@@ -1,5 +1,5 @@
 ;
-var cdnurl = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3"
+var cdnurl = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4"
 var _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (a) {
     return typeof a
 } : function (a) {
@@ -184,7 +184,7 @@ function imgError(ele, type) {
             ele.src = cdnurl +'/img/other/404_img.jpg'
             break
         default:
-            ele.src = cdnurl +'/img/other/404_img.jpg'
+            ele.src = cdnurl +' /img/other/404_img.jpg'
     }
 }
 mashiro_global.post_list_show_animation = new function () {
