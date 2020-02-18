@@ -1,3 +1,7 @@
+:root{
+    --contentBGURL:url("https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/BG/bg2.jpg") ;
+}
+
 .covers{
     position: absolute;
     height: 100%;
@@ -42,7 +46,7 @@
     line-height: 30px;
 }
 .contentBG {
-    background-image: url(/images/BG/bg1.jpeg);
+    background-image: var(--contentBGURL);
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;

@@ -37,7 +37,7 @@
     transition: all 0.5s ease-out;
     transform: translateX(20px);
   }
-  .attention{
+  #attention{
     position: relative;
     top: 30px;
     margin-left: 20px;

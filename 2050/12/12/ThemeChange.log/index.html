@@ -387,7 +387,7 @@
 
   <div class="pattern-center single-center">
     <!-- 有配图默认渲染第一张 -->
-    <div class="pattern-attachment-img lazyload" style="background-image: url(https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg">
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/ev_aone.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/ev_aone.jpg">
     </div>
     <header class="pattern-header single-header">
       <h1 class="entry-title">
@@ -395,7 +395,7 @@
       <p class="entry-census">
         <span>
           <a href="">
-            <img src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg">
+            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/ev_aone.jpg">
           </a>
         </span>
         <span>
@@ -427,9 +427,9 @@
 <h2 id="background"><a href="#background" class="headerlink" title="background"></a><strong>background</strong></h2><p>content部分：这部分其实吧，就是加了个<code>background-img: url()</code>。其实一开始想做成能切换背景的样子，但是还是自己太蠢，样式调了半天也没弄出来，暂时放弃了。</p>
 <p>top部分：就是换个url，在<code>_config.yml</code>里改。</p>
 <hr>
-<h2 id="index的centerBG"><a href="#index的centerBG" class="headerlink" title="index的centerBG"></a><strong>index的centerBG</strong></h2><p>在figure下面加了俩div用来装BG图片，改了下sakura-app.js里的<code>nextBG()</code>和<code>preBG()</code>以及其初始化函数。周期性调用<code>nextBG()</code>来换图。</p>
+<h2 id="index的centerpassage"><a href="#index的centerpassage" class="headerlink" title="index的centerpassage"></a><strong>index的centerpassage</strong></h2><p>在figure下面加了俩div用来装passage图片，改了下sakura-app.js里的<code>nextpassage()</code>和<code>prepassage()</code>以及其初始化函数。周期性调用<code>nextpassage()</code>来换图。</p>
 <p>使用Animate.css通过class进行淡入淡出（感觉好蠢的操作啊）。</p>
-<p>由于是在顶部，position调整为absolute就好了。和contant的BG不一样，那个调成absolute就飞到顶端了。<br>2019.12.20</p>
+<p>由于是在顶部，position调整为absolute就好了。和contant的passage不一样，那个调成absolute就飞到顶端了。<br>2019.12.20</p>
 <hr>
 <h2 id="aplayer部分"><a href="#aplayer部分" class="headerlink" title="aplayer部分"></a><strong>aplayer部分</strong></h2><p>主要就是改ID和servers，网易云私有的list似乎不能被访问。</p>
 <p>一开始少了俩图标，重新建立个新的只改ID发现就好了，可能是之前瞎改layout的时候碰到点什么。<br>2019.12.21</p>
@@ -485,7 +485,7 @@
   LAppDelegate.getInstance().run();
 };
 </code></pre>
-<p><code>main.ts</code>为主程序入口。首先初始化Canvas和WebGL的东西。包括Dom操作，事件函数绑定。接下来就是Live的View（用于显示的组件）和整个Cubism SDK的初始化。</p>
+<p><code>main.ts</code>为主程序入口。首先初始化Canvas和WepassageL的东西。包括Dom操作，事件函数绑定。接下来就是Live的View（用于显示的组件）和整个Cubism SDK的初始化。</p>
 <p>View初始化就是视口大小和矩阵。</p>
 <p>SDK包括Debug用日志、CubismFramework的初始化、Live2DManager的创建、时钟的更新和背景等其他素材的加载。比如原始Demo上面的那个话模型用的齿轮<br>就是这个时候被加载的。</p>
 <p>Live2DManager的构造函数包括的模型矩阵的设置，模型的创建的场景索引的更新。</p>
@@ -567,7 +567,7 @@
           
             <a href="/2050/12/12/Admin/" rel="prev">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/ev318c.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/ev318c.jpg">
               </div>
               <span class="label">
               Previous Post</span>
@@ -583,15 +583,15 @@
           
             <div class="post-nepre half next">
           
-            <a href="/2020/01/19/Struts2Framework/" rel="next">
+            <a href="/2019/12/30/DirectX12.log/" rel="next">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/evkn_01e.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/evkn_01e.png">
               </div>
               <span class="label">
               Next Post</span>
               <div class="info">
                 <h3>
-                </h3>
+                DirectX12 Study log (仮)</h3>
                 <hr>
               </div>
             </a>
@@ -601,7 +601,7 @@
       
       <section class="author-profile">
         <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-          <a href="" class="profile gravatar"><img src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/passage/ev_aone.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
           <div class="meta">
             <span class="title">Author</span>
             <h3 itemprop="name">
@@ -623,7 +623,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <input type="text" class="ins-search-input" placeholder="Type something..."/>
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -635,10 +635,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: '文章',
-            // PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
+            POSTS: 'Posts',
+            // PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -902,7 +902,7 @@
         <div id="hide"><div class="label">hide</div></div>
   <div id="language"><div class="label">jp</div></div>
   <div id="live2d">
-    <div class="attention"><div id="attentionInfo"></div></div>
+    <div id="attention"><div id="attentionInfo"></div></div>
   </div>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>

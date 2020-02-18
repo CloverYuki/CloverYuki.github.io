@@ -1,4 +1,5 @@
 ;
+var cdnurl = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3"
 var _typeof = typeof Symbol === 'function' && typeof Symbol.iterator === 'symbol' ? function (a) {
     return typeof a
 } : function (a) {
@@ -170,20 +171,20 @@ function imgError(ele, type) {
     switch (type) {
         case 1:
             if (ele.src.includes('https://cn.gravatar.com/avatar')) {
-                ele.src = ele.src.replace('https://cn.gravatar.com/avatar/', 'https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/gravatar.jpg')
+                ele.src = ele.src.replace('https://cn.gravatar.com/avatar/', cdnurl + '/img/other/gravatar.jpg')
             } else {
-                ele.src = 'https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/default_avatar.jpg'
+                ele.src = cdnurl +'/img/other/default_avatar.jpg'
             }
             break
         case 2:
-            ele.src = 'https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/default_gavatar.jpg'
+            ele.src = cdnurl +'/img/other/default_gavatar.jpg'
             break
         case 3:
 
-            ele.src = 'https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/image-404.png'
+            ele.src = cdnurl +'/img/other/404_img.jpg'
             break
         default:
-            ele.src = 'https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/image-404.png'
+            ele.src = cdnurl +'/img/other/404_img.jpg'
     }
 }
 mashiro_global.post_list_show_animation = new function () {
