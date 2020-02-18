@@ -1,0 +1,55 @@
+#live2d{
+    position:fixed;
+    bottom: 0;
+    user-select: none;
+    z-index: 98;
+  }
+
+  #hide,#language{
+    width: 200px;
+    height:50px;
+    background-color: hotpink;
+    border-radius: 8px;
+    bottom: 200px;
+    left: -180px;
+    position: fixed;
+    z-index: 99;
+    writing-mode: vertical-rl;
+    cursor: pointer;
+  }
+  #language{
+    bottom: 150px;
+  }
+  #hide,#language .label{
+    margin-right: 2px;
+    color:white;
+    font-family:'Times New Roman', Times, serif;
+    font-weight: bold;
+    text-align: center;
+  }
+  #hide:hover
+  {
+    transition: all 0.5s ease-out;
+    transform: translateX(20px);
+  }
+  #language:hover
+  {
+    transition: all 0.5s ease-out;
+    transform: translateX(20px);
+  }
+  .attention{
+    position: relative;
+    top: 30px;
+    margin-left: 20px;
+    width:250px;
+    height:80px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.18);
+    border: 1px solid rgba(0,0,0,0.12);
+    z-index: 99;
+  }
+  #attentionInfo{
+    margin: 5px 5px 5px 5px;
+    font-size: 15px;
+  }

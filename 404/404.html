@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+        <title itemprop="name">
+            
+                        SakuraTest
+        </title>
+        
+            <link rel="shortcut icon" href="/img/favicon.ico">
+            
+                <meta http-equiv="x-dns-prefetch-control" content="on">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+                <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+                <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/Animate.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/lib.min.css" media="all">
+                <link rel="stylesheet" href="/css/font.css" media="all">
+                <link rel="stylesheet" href="/css/insight.css" media="all">
+                <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+                <link rel="stylesheet" href="/css/zoom.css" media="all">
+                <link rel="stylesheet" href="/css/restage.css" type="text/css">
+                <link rel="stylesheet" href="/css/live2d.css" type="text/css">
+                <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+                <link rel="stylesheet" type="text/css" href="/css/add.css">
+                <!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+                <script>
+                    /*Initial Variables*/
+                    var mashiro_option = new Object();
+                    var mashiro_global = new Object();
+                    mashiro_option.NProgressON = true;
+                    /* 
+                     * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+                     * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+                     */
+                    mashiro_option.email_domain = "";
+                    mashiro_option.email_name = "";
+                    mashiro_option.cookie_version_control = "";
+                    mashiro_option.qzone_autocomplete = false;
+                    mashiro_option.site_name = "見えなかった雪";
+                    mashiro_option.author_name = "雪";
+                    mashiro_option.site_url = "";
+                    mashiro_option.v_appId = "";
+                    mashiro_option.v_appKey = "";
+                    mashiro_option.mathjax = "0";
+                    mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/";
+                    mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+                    // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+                    // mashiro_option.float_player_on = true;
+
+                    /*End of Initial Variables*/
+                </script>
+                <script type="text/javascript">
+                    var bg = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (1).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (2).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (3).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (4).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (5).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (6).jpg".split(",");
+                    var bgindex = Math.floor(Math.random() * bg.length);
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+                        alert('朋友，IE浏览器未适配哦~');
+                    }
+                </script>
+                
+                <style type="text/css">
+                    .hljs-ln {
+                        border-collapse: collapse
+                    }
+                    
+                    .hljs-ln td {
+                        padding: 0
+                    }
+                    
+                    .hljs-ln-n:before {
+                        content: attr(data-line-number)
+                    }
+                </style>
+                <style type="text/css">
+                .site-top .lower nav {
+                        display: block !important;
+                    }
+                    
+                    .author-profile i,
+                    .post-like a,
+                    .post-share .show-share,
+                    .sub-text,
+                    .we-info a,
+                    span.sitename,
+                    .post-more i:hover,
+                    #pagination a:hover,
+                    .post-content a:hover,
+                    .float-content i:hover {
+                        color: #f782ff
+                    }
+                    
+                    .feature i,
+                    .download,
+                    .navigator i:hover,
+                    .links ul li:before,
+                    .ar-time i,
+                    span.ar-circle,
+                    .object,
+                    .comment .comment-reply-link,
+                    .siren-checkbox-radio:checked+.siren-checkbox-radioInput:after {
+                        background: #f782ff
+                    }
+                    
+                    .download,
+                    .navigator i:hover,
+                    .link-title,
+                    .links ul li:hover,
+                    #pagination a:hover,
+                    .comment-respond input[type='submit']:hover {
+                        border-color: #21c0ff
+                    }
+                    
+                    .entry-content a:hover,
+                    .site-info a:hover,
+                    .comment h4 a,
+                    #comments-navi a.prev,
+                    #comments-navi a.next,
+                    .comment h4 a:hover,
+                    .site-top ul li a:hover,
+                    .entry-title a:hover,
+                    #archives-temp h3,
+                    span.page-numbers.current,
+                    .sorry li a:hover,
+                    .site-title a:hover,
+                    i.iconfont.js-toggle-search.iconsearch:hover,
+                    .comment-respond input[type='submit']:hover {
+                        color: #f782ff
+                    }
+                    
+                    .comments .comments-main {
+                        display: block !important;
+                    }
+                    
+                    .comments .comments-hidden {
+                        display: none !important;
+                    }
+                
+                </style>
+</head></html>
+
+    <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+        <div class="scrollbar" id="bar">
+        </div>
+        <div id="back-to-top" class="animated fadeIn faster">
+            <div class="flow"></div>
+            <span class="percentage animated fadeIn faster">0%</span>
+            <span class="animated fadeIn faster">Topへ</span>
+            <span class="iconfont icon-top02 animated fadeIn faster"></span>
+        </div>
+        <section id="main-container">
+            <div class="headertop filter-dim">
+    <div id="banner_wave_1"></div>
+    <div id="banner_wave_2"></div>
+    <figure id="centerbg" class="centerbg">
+        <div class="focusinfo no-select">
+            <div class="header-tou">
+                <a href="">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+                    <!--  <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg"> -->
+                </a>
+            </div>
+            <div class="header-signature">
+                <span>
+                  摸鱼拯救世界
+              </span>
+            </div>
+            <div class="header-info">
+                <p>
+                    Live your life with passion! With some drive!
+                </p>
+                <div class="top-social_v2">
+                    <li id="bg-pre">
+                        <img class="flipx" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                    </li>
+                    
+                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/github.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="weibo">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/weibo.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="twitter">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/twitter.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/email.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="/#" target="_blank" class="social-github" title="qq">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/qq.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                                            
+                                                <li id="bg-next">
+                                                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                                                </li>
+                </div>
+            </div>
+        </div>
+    </figure>
+    <div id="video-container" style="">
+        <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+        <div id="video-btn" class="loadvideo videolive">
+        </div>
+        <div id="video-add">
+        </div>
+        <div class="video-stu">
+        </div>
+    </div>
+    <div class="headertop-down faa-float animated" onclick="headertop_down()">
+        <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+    </div>
+</div>
+                <div id="page" class="site wrapper contentBG">
+                    <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">見えなかった</span>
+            <span class="shironeko">雪</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/技术/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/吐槽/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          吐槽
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/资源/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          资源
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/随想/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+                          <div class="pattern-center-blank"></div>
+  
+  <div id="content" class="site-content">
+    <article class="post-item post-301 page type-page status-publish has-post-thumbnail hentry">
+      <html>
+
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=11" id="mixia_vpid">
+
+	<title>404</title>
+	<style>
+		html,
+		body,
+		div,
+		span,
+		applet,
+		object,
+		iframe,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p,
+		blockquote,
+		pre,
+		a,
+		abbr,
+		acronym,
+		address,
+		big,
+		cite,
+		code,
+		del,
+		dfn,
+		em,
+		img,
+		ins,
+		kbd,
+		q,
+		s,
+		samp,
+		small,
+		strike,
+		strong,
+		sub,
+		sup,
+		tt,
+		var,
+		b,
+		u,
+		i,
+		center,
+		dl,
+		dt,
+		dd,
+		ol,
+		ul,
+		li,
+		fieldset,
+		form,
+		label,
+		legend,
+		table,
+		caption,
+		article,
+		aside,
+		canvas,
+		details,
+		embed,
+		figure,
+		figcaption,
+		footer,
+		header,
+		hgroup,
+		menu,
+		nav,
+		output,
+		ruby,
+		section,
+		summary,
+		time,
+		mark,
+		audio,
+		video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			vertical-align: baseline;
+			font: inherit;
+			font-size: 100%;
+		}
+
+		tbody,
+		tfoot,
+		thead,
+		tr,
+		th,
+		td {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font: inherit;
+			font-size: 100%;
+		}
+
+		/* HTML5 display-role reset for older browsers */
+		article,
+		aside,
+		details,
+		figcaption,
+		figure,
+		footer,
+		header,
+		hgroup,
+		menu,
+		nav,
+		section {
+			display: block;
+		}
+
+		body {
+			line-height: 1;
+		}
+
+		ol,
+		ul {
+			list-style: none;
+		}
+
+		q:before,
+		q:after {
+			content: '';
+			content: none;
+		}
+
+		body {
+			width: 100%;
+			*zoom: 1;
+		}
+
+		body:before,
+		body:after {
+			display: table;
+			content: "";
+		}
+
+		body:after {
+			clear: both;
+		}
+
+		html,
+		body {
+			height: 100%;
+		}
+
+		html {
+			height: 100%;
+			max-height: 100%;
+		}
+
+		body {
+			color: #333333;
+			font-size: 1em;
+			font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		::selection {
+			background: rgba(255, 255, 255, 0.3);
+		}
+
+		::-moz-selection {
+			background: rgba(255, 255, 255, 0.3);
+		}
+
+		a {
+			color: #DF9C81;
+			text-decoration: none;
+		}
+
+		a:hover {
+			color: #d06c44;
+			-webkit-transition: .5s;
+			-moz-transition: .5s;
+			-o-transition: .5s;
+			-ms-transition: .5s;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h5 {
+			margin-top: 1.0em;
+			margin-bottom: .5em;
+			color: #333333;
+			font-weight: lighter;
+			font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		h1 {
+			margin-top: 0;
+			letter-spacing: .05em;
+			font-size: 1.8em;
+			line-height: 1.2em;
+		}
+
+		h2 {
+			font-size: 1.6em;
+		}
+
+		h3 {
+			font-size: 1.4em;
+		}
+
+		h4 {
+			font-size: 1.2em;
+		}
+
+		h4 {
+			font-size: 1.1em;
+		}
+
+		h5 {
+			font-size: 1em;
+		}
+
+		p {
+			margin-bottom: 1.3em;
+			line-height: 1.7em;
+		}
+
+		em {
+			font-style: italic;
+		}
+
+		ol,
+		ul {
+			margin: 0 0 .3em 1em;
+		}
+
+		ol li,
+		ul li {
+			margin: 0 0 .2em 0;
+			line-height: 1.6em;
+		}
+
+		ol ol,
+		ol ul,
+		ul ol,
+		ul ul {
+			margin: .1em 0 .2em 2em;
+		}
+
+		ol {
+			list-style-type: decimal;
+		}
+
+		ul {
+			list-style-type: disc;
+		}
+
+		.date,
+		.time,
+		.author,
+		.tags {
+			color: #c7c7c7;
+			font-size: .8em;
+		}
+
+		.date a,
+		.time a,
+		.author a,
+		.tags a {
+			color: #666666;
+		}
+
+		.date a:hover,
+		.time a:hover,
+		.author a:hover,
+		.tags a:hover {
+			color: #d06c44;
+		}
+
+		.footer {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			color: #b3b3b3;
+			font-size: .7em;
+		}
+
+		.logo {
+			width: 25%;
+			border: 3px solid #FFF;
+			border-radius: 50%;
+			box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+			transition: all .5s;
+		}
+
+		.logo:hover {
+			border: 3px solid #5ba4e5;
+			transition: all .5s;
+			-webkit-transform: rotate(360deg);
+			/* Safari 和 Chrome */
+			-moz-transform: rotate(360deg);
+			/* Firefox */
+			-o-transform: rotate(350deg);
+			/* Opera */
+			transform: rotate(360deg);
+			-ms-transform: rotate(360deg);
+			/* IE 9 */
+		}
+
+		.Weibo_icon_logo {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background-position: -50px -25px;
+			box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+			vertical-align: -2px;
+		}
+
+		.Weibo_icon {
+			display: inline-block;
+			background-image: url(../homepage/img/V_icon.png);
+			background-repeat: no-repeat;
+		}
+
+		.Weibo_icon_position {
+			position: relative;
+			top: -12px;
+			right: 42px;
+		}
+
+		hr {
+			border: none;
+		}
+
+		.hidden {
+			display: none !important;
+		}
+
+		.panel {
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+
+		.panel-title {
+			margin: 0 0 15px 0;
+			color: #FFF;
+			letter-spacing: 4px;
+			font-size: 5em;
+		}
+
+		.panel-subtitle {
+			color: #CCCCCC;
+			letter-spacing: 3px;
+			font-weight: lighter;
+			font-size: 1.2em;
+			font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.panel-cover {
+			position: fixed;
+			z-index: 900;
+			display: block;
+			width: 100%;
+			height: 100%;
+			max-width: none;
+			background: url(../images/background-cover.jpg) top left no-repeat #666666;
+			background-size: cover;
+		}
+
+		.panel-cover--collapsed {
+			width: 30%;
+			max-width: 700px;
+		}
+
+		.panel-cover--overlay {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 0;
+			display: block;
+			background-color: rgba(68, 68, 68, 0.6);
+			background-image: -webkit-linear-gradient(-410deg, rgba(68, 68, 68, 0.6) 20%, rgba(0, 0, 0, 0.9));
+			background-image: linear-gradient(140deg, rgba(68, 68, 68, 0.6) 20%, rgba(0, 0, 0, 0.9));
+		}
+
+		.panel-cover__logo {
+			margin: 0px 0px 0px 20px;
+			margin-bottom: .2em;
+		}
+
+		.panel-cover__description {
+			margin: 0 30px;
+			font-size: 20px;
+			font-weight: bolder;
+		}
+
+		.panel-cover__divider {
+			margin: 20px auto;
+			width: 50%;
+			border-top: 1px solid rgba(255, 255, 255, 0.14);
+		}
+
+		.panel-cover__divider--secondary {
+			width: 15%;
+		}
+
+		.panel-main {
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+
+		.panel-main__inner {
+			position: relative;
+			z-index: 800;
+			display: table-cell;
+			padding: 0 60px;
+			vertical-align: middle;
+		}
+
+		.panel-main__content {
+			margin: 0 auto;
+			max-width: 800px;
+		}
+
+		.panel-main__content--fixed {
+			width: 480px;
+			-webkit-transition: width 1s;
+			/* Safari */
+			transition: width 1s;
+		}
+
+		.panel-inverted {
+			color: #FFF;
+			text-align: center;
+			text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+			font-weight: 100;
+		}
+
+		.panel-inverted a {
+			color: #FFF;
+		}
+
+		.cover-navigation {
+			margin-top: 42px;
+		}
+
+		.cover-navigation--social {
+			margin-left: 30px;
+		}
+
+		.cover-blue {
+			background-color: rgba(37, 104, 163, 0.6);
+			background-image: -webkit-linear-gradient(-410deg, rgba(37, 104, 163, 0.6) 20%, rgba(18, 51, 80, 0.8));
+			background-image: linear-gradient(140deg, rgba(37, 104, 163, 0.6) 20%, rgba(18, 51, 80, 0.8));
+		}
+
+		.cover-green {
+			background-color: rgba(21, 111, 120, 0.6);
+			background-image: -webkit-linear-gradient(-410deg, rgba(21, 111, 120, 0.6) 20%, rgba(6, 31, 33, 0.8));
+			background-image: linear-gradient(140deg, rgba(21, 111, 120, 0.6) 20%, rgba(6, 31, 33, 0.8));
+		}
+
+		.cover-purple {
+			background-color: rgba(73, 50, 82, 0.6);
+			background-image: -webkit-linear-gradient(-410deg, rgba(73, 50, 82, 0.6) 20%, rgba(17, 11, 19, 0.8));
+			background-image: linear-gradient(140deg, rgba(73, 50, 82, 0.6) 20%, rgba(17, 11, 19, 0.8));
+		}
+
+		.cover-red {
+			background-color: rgba(119, 31, 18, 0.6);
+			background-image: -webkit-linear-gradient(-410deg, rgba(119, 31, 18, 0.6) 20%, rgba(30, 8, 5, 0.8));
+			background-image: linear-gradient(140deg, rgba(119, 31, 18, 0.6) 20%, rgba(30, 8, 5, 0.8));
+		}
+
+		.cover-orange {
+			background-color: rgba(174, 80, 4, 0.6);
+			background-image: -webkit-linear-gradient(-410deg, rgba(174, 80, 4, 0.6) 20%, rgba(74, 34, 2, 0.8));
+			background-image: linear-gradient(140deg, rgba(174, 80, 4, 0.6) 20%, rgba(74, 34, 2, 0.8));
+		}
+
+		.cover-slate {
+			background-color: rgba(0, 0, 0, 0.4);
+			background-image: -webkit-linear-gradient(-410deg, rgba(0, 0, 0, 0.2) 20%, rgba(0, 0, 0, 0.6));
+			background-image: linear-gradient(140deg, rgba(0, 0, 0, 0.62) 20%, rgba(0, 0, 0, 0.6));
+		}
+
+		.cover-disabled {
+			background: none;
+		}
+
+		.btn,
+		.navigation__item a {
+			padding: 10px 20px;
+			border: 1px solid #DF9C81;
+			border-radius: 20px;
+			color: #DF9C81;
+			text-shadow: none;
+			letter-spacing: 1px;
+			font-weight: bold;
+			font-size: .9em;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.btn:hover,
+		.navigation__item a:hover {
+			border-color: #d06c44;
+			color: #d06c44;
+		}
+
+		.btn-border-small {
+			margin-left: 10px;
+			padding: 6px 8px;
+			border: 1px solid #DF9C81;
+			border-radius: 20px;
+			font-size: .8em;
+		}
+
+		.btn-contribute {
+			padding: 6px 8px;
+			border: 1px solid #DF9C81;
+			border-radius: 8px;
+			background-color: #DF9C81;
+			color: white;
+			font-weight: bold;
+			font-size: 1.1em;
+		}
+
+		.btn-secondary {
+			border-color: #5BA4E5;
+			color: #5BA4E5;
+		}
+
+		.btn-secondary:hover {
+			border-color: #217fd2;
+			color: #217fd2;
+		}
+
+		.btn-tertiary {
+			border-color: #999999;
+			color: #999999;
+		}
+
+		.btn-tertiary:hover {
+			border-color: #737373;
+			color: #737373;
+		}
+
+		.btn-large {
+			padding: 10px 24px;
+			font-size: 1.1em;
+		}
+
+		.btn-small {
+			padding: 8px 12px;
+			font-size: .7em;
+		}
+
+		.btn-mobile-menu {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			z-index: 9999;
+			display: none;
+			width: 100%;
+			height: 35px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			background: rgba(51, 51, 51, 0.98);
+			text-align: center;
+		}
+
+		.btn-mobile-menu__icon,
+		.btn-mobile-close__icon {
+			position: relative;
+			top: 10px;
+			color: #FFF;
+		}
+
+		nav {
+			position: relative;
+			display: inline-block;
+		}
+
+		.navigation {
+			position: relative;
+			float: left;
+			display: inline-block;
+			margin: 0;
+			list-style-type: none;
+		}
+
+		.navigation__item {
+			display: inline-block;
+			margin: 5px 1px 0 0;
+			line-height: 1em;
+		}
+
+		.navigation__item a {
+			position: relative;
+			display: block;
+			border-color: #FFF;
+			color: #FFF;
+			opacity: .8;
+		}
+
+		.navigation__item a:hover {
+			border-color: rgba(255, 255, 255, 0.3);
+			background: rgba(255, 255, 255, 0.3);
+			color: #FFF;
+			opacity: 1;
+			transition: all .3s;
+		}
+
+		.navigation--social a {
+			padding: 6px 8px 6px 9px;
+			border: 0px;
+		}
+
+		.navigation--social a .label {
+			display: none;
+		}
+
+		.navigation--social a .icon {
+			display: block;
+			font-size: 1.7em;
+		}
+
+		i {
+			font-weight: normal;
+			font-style: normal;
+			font-size: 18px;
+			font-family: 'entypo';
+		}
+
+		.social {
+			font-size: 22px;
+		}
+
+		.icon-social {
+			position: relative;
+			display: block;
+			font-size: 22px;
+			font-family: 'entypo-social';
+		}
+
+		*:focus {
+			outline: none;
+		}
+
+		.wechat[data-v] {
+			position: relative;
+		}
+
+		.qrCode[data-v] {
+			position: absolute;
+			bottom: 42px;
+			left: -25px;
+			display: none;
+			width: 92px;
+			height: 92px;
+			background-color: #fff;
+			text-align: center;
+		}
+
+		.wechat .qrCode .triangle-down[data-v] {
+			position: absolute;
+			bottom: -8px;
+			left: 50%;
+			margin-left: -6px;
+			width: 0;
+			height: 0;
+			border-top: 10px solid #fff;
+			border-right: 6px solid transparent;
+			border-left: 6px solid transparent;
+		}
+
+		.wechat:hover .qrCode[data-v] {
+			display: inline;
+		}
+
+		@media all and (max-width: 1100px) {
+			.panel-title {
+				font-size: 2em;
+			}
+
+			.panel-subtitle {
+				font-size: 1em;
+			}
+
+			.panel-cover__description {
+				margin: 0 10px;
+				font-size: .9em;
+			}
+
+			.navigation--social {
+				margin-top: 5px;
+				margin-left: 0;
+			}
+		}
+
+		@media all and (max-width: 960px) {
+			.btn-mobile-menu {
+				display: block;
+			}
+
+			.qrCode[data-v] {
+				Margin: 0px 41%;
+			}
+
+			.panel-main {
+				position: relative;
+				display: table;
+			}
+
+			.panel-cover--collapsed {
+				width: 100%;
+				max-width: none;
+			}
+
+			.panel-main__inner {
+				display: table-cell;
+				padding: 60px 10%;
+			}
+
+			.panel-cover__description {
+				display: block;
+				margin: 0 auto;
+				max-width: 600px;
+			}
+
+			.panel-cover {
+				width: 100%;
+				height: 100%;
+				background-position: center center;
+			}
+
+			.panel-cover.panel-cover--collapsed {
+				position: relative;
+				display: block;
+				padding: 0;
+				height: auto;
+				background-position: center center;
+			}
+
+			.panel-cover.panel-cover--collapsed .panel-main__inner {
+				display: block;
+				padding: 70px 0 30px 0;
+			}
+
+			.panel-cover.panel-cover--collapsed .panel-cover__logo {
+				width: 60px;
+				border-width: 2px;
+			}
+
+			.panel-cover.panel-cover--collapsed .panel-cover__description {
+				display: none;
+			}
+
+			.panel-cover.panel-cover--collapsed .panel-cover__divider {
+				display: none;
+				margin: 1em auto;
+			}
+
+			.navigation-wrapper {
+				position: fixed;
+				top: 0;
+				right: 0;
+				left: 0;
+				display: none;
+				padding: 20px 0;
+				width: 100%;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+				background: rgba(51, 51, 51, 0.98);
+			}
+
+			.navigation-wrapper.visible {
+				display: block;
+			}
+
+			.cover-navigation {
+				position: relative;
+				float: left;
+				clear: left;
+				display: block;
+				width: 100%;
+			}
+
+			.cover-navigation .navigation {
+				display: block;
+				width: 100%;
+			}
+
+			.cover-navigation .navigation li {
+				margin-bottom: .4em;
+				width: 80%;
+			}
+
+			.cover-navigation.navigation--social {
+				padding-top: 5px;
+			}
+
+			.cover-navigation.navigation--social .navigation li {
+				display: inline-block;
+				width: 25.8%;
+			}
+
+			.content-wrapper {
+				margin: 0 auto;
+				width: 80%;
+				max-width: none;
+			}
+
+			.content-wrapper__inner {
+				margin-right: 0;
+				margin-left: 0;
+			}
+
+			.navigation__item {
+				margin: 0 0 .4em 0;
+				width: 100%;
+			}
+		}
+
+		@media all and (max-width: 767px) {
+			.panel-cover__logo {
+				width: 100px;
+			}
+
+			.Weibo_icon_position {
+				top: -6px;
+				right: 35px;
+			}
+
+			.qrCode[data-v] {
+				Margin: 0px 38%;
+			}
+		}
+
+		@media all and (max-width: 480px) {
+			.qrCode[data-v] {
+				Margin: 0px 30%;
+			}
+		}
+
+		@media all and (max-width: 340px) {
+			.panel-main__inner {
+				padding: 0 5%;
+			}
+
+			.panel-title {
+				margin-bottom: .1em;
+				font-size: 1.5em;
+			}
+
+			.panel-subtitle {
+				font-size: .9em;
+			}
+
+			.btn,
+			.navigation__item a {
+				margin-bottom: .4em;
+			}
+		}
+	</style>
+	<script src="https://cdn.bootcss.com/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+</head>
+
+<body>
+
+	<span class="mobile btn-mobile-menu">
+		<i class="fa fa-list btn-mobile-menu__icon"></i>
+		<i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+	</span>
+	
+	<header class="panel-cover" style="background-image: url(img/custom/404_bg.jpg)">
+
+		<div class="panel-main">
+
+			<div class="panel-main__inner panel-inverted">
+				<div class="panel-main__content">
+
+					<!-- <a href="https://404.life/" title="前往 玖梦HEISTSOCYETY"><img src="" width="150" alt="Noisky logo"
+							class="panel-cover__logo logo"></a> -->
+					<h1 class="panel-cover__title panel-title"><a href title="link to homepage for noisky">404</a></h1>
+
+
+					<hr class="panel-cover__divider">
+					<p class="panel-cover__description">对不起，您要找的页面丢失了，(＞_＜；)</p>
+					<p class="panel-cover__description">Sorry, The page your requested can not be found, (＞_＜；)</p>
+					<hr class="panel-cover__divider panel-cover__divider--secondary">
+
+					<p class="panel-cover__description">可以向打小报告哦~</p>
+
+
+					<p class="footer">404 © 2019 | <a style="TEXT-DECORATION: none" href="http://www.miibeian.gov.cn" rel="nofollow" target="_blank">
+							<font color="#b3b3b3"></font>
+						</a></p>
+				</div>
+			</div>
+			<div class="panel-cover--overlay cover-slate"></div>
+		</div>
+	</header>
+</body>
+
+</html>
+      <!-- .entry-content -->
+      
+      <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+      <footer class="post-footer">
+        <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+        <div class="post-tags">
+        </div>
+        <div class="post-share">
+          <div class="social-share sharehidden share-component"></div>
+          <i class="iconfont show-share icon-forward"></i>
+        </div>
+      </footer><!-- .entry-footer -->
+    </article>
+      <!-- #post-## -->
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="/about/" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg" itemprop="image" alt="雪" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author">雪</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>Live your life with passion! With some drive!</p>
+      </section>
+  </div><!-- #primary -->
+</div>
+                </div>
+                <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+                    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yuuki<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+        <div class="footertext">
+            <div class="img-preload">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/wordpress-rotating-ball-o.svg">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/disqus-preloader.svg">
+            </div>
+            <p style="color: #666666;">&copy 2018</p>
+        </div>
+        <div class="footer-device">
+            <p style="font-family: 'Ubuntu', sans-serif;">
+                <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+            </p>
+        </div>
+    </div>
+    <!-- .site-info -->
+</footer>
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<script src="/js/botui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+<script type="text/javascript" src="/js/restage.js"></script>
+<!-- Pollyfill script -->
+<script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+<!-- Live2DCubismCore script -->
+<script src = "/js/live2dcubismcore.min.js"></script>
+<!-- Build script -->
+<script src = "/js/live2d.min.js"></script>
+<script type="text/javascript" src="/js/add.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "close"
+            },
+            "windowheight": "fixed",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    } else {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "open"
+            },
+            "windowheight": "auto",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    }
+    /* ]]> */
+</script>
+<script>
+    $(document).ready(function() {
+        if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+            if ($(".pattern-center").length > 0) { //有图的情况
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -400,
+                    scrollSmoothOffset: -85
+                });
+            } else {
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -85,
+                    scrollSmoothOffset: -85
+                });
+            }
+            var offsetTop = $('.toc').offset().top - 95;
+            window.onscroll = function() {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop >= offsetTop) {
+                    $('.toc').addClass('toc-fixed');
+                } else {
+                    $('.toc').removeClass('toc-fixed');
+                }
+            }
+        }
+    });
+</script>
+</script>
+                        <div class="openNav no-select" style="height: 50px;">
+                            <div class="iconflat no-select" style="width: 50px; height: 50px;">
+                                <div class="icon"></div>
+                            </div>
+                            <div class="site-branding search-form-submit">
+                                <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+                            </div>
+                        </div>
+        </section>
+        <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">見えなかった雪</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/技术/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/吐槽/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  吐槽
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/资源/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  资源
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/随想/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+        <div id="hide"><div class="label">hide</div></div>
+  <div id="language"><div class="label">jp</div></div>
+  <div id="live2d">
+    <div class="attention"><div id="attentionInfo"></div></div>
+  </div>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+    id="3130796893"
+
+    server="netease"
+
+    type="playlist"
+
+    fixed="true"
+
+    autoplay="false"
+
+    loop="all"
+
+    order="random"
+
+    preload="auto"
+
+    volume="0.7"
+
+    mutex="true"
+
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+    </body>
+
+    </html>

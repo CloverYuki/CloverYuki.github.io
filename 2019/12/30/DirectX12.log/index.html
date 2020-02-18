@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+        <title itemprop="name">
+            
+                DirectX12 Study log (仮) |
+                    
+                        SakuraTest
+        </title>
+        
+            <link rel="shortcut icon" href="/img/favicon.ico">
+            
+                <meta http-equiv="x-dns-prefetch-control" content="on">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+                <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+                <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/Animate.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/lib.min.css" media="all">
+                <link rel="stylesheet" href="/css/font.css" media="all">
+                <link rel="stylesheet" href="/css/insight.css" media="all">
+                <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+                <link rel="stylesheet" href="/css/zoom.css" media="all">
+                <link rel="stylesheet" href="/css/restage.css" type="text/css">
+                <link rel="stylesheet" href="/css/live2d.css" type="text/css">
+                <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+                <link rel="stylesheet" type="text/css" href="/css/add.css">
+                <!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+                <script>
+                    /*Initial Variables*/
+                    var mashiro_option = new Object();
+                    var mashiro_global = new Object();
+                    mashiro_option.NProgressON = true;
+                    /* 
+                     * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+                     * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+                     */
+                    mashiro_option.email_domain = "";
+                    mashiro_option.email_name = "";
+                    mashiro_option.cookie_version_control = "";
+                    mashiro_option.qzone_autocomplete = false;
+                    mashiro_option.site_name = "見えなかった雪";
+                    mashiro_option.author_name = "雪";
+                    mashiro_option.site_url = "";
+                    mashiro_option.v_appId = "";
+                    mashiro_option.v_appKey = "";
+                    mashiro_option.mathjax = "0";
+                    mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/";
+                    mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+                    // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+                    // mashiro_option.float_player_on = true;
+
+                    /*End of Initial Variables*/
+                </script>
+                <script type="text/javascript">
+                    var bg = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (1).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (2).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (3).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (4).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (5).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (6).jpg".split(",");
+                    var bgindex = Math.floor(Math.random() * bg.length);
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+                        alert('朋友，IE浏览器未适配哦~');
+                    }
+                </script>
+                
+                <style type="text/css">
+                    .hljs-ln {
+                        border-collapse: collapse
+                    }
+                    
+                    .hljs-ln td {
+                        padding: 0
+                    }
+                    
+                    .hljs-ln-n:before {
+                        content: attr(data-line-number)
+                    }
+                </style>
+                <style type="text/css">
+                .site-top .lower nav {
+                        display: block !important;
+                    }
+                    
+                    .author-profile i,
+                    .post-like a,
+                    .post-share .show-share,
+                    .sub-text,
+                    .we-info a,
+                    span.sitename,
+                    .post-more i:hover,
+                    #pagination a:hover,
+                    .post-content a:hover,
+                    .float-content i:hover {
+                        color: #f782ff
+                    }
+                    
+                    .feature i,
+                    .download,
+                    .navigator i:hover,
+                    .links ul li:before,
+                    .ar-time i,
+                    span.ar-circle,
+                    .object,
+                    .comment .comment-reply-link,
+                    .siren-checkbox-radio:checked+.siren-checkbox-radioInput:after {
+                        background: #f782ff
+                    }
+                    
+                    .download,
+                    .navigator i:hover,
+                    .link-title,
+                    .links ul li:hover,
+                    #pagination a:hover,
+                    .comment-respond input[type='submit']:hover {
+                        border-color: #21c0ff
+                    }
+                    
+                    .entry-content a:hover,
+                    .site-info a:hover,
+                    .comment h4 a,
+                    #comments-navi a.prev,
+                    #comments-navi a.next,
+                    .comment h4 a:hover,
+                    .site-top ul li a:hover,
+                    .entry-title a:hover,
+                    #archives-temp h3,
+                    span.page-numbers.current,
+                    .sorry li a:hover,
+                    .site-title a:hover,
+                    i.iconfont.js-toggle-search.iconsearch:hover,
+                    .comment-respond input[type='submit']:hover {
+                        color: #f782ff
+                    }
+                    
+                    .comments .comments-main {
+                        display: block !important;
+                    }
+                    
+                    .comments .comments-hidden {
+                        display: none !important;
+                    }
+                
+                </style>
+</head></html>
+
+    <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+        <div class="scrollbar" id="bar">
+        </div>
+        <div id="back-to-top" class="animated fadeIn faster">
+            <div class="flow"></div>
+            <span class="percentage animated fadeIn faster">0%</span>
+            <span class="animated fadeIn faster">Topへ</span>
+            <span class="iconfont icon-top02 animated fadeIn faster"></span>
+        </div>
+        <section id="main-container">
+            <div class="headertop filter-dim">
+    <div id="banner_wave_1"></div>
+    <div id="banner_wave_2"></div>
+    <figure id="centerbg" class="centerbg">
+        <div class="focusinfo no-select">
+            <div class="header-tou">
+                <a href="">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+                    <!--  <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg"> -->
+                </a>
+            </div>
+            <div class="header-signature">
+                <span>
+                  摸鱼拯救世界
+              </span>
+            </div>
+            <div class="header-info">
+                <p>
+                    Live your life with passion! With some drive!
+                </p>
+                <div class="top-social_v2">
+                    <li id="bg-pre">
+                        <img class="flipx" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                    </li>
+                    
+                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/github.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="weibo">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/weibo.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="twitter">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/twitter.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/email.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="/#" target="_blank" class="social-github" title="qq">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/qq.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                                            
+                                                <li id="bg-next">
+                                                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                                                </li>
+                </div>
+            </div>
+        </div>
+    </figure>
+    <div id="video-container" style="">
+        <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+        <div id="video-btn" class="loadvideo videolive">
+        </div>
+        <div id="video-add">
+        </div>
+        <div class="video-stu">
+        </div>
+    </div>
+    <div class="headertop-down faa-float animated" onclick="headertop_down()">
+        <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+    </div>
+</div>
+                <div id="page" class="site wrapper contentBG">
+                    <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">見えなかった</span>
+            <span class="shironeko">雪</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/技术/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/吐槽/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          吐槽
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/资源/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          资源
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/随想/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+                        <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://test-1300966770.file.myqcloud.com/image/BG/evkn_01e.png);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://test-1300966770.file.myqcloud.com/image/BG/evkn_01e.png">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      DirectX12 Study log (仮)</h1>
+      <p class="entry-census">
+        <span>
+          <a href="">
+            <img src="https://test-1300966770.file.myqcloud.com/image/BG/evkn_01e.png">
+          </a>
+        </span>
+        <span>
+          <a href="">yuuki</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2019-12-30<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h1 id="DirectX12-Study-log-仮"><a href="#DirectX12-Study-log-仮" class="headerlink" title="DirectX12 Study log (仮)"></a><strong>DirectX12 Study log (仮)</strong></h1><h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>基于《<em>3D GAMEPROGRAMMING WITH DIRECTX 12</em>》内容学习。原文使用面向对象编程，个人强行改为面向过程。而且还是非常SB的面向过程。垃圾一枚，只能这样了。主要记录D3D12有些什么东西，干了些什么</p>
+<p>关于具体的实现的东西想在新开个地方慢慢解释。</p>
+<hr>
+<h2 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h2><p>说白了，看了也记不住，记住了也不懂，懂了也不会用。2333333</p>
+<hr>
+<h2 id="Direct3dD-initialize-Direct3D的初始化"><a href="#Direct3dD-initialize-Direct3D的初始化" class="headerlink" title="Direct3dD initialize Direct3D的初始化"></a>Direct3dD initialize Direct3D的初始化</h2><h3 id="DirectX10（9？）之后的变化"><a href="#DirectX10（9？）之后的变化" class="headerlink" title="DirectX10（9？）之后的变化"></a><strong>DirectX10（9？）之后的变化</strong></h3><p>其实个人只知道DirectX7，就是那本“超经典”的《Windows游戏大师编程技巧》。这本书用的很老。里面最主要的Surface的概念似乎从DirectX11开始就没了（或是极少被提到）。10似乎是最后使用这个概念的。（可能也是9，我什么也不知道，23333），之前大多数的操作是针对Surface的，DrawLine、Bitmap等操作都是基于Surface的。之前似乎没有涉及到Shader。还有Factory，7似乎所有东西基本都从这里创建。</p>
+<h3 id="初始化内容"><a href="#初始化内容" class="headerlink" title="初始化内容"></a><strong>初始化内容</strong></h3><p>顺序就按照书上的了,其实不是特别有必要.比如就可以先创建交换链在创建命令队列.</p>
+<h4 id="Devices-设备"><a href="#Devices-设备" class="headerlink" title="Devices 设备"></a>Devices 设备</h4><p>这个不论那个版本都是需要先初始化的东西，目的在于选择当前机器上显示适配器（显卡？）。获取所支持的DirectX的版本并设置需要使用的版本。而且接下来所有与Direct3D直接相关的东西由Devices创建.</p>
+<h4 id="Fance-围栏"><a href="#Fance-围栏" class="headerlink" title="Fance 围栏"></a>Fance 围栏</h4><p>Fance主要作用是标记命令执行的位置,用于同步CPU和GPU.防止CPU速度太快而GPU没执行完命令就把命令队列给刷新了.</p>
+<h4 id="MASS-多重采样"><a href="#MASS-多重采样" class="headerlink" title="MASS 多重采样"></a>MASS 多重采样</h4><p>其实不开也可以,就是画面不好看而已.想恶心人可以不开.当然书上开的是4x的,也可以开8x,前提你渲染的东西不多,并且显卡得撑得住啊.</p>
+<h4 id="CommandQueue-and-CommandList-命令队列和命令列表"><a href="#CommandQueue-and-CommandList-命令队列和命令列表" class="headerlink" title="CommandQueue and CommandList 命令队列和命令列表"></a>CommandQueue and CommandList 命令队列和命令列表</h4><p>命令队列用于向GPU提交要执行的命令,相当于Windows的消息队列.命令列表用于记录队列需要执行的命令,然后将列表提交到队列中.至于为什么不直接加入到队列里.实际答案我也不机密.我猜可能是因为我们的目标是呈现一张完整的Frame.GPU又是并行计算,提交成批操作一可以更好利用GPU效率,二不至于因为一些错误导致可以看见画面生成过程.</p>
+<p>而创建CommandList还需要先创建CommandAllocator(命令分配器),负责记录命令并自动写到List中.具体原理我也不懂,反正到时候直接获取然后Execute就行了.233333</p>
+<h4 id="Swap-Chain-交换链"><a href="#Swap-Chain-交换链" class="headerlink" title="Swap Chain 交换链"></a>Swap Chain 交换链</h4><p>用于切换用户能看到的是哪一块缓冲块(之间叫Surface来着?).通常有两块后台缓冲区,一块给用户看,一块用来绘制下一帧.绘制好了就交换一下,让用户看到下一帧并重绘前一帧.两块缓冲话技术又叫双缓冲,三块就是三缓冲,似乎再多就没啥用了.目的是为了让用户就看到以绘制好的画面.而不知道画面是怎么生成的.</p>
+<h4 id="DescriptorHeap-And-Descriptor-描述符堆和描述符"><a href="#DescriptorHeap-And-Descriptor-描述符堆和描述符" class="headerlink" title="DescriptorHeap And Descriptor 描述符堆和描述符"></a>DescriptorHeap And Descriptor 描述符堆和描述符</h4><p>描述符就是资源视图,由于Rendering Pipeline不能直接绑定资源,所以使用视图来获取资源情况.描述符堆用来保存他们.</p>
+<p>描述符最重要的两个,RTV(Render Target View)和DTV(Depth Target Viet).</p>
+<p>RTV相当于用于渲染的画面,在Draw任何东西先都应先清空并设置,创建时为每个后台缓冲区创建一个RTV.</p>
+<p>DTV用于深度模板.</p>
+<p>之后还有SRV(Shader Resource View),用于保存着色器使用的资源,如纹理,贴图.SRV似乎应该在加载贴图的时候再创建,最基本的初始化阶段不是必须的.<br>CBV(Constant Buffer View)和UAV(Unordered Access View)bulabulabula</p>
+<p>在所有描述符堆前应使用<code>GetDescriptorHandleIncrementSize();</code>获取描述符大小,在创建多个描述符时需要用<code>offset();</code>进行偏移.</p>
+<h4 id="ViewPort-视口"><a href="#ViewPort-视口" class="headerlink" title="ViewPort 视口"></a>ViewPort 视口</h4><p>视口就是描述你窗口大小的东西,DirectX只能在Windows上运行,通常视口大小与Windows窗口大小一致,同时视口还可以设置深度,但通常最小为<code>0.0f</code>最大为<code>1.0f</code>.</p>
+<h4 id="Scissor-Rectangle-裁剪矩形"><a href="#Scissor-Rectangle-裁剪矩形" class="headerlink" title="Scissor Rectangle 裁剪矩形"></a>Scissor Rectangle 裁剪矩形</h4><p>裁剪矩形是将矩形外的像素全部剔除,通常和视口大小保持一致.</p>
+<hr>
+<h3 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a><strong>计时器</strong></h3><p>不管咋样最好有一个,高性能计时器对控制帧率有很好的帮助.</p>
+<p>书中给出的<code>GameTimer</code>利用了Windows自带的计时器函数<code>QueryPerformanceCounter();</code>返回一个<code>int64</code>的整数,配合<code>QueryPerformanceFrequency();</code>返回计时器的频率一个<code>int64</code>的整数.</p>
+<p>通过调用两次<code>QueryPerformanceCounter();</code>做差再乘上<code>QueryPerformanceFrequency();</code>即可得到两次调用之间经过的时间.</p>
+<hr>
+<h2 id="Rendering-Pipeline-渲染流水线-渲染管线"><a href="#Rendering-Pipeline-渲染流水线-渲染管线" class="headerlink" title="Rendering Pipeline 渲染流水线(渲染管线)"></a><strong>Rendering Pipeline 渲染流水线(渲染管线)</strong></h2><h3 id="Profile-概述"><a href="#Profile-概述" class="headerlink" title="Profile 概述"></a><strong>Profile 概述</strong></h3><pre><code class="mermaid">graph TD
+A(Input Assembler Stage 输入装配阶段) --&gt; B(Vertex Shader Stage 顶点着色器阶段) --&gt; C(Hull Shader Stage 外壳着色器阶段)--&gt;D(Tessellator Stage 曲面细分阶段)--&gt;E(Domain shader Stage 域着色器阶段)--&gt;F(Geometry Shader Stage 集合着色器阶段)--&gt;G(Stream Output Stage 流输出阶段)--&gt;H(Rasterizer Stage 光栅化阶段)--&gt;I(Pixel Shader Stage 像素着色器阶段)--&gt;J(Output Merger Stage 合并输出阶段)
+</code></pre>
+<hr>
+<h3 id="Input-Assembler-Stage-输入装配阶段-IA"><a href="#Input-Assembler-Stage-输入装配阶段-IA" class="headerlink" title="Input Assembler Stage 输入装配阶段 (IA)"></a><strong>Input Assembler Stage 输入装配阶段 (IA)</strong></h3><p>简单来讲就是从显存中模型的顶点坐标和面索引.<br>注意这里是显存,这就意味之我们在此之前就应该把数据从内存中拷贝到显存里来.</p>
+<p>然后需要设置图元拓扑,就是指定顶点之间的结构,读文件的一般不需要注意索引的绕序,想obj和m3d都是可以直接用的.</p>
+<h3 id="Vertex-Shader-顶点着色器阶段-VS"><a href="#Vertex-Shader-顶点着色器阶段-VS" class="headerlink" title="Vertex Shader 顶点着色器阶段(VS)"></a><strong>Vertex Shader 顶点着色器阶段(VS)</strong></h3><p>涉及一大堆一大堆数学东西.简而言之就是把相对坐标变成绝对坐标,把局部空间坐标系上的点,表示成世界空间坐标系的点.然后归一化深度值.</p>
+<h3 id="Hull-Shader-外壳着色器阶段-HS-不是H-Sence！"><a href="#Hull-Shader-外壳着色器阶段-HS-不是H-Sence！" class="headerlink" title="Hull Shader 外壳着色器阶段(HS) 不是H Sence！"></a><strong>Hull Shader 外壳着色器阶段(HS) <del>不是H Sence！</del></strong></h3><p>其实是曲面细分阶段的一部分,但实际上工作量差不多,我就拿HS说了</p>
+<p>Hull Shader包括两种SHader:</p>
+<p>1.Constant Hull Shader 常量外壳着色器</p>
+<p>2.Control Hull Shader 控制外壳着色器</p>
+<h4 id="Constant-Hull-Shader-常量外壳着色器"><a href="#Constant-Hull-Shader-常量外壳着色器" class="headerlink" title="Constant Hull Shader 常量外壳着色器"></a>Constant Hull Shader 常量外壳着色器</h4><p>常量外壳着色器的任务是输出网格的曲面细分因子(tessellation factor).曲面细分因子指示了曲面细分阶段中将面片镶嵌处理后份数.</p>
+<p>说白了就是增加定点数量.简单操作就是将直线等分</p>
+<p>等分分为两部分，对于四边面，一个是对每条边的细分，另一个是对内部空间几行几列的细分，对于三边面，一个是对每条边的细分，另一个是对内部空间的细分，三边面只有一个内部空间细分参数，可以理解成n行n列的细分。（嗯，应该吧。）</p>
+<h4 id="Control-Hull-Shader-控制外壳着色器"><a href="#Control-Hull-Shader-控制外壳着色器" class="headerlink" title="Control Hull Shader 控制外壳着色器"></a>Control Hull Shader 控制外壳着色器</h4><p>控制外壳着色器以大量控制顶点作为输入与输出,每输出一个控制点就调用一次.应用之一是改变曲面的表示方式.比如三次贝塞尔曲线.可以带来更丰富的细节.</p>
+<p>说白了HS就是可以把低模变成高模</p>
+<h4 id="镶嵌器阶段"><a href="#镶嵌器阶段" class="headerlink" title="镶嵌器阶段"></a>镶嵌器阶段</h4><p>这个是硬件自动完成的，这个环节会根据常量外壳着色器输出的曲面细分因子对面片进行镶嵌画处理，当然四边面和三边面的处理方式是不同的。</p>
+<h4 id="Domain-Shader域着色器"><a href="#Domain-Shader域着色器" class="headerlink" title="Domain Shader域着色器"></a>Domain Shader域着色器</h4><p>镶嵌器阶段会输出新建的所有顶点与三角形，在此阶段创建的顶点会逐一调用域着色器.其本质就是“对已经经过镶嵌化的面片进行处理的顶点着色器”。对镶嵌花化后的点进行做坐标变换。</p>
+<hr>
+<h3 id="Geometry-Shader-几何着色器-GS"><a href="#Geometry-Shader-几何着色器-GS" class="headerlink" title="Geometry Shader 几何着色器(GS)"></a><strong>Geometry Shader 几何着色器(GS)</strong></h3><p>记得某个群的入群问题就是GS在PS前还是VS后？（还是VS前PS后来着）。总之书上说的是：“再不启用曲面细分这一环节，GS这个可选阶段便会位于VS与PS之间”。</p>
+<p>GS的输入必须是完整的图元，如构成一条线的两个顶点，构成三角形的三个顶点。书中提到的一个常见应用是将一点拓展成为一个四边形（俩三角形）。并以此介绍了公告牌技术，用来显示远处的一些小东西。</p>
+<p>GS其实就是把顶点来回折腾的一个东西，并且还可以改变图元拓扑（其实我想说的是变成不同的图元），一些小的细节变化和粒子效果似乎可以用这个实现。</p>
+<hr>
+<h3 id="Pixel-Shader像素着色器-PS"><a href="#Pixel-Shader像素着色器-PS" class="headerlink" title="Pixel Shader像素着色器(PS)"></a><strong>Pixel Shader像素着色器(PS)</strong></h3><p>PS会对每一个像素采样点进行计算，根据顶点的插值属性作为输入来计算对应为的像素的颜色。PS可以返回单一恒定的颜色，也可是实现逐像素光照，反射，和阴影等其他效果。</p>
+<h3 id="Output-Marger-合并输出"><a href="#Output-Marger-合并输出" class="headerlink" title="Output Marger 合并输出"></a><strong>Output Marger 合并输出</strong></h3><p>简单来讲就是去掉不符合要求的像素，如没通过深度缓冲区测试或模板缓冲区测试的像素。剩下的就写入后台缓冲区中，“Blend 混合”也是在这个阶段实现的。</p>
+<h4 id="Shader-着色器的写法和一些东西会专门找地方说。"><a href="#Shader-着色器的写法和一些东西会专门找地方说。" class="headerlink" title="Shader 着色器的写法和一些东西会专门找地方说。"></a>Shader 着色器的写法和一些东西会专门找地方说。</h4><hr>
+<h2 id="Lighting-光照"><a href="#Lighting-光照" class="headerlink" title="Lighting 光照"></a><strong>Lighting 光照</strong></h2><p>这个，要在这里面说嘛？就是很多很多的数学和物理知识，在Shader里实现就好了。</p>
+<h2 id="Texture-Mapping-纹理贴图"><a href="#Texture-Mapping-纹理贴图" class="headerlink" title="Texture Mapping 纹理贴图"></a><strong>Texture Mapping 纹理贴图</strong></h2><p>纹理其实就是一种资源，D3D12中几乎所有资源统一用<code>ID3D12Resource</code>来管理。</p>
+<p>纹理具有特定的数据格式，不支持除这些格式之外的格式，并且纹理可以具有多个层级的mipmap（给我感觉的意思当相当于人工智能里的池化操作，就是具有多个大小的同一图，但他们都还在同一个“图”里）。</p>
+<p>有一种技术叫“渲染到纹理”，是指即将纹理作用于渲染目标，有能将纹理作为着色器的资源（在着色器里对纹理采样）使用。</p>
+<p>DirectX中纹理用DDS(DirectDraw Suaface Format)格式的文件。PS需要装插件才能导出和编辑（忙活了我半天）。</p>
+<h2 id="Blend-混合"><a href="#Blend-混合" class="headerlink" title="Blend 混合"></a><strong>Blend 混合</strong></h2><p>做了个和啥呢，就是把已经光栅化的像素（目标像素）和现在要光栅化的像素（源像素）进行融合的操作。常见操作就是半透明物体的运用，配合纹理贴图会有很多意想不到的效果，有种用代码玩AE的感觉。</p>
+<h2 id="Stencli-模板"><a href="#Stencli-模板" class="headerlink" title="Stencli 模板"></a><strong>Stencli 模板</strong></h2><p>在这里我纳闷过模板为啥子不是Template，一般见到模板都是Template。查字典哇Stencli也是模板的意思。但就是Stencli的模板指的是印刷文字或图案的那个模板。Template有模框，样板的意思。</p>
+<p>所以顾名思义，这里的模板是指根据某种规则来写入像素的。书中给的应用就是镜子。当然是平面镜。阴影书中也用了模板缓冲来防止双重混合。</p>
+<h2 id="第一人称视角摄像机"><a href="#第一人称视角摄像机" class="headerlink" title="第一人称视角摄像机"></a><strong>第一人称视角摄像机</strong></h2><p>在书中15章之前的内容中，视角都是通过一个<code>DirectX::XMFLOAT3</code>类型的<code>EyePos</code>变量，传到着色器中<code>gEyePos</code>，通过取景变换转换坐标。</p>
+<p>第一人称摄像机就是把这个东西封装成类，添加一些方便计算的属性和方法。同时可以不仅仅“旋转”改变坐标，还可以移动摄像机坐标。每次角度和位置不同更新内部向量，供着色器使用。</p>
+<h2 id="动态索引"><a href="#动态索引" class="headerlink" title="动态索引"></a><strong>动态索引</strong></h2><p>说白了就是让着色器用索引访问资源。据说配合实例化有意想不到的效果。动态索引可以让所有纹理资源一次绑定后，让着色器自己选择适合的纹理。索引要求使用系统ID。如<code>SV_InstanceID</code>、<code>SV_VertexID</code>。</p>
+<h2 id="实例化"><a href="#实例化" class="headerlink" title="实例化"></a><strong>实例化</strong></h2>
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2020/01/19/Struts2Framework/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                </h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2018/12/12/AnotherTest/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://test-1300966770.file.myqcloud.com/image/BG/evkn_01e.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://test-1300966770.file.myqcloud.com/image/BG/evkn_01e.png">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                Hexo-Theme-Sakura-test-passage</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="https://test-1300966770.file.myqcloud.com/image/BG/evkn_01e.png" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author">yuuki</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一个好奇的人</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+
+                </div>
+                <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+                    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yuuki<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+        <div class="footertext">
+            <div class="img-preload">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/wordpress-rotating-ball-o.svg">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/disqus-preloader.svg">
+            </div>
+            <p style="color: #666666;">&copy 2018</p>
+        </div>
+        <div class="footer-device">
+            <p style="font-family: 'Ubuntu', sans-serif;">
+                <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+            </p>
+        </div>
+    </div>
+    <!-- .site-info -->
+</footer>
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<script src="/js/botui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+<script type="text/javascript" src="/js/restage.js"></script>
+<!-- Pollyfill script -->
+<script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+<!-- Live2DCubismCore script -->
+<script src = "/js/live2dcubismcore.min.js"></script>
+<!-- Build script -->
+<script src = "/js/live2d.min.js"></script>
+<script type="text/javascript" src="/js/add.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "close"
+            },
+            "windowheight": "fixed",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    } else {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "open"
+            },
+            "windowheight": "auto",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    }
+    /* ]]> */
+</script>
+<script>
+    $(document).ready(function() {
+        if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+            if ($(".pattern-center").length > 0) { //有图的情况
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -400,
+                    scrollSmoothOffset: -85
+                });
+            } else {
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -85,
+                    scrollSmoothOffset: -85
+                });
+            }
+            var offsetTop = $('.toc').offset().top - 95;
+            window.onscroll = function() {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop >= offsetTop) {
+                    $('.toc').addClass('toc-fixed');
+                } else {
+                    $('.toc').removeClass('toc-fixed');
+                }
+            }
+        }
+    });
+</script>
+</script>
+                        <div class="openNav no-select" style="height: 50px;">
+                            <div class="iconflat no-select" style="width: 50px; height: 50px;">
+                                <div class="icon"></div>
+                            </div>
+                            <div class="site-branding search-form-submit">
+                                <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+                            </div>
+                        </div>
+        </section>
+        <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">見えなかった雪</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/技术/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/吐槽/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  吐槽
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/资源/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  资源
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/随想/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+        <div id="hide"><div class="label">hide</div></div>
+  <div id="language"><div class="label">jp</div></div>
+  <div id="live2d">
+    <div class="attention"><div id="attentionInfo"></div></div>
+  </div>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+    id="3130796893"
+
+    server="netease"
+
+    type="playlist"
+
+    fixed="true"
+
+    autoplay="false"
+
+    loop="all"
+
+    order="random"
+
+    preload="auto"
+
+    volume="0.7"
+
+    mutex="true"
+
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+    </body>
+
+    </html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+        <title itemprop="name">
+            
+                NLP_EmotionClassfied |
+                    
+                        SakuraTest
+        </title>
+        
+            <link rel="shortcut icon" href="/img/favicon.ico">
+            
+                <meta http-equiv="x-dns-prefetch-control" content="on">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+                <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+                <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/Animate.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/lib.min.css" media="all">
+                <link rel="stylesheet" href="/css/font.css" media="all">
+                <link rel="stylesheet" href="/css/insight.css" media="all">
+                <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+                <link rel="stylesheet" href="/css/zoom.css" media="all">
+                <link rel="stylesheet" href="/css/restage.css" type="text/css">
+                <link rel="stylesheet" href="/css/live2d.css" type="text/css">
+                <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+                <link rel="stylesheet" type="text/css" href="/css/add.css">
+                <!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+                <script>
+                    /*Initial Variables*/
+                    var mashiro_option = new Object();
+                    var mashiro_global = new Object();
+                    mashiro_option.NProgressON = true;
+                    /* 
+                     * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+                     * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+                     */
+                    mashiro_option.email_domain = "";
+                    mashiro_option.email_name = "";
+                    mashiro_option.cookie_version_control = "";
+                    mashiro_option.qzone_autocomplete = false;
+                    mashiro_option.site_name = "見えなかった雪";
+                    mashiro_option.author_name = "雪";
+                    mashiro_option.site_url = "";
+                    mashiro_option.v_appId = "";
+                    mashiro_option.v_appKey = "";
+                    mashiro_option.mathjax = "0";
+                    mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/";
+                    mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+                    // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+                    // mashiro_option.float_player_on = true;
+
+                    /*End of Initial Variables*/
+                </script>
+                <script type="text/javascript">
+                    var bg = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (1).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (2).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (3).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (4).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (5).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (6).jpg".split(",");
+                    var bgindex = Math.floor(Math.random() * bg.length);
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+                        alert('朋友，IE浏览器未适配哦~');
+                    }
+                </script>
+                
+                <style type="text/css">
+                    .hljs-ln {
+                        border-collapse: collapse
+                    }
+                    
+                    .hljs-ln td {
+                        padding: 0
+                    }
+                    
+                    .hljs-ln-n:before {
+                        content: attr(data-line-number)
+                    }
+                </style>
+                <style type="text/css">
+                .site-top .lower nav {
+                        display: block !important;
+                    }
+                    
+                    .author-profile i,
+                    .post-like a,
+                    .post-share .show-share,
+                    .sub-text,
+                    .we-info a,
+                    span.sitename,
+                    .post-more i:hover,
+                    #pagination a:hover,
+                    .post-content a:hover,
+                    .float-content i:hover {
+                        color: #f782ff
+                    }
+                    
+                    .feature i,
+                    .download,
+                    .navigator i:hover,
+                    .links ul li:before,
+                    .ar-time i,
+                    span.ar-circle,
+                    .object,
+                    .comment .comment-reply-link,
+                    .siren-checkbox-radio:checked+.siren-checkbox-radioInput:after {
+                        background: #f782ff
+                    }
+                    
+                    .download,
+                    .navigator i:hover,
+                    .link-title,
+                    .links ul li:hover,
+                    #pagination a:hover,
+                    .comment-respond input[type='submit']:hover {
+                        border-color: #21c0ff
+                    }
+                    
+                    .entry-content a:hover,
+                    .site-info a:hover,
+                    .comment h4 a,
+                    #comments-navi a.prev,
+                    #comments-navi a.next,
+                    .comment h4 a:hover,
+                    .site-top ul li a:hover,
+                    .entry-title a:hover,
+                    #archives-temp h3,
+                    span.page-numbers.current,
+                    .sorry li a:hover,
+                    .site-title a:hover,
+                    i.iconfont.js-toggle-search.iconsearch:hover,
+                    .comment-respond input[type='submit']:hover {
+                        color: #f782ff
+                    }
+                    
+                    .comments .comments-main {
+                        display: block !important;
+                    }
+                    
+                    .comments .comments-hidden {
+                        display: none !important;
+                    }
+                
+                </style>
+</head></html>
+
+    <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+        <div class="scrollbar" id="bar">
+        </div>
+        <div id="back-to-top" class="animated fadeIn faster">
+            <div class="flow"></div>
+            <span class="percentage animated fadeIn faster">0%</span>
+            <span class="animated fadeIn faster">Topへ</span>
+            <span class="iconfont icon-top02 animated fadeIn faster"></span>
+        </div>
+        <section id="main-container">
+            <div class="headertop filter-dim">
+    <div id="banner_wave_1"></div>
+    <div id="banner_wave_2"></div>
+    <figure id="centerbg" class="centerbg">
+        <div class="focusinfo no-select">
+            <div class="header-tou">
+                <a href="">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+                    <!--  <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg"> -->
+                </a>
+            </div>
+            <div class="header-signature">
+                <span>
+                  摸鱼拯救世界
+              </span>
+            </div>
+            <div class="header-info">
+                <p>
+                    Live your life with passion! With some drive!
+                </p>
+                <div class="top-social_v2">
+                    <li id="bg-pre">
+                        <img class="flipx" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                    </li>
+                    
+                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/github.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="weibo">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/weibo.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="twitter">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/twitter.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/email.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="/#" target="_blank" class="social-github" title="qq">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/qq.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                                            
+                                                <li id="bg-next">
+                                                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                                                </li>
+                </div>
+            </div>
+        </div>
+    </figure>
+    <div id="video-container" style="">
+        <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+        <div id="video-btn" class="loadvideo videolive">
+        </div>
+        <div id="video-add">
+        </div>
+        <div class="video-stu">
+        </div>
+    </div>
+    <div class="headertop-down faa-float animated" onclick="headertop_down()">
+        <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+    </div>
+</div>
+                <div id="page" class="site wrapper contentBG">
+                    <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">見えなかった</span>
+            <span class="shironeko">雪</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/技术/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/吐槽/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          吐槽
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/资源/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          资源
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/随想/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+                        <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://static.2heng.xin/wp-content/uploads//2019/02/wallhaven-672007-1-1024x576.png);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://static.2heng.xin/wp-content/uploads//2019/02/wallhaven-672007-1-1024x576.png">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      NLP_EmotionClassfied</h1>
+      <p class="entry-census">
+        <span>
+          <a href="hojun.cn">
+            <img src="https://wx1.sinaimg.cn/large/006bYVyvgy1ftand2qurdj303c03cdfv.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="hojun.cn">hojun</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2018-12-12<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h4 id="不谈理论，不谈公式，就说用啥能实现！"><a href="#不谈理论，不谈公式，就说用啥能实现！" class="headerlink" title="不谈理论，不谈公式，就说用啥能实现！"></a>不谈理论，不谈公式，就说用啥能实现！</h4><h2 id="1-整体过程"><a href="#1-整体过程" class="headerlink" title="1. 整体过程"></a>1. 整体过程</h2><ol>
+<li>读取训练数据，调整数据格式。</li>
+<li>对数据进行分词（字），可以按词，也可以按字。</li>
+<li>统计词（字）频，建立词典（字典）。</li>
+<li>对每个词（字）建立索引。</li>
+<li>将之前分好词（字）的每个句子用索引替换。</li>
+<li>调整句子长度，多的截取，少的补0。</li>
+<li>建立模型</li>
+<li>训练。</li>
+</ol>
+<h2 id="2-详细说明"><a href="#2-详细说明" class="headerlink" title="2. 详细说明"></a>2. 详细说明</h2><h3 id="2-0-导包"><a href="#2-0-导包" class="headerlink" title="2.0 导包"></a>2.0 导包</h3><p>其实这是句废话，不导包怎写代码？</p>
+<pre><code class="python">import numpy as np;
+import tensorflow as tf;
+import jieba;                   # 用于分词
+import re;                      # 用于删除特殊字符
+import pandas as pd;            # 用于统计词频，其实也可以用Tensorflow自己的Tokenizer
+</code></pre>
+<h3 id="2-1-读取训练数据"><a href="#2-1-读取训练数据" class="headerlink" title="2.1 读取训练数据"></a>2.1 读取训练数据</h3><p>由于任何人的训练数据不一样，格式千奇百怪，整理方式也不尽相同，先说一下最终的样子吧。</p>
+<p>简单来讲需要分成两个list，一个<code>label</code>用来存放标情感标记。一个<code>sentencesList</code>用于存放句子。</p>
+<p>这里用自己的txt来举例子。</p>
+<p>首先数据格式如下</p>
+<pre><code class="txt">1,&quot;距离川沙公路较近,但是公交指示不对,如果是&quot;&quot;蔡陆线&quot;&quot;的话,会非常麻烦.建议用别的路线.房间较为简单.&quot;
+···
+···
+0,说实在的我很失望，之前看了其他人的点评后觉得还可以才去的，结果让我们大跌眼镜。我想这家酒店以后无论如何我都不会再去了。
+</code></pre>
+<p>第一个为label,1表示积极，0表示消极，之后为语句。<br>我们只需要按行读取，先存标记，然后出去标点等特殊符号，接着将语句存入list就好。</p>
+<p>在这个部分其实就可以使用jieba进行分词操作。这里就加上了。</p>
+<pre><code class="python">lineList = [];
+lable = [];
+with open(&quot;ChnSentiCorp_htl_all.txt&quot;,encoding=&quot;utf-8&quot;) as file:
+    for line in file:
+        if(line[0]==&quot;1&quot;):
+            lable.append(1);
+        else:
+            lable.append(0);
+        line = re.sub(&#39;[’!&quot;#$%&amp;\&#39;()*+,-./:;&lt;=&gt;?@[\\]^_`{|}，。（）/《》！~#￥%……&amp;*？：；”“‘’【】、\n|]+&#39;,&#39;&#39;,line);
+        lineList.append(list(jieba.cut(line[1:])));
+</code></pre>
+<p>插一句题外话，这里肯定有人要问Python还打分号？不好意思，个人习惯，C++和JAVA写多了，习惯性打的，甚至还习惯性补分号，反正Python也不算错，还请见谅。</p>
+<p>好的我们来看，首先<code>with open()</code>常规操作打开文件。对每一行进行读取，并判断第一行的label，接下来使用re进行特殊符号的删除。然后使用jieba对从第二个字符开始之后的字符串进行分词操作，因为第一个是label不需要他。</p>
+<h3 id="2-2-分词操作"><a href="#2-2-分词操作" class="headerlink" title="2.2 分词操作"></a>2.2 分词操作</h3><p>上面确实做了，如果没错可以在这里做。当然暂时我为了求快没有按字分。可能以后会写吧。</p>
+<h3 id="2-3-统计词（字）频，建立字典"><a href="#2-3-统计词（字）频，建立字典" class="headerlink" title="2.3 统计词（字）频，建立字典"></a>2.3 统计词（字）频，建立字典</h3><p>建立字典是为了其实是为了下一步的索引，索引是为了方便计算，数字的计算和查找要比字符串方便而且快得多。所以最后训练数据是很多条索引组成的句子。</p>
+<p>这里使用的pandas来统计。</p>
+<pre><code class="python">word_dictionary =[];
+for line in lineList:
+    for word in line:
+        word_dictionary.append(word);
+print(word_dictionary);
+
+wordNum = pd.Series(word_dictionary).value_counts();
+wordNum = wordNum[wordNum&gt;=5];
+</code></pre>
+<p>首先是个笨办法，遍历每一个单词，然后添加进一个list（因为list不去重）。接着就是建立一个pandas.Series对象调用<code>value_counts()</code>方法统计词频。返回值是一个Series对象。里面储存了词和次出现的次数。</p>
+<h3 id="2-4-对每个词（字）建立索引。"><a href="#2-4-对每个词（字）建立索引。" class="headerlink" title="2.4 对每个词（字）建立索引。"></a>2.4 对每个词（字）建立索引。</h3><p>这里做的很简单，就是把频率换成索引就好。但是要注意，索引要从1开始，0用于填充补齐。还有就是，我们选择出现频率比较高的词，因为计算速度。但实际上低频词也未必不起到关键作用，滑稽保命之类的对吧？</p>
+<pre><code class="python">wordNum = wordNum[wordNum&gt;=5];              # 保留词频大于等于5的词
+wordNum[:] = list(range(1,len(wordNum)+1)); # 依照频率高低将频率换成索引，
+wordNum[&#39;&#39;] = 0;                            # 添加空的索引为0
+</code></pre>
+<p>首先是提取词频大于5的词，然后将频率换成索引，然后添加0索引。</p>
+<h3 id="2-5-用索引替换句子"><a href="#2-5-用索引替换句子" class="headerlink" title="2.5 用索引替换句子"></a>2.5 用索引替换句子</h3><pre><code class="python">sentencesi = [];
+for line in lineList:
+    sentenceindex = [];
+    for word in line:
+        if word in wordSet:
+            sentenceindex.append(wordNum[word]);
+    sentencesi.append(sentenceindex);
+</code></pre>
+<p>就是个替换，我觉得没啥可说的，就是遍历一遍所有单词，如果词再字典里那么久转换成索引添加进来，没有就放弃。</p>
+<h3 id="2-6-调整句子长度，多的截取，少的补0。"><a href="#2-6-调整句子长度，多的截取，少的补0。" class="headerlink" title="2.6 调整句子长度，多的截取，少的补0。"></a>2.6 调整句子长度，多的截取，少的补0。</h3><p>为了计算速度，这里同时使用固定长度的句子，因此就要多截少补。</p>
+<pre><code class="python">X =list(tf.keras.preprocessing.sequence.pad_sequences(sentencesi,maxlen=50));
+</code></pre>
+<p>这里选取最大长度为50。当然好一点的方法是先统计一下句子长度，找一个能包含大多数完整句子的长度。</p>
+<h3 id="2-7-建立模型和训练。"><a href="#2-7-建立模型和训练。" class="headerlink" title="2.7 建立模型和训练。"></a>2.7 建立模型和训练。</h3><p>模型这里很简单的随便建立了一个，层数，损失函数和优化函数都可以看情况换，我是看有篇文章这么做了，我就这么写了。</p>
+<pre><code class="python">x_train = np.array(X);
+y_train = np.array(lable);
+
+model = tf.keras.Sequential();
+model.add(tf.keras.layers.Embedding(input_dim=len(wordSet),output_dim=200,input_length=50));
+model.add(tf.keras.layers.LSTM(128));
+model.add(tf.keras.layers.Dropout(0.5));
+model.add(tf.keras.layers.Dense(1,activation=&quot;sigmoid&quot;));
+
+model.compile(loss=&#39;binary_crossentropy&#39;,
+              optimizer=&#39;rmsprop&#39;,
+              metrics=[&#39;accuracy&#39;]);
+
+print(model.summary());
+
+model.fit(x_train, y_train, batch_size=16, epochs=250);
+</code></pre>
+<p>这里因为是2分类所以就用<code>sigmoid</code>了，多分类要用<code>softmax</code>，将来会做一个多分类的。</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="3-1-程序说明"><a href="#3-1-程序说明" class="headerlink" title="3.1 程序说明"></a>3.1 程序说明</h3><p>整个程序习惯性的面向过程了。所以上面代码全部按顺序crtl+c、crtl+v下来差不多就能用了。为了流程叙述方便所以这么写了。而且为了快，很多地方没有优化，速度肯定还可以再快，再者为了维护，实际上最终要用的话最好面向对象一下。</p>
+<p>其中需很多多西想重复用的话其实可以保存一下。像是模型，字典什么的。而且要生产开发用还需要预测，个人认为同样还需要字典等数据，所以保存下来会好一些？</p>
+<h3 id="3-2-tf-keras-layers-Embedding-的一些小说明"><a href="#3-2-tf-keras-layers-Embedding-的一些小说明" class="headerlink" title="3.2 tf.keras.layers.Embedding()的一些小说明"></a>3.2 tf.keras.layers.Embedding()的一些小说明</h3><p>这个是个嵌入层，用于将索引转换为向量。参数如下</p>
+<ul>
+<li>input_dim: int &gt; 0。词汇表大小， 即，最大整数 index + 1。</li>
+<li>output_dim: int &gt;= 0。词向量的维度。</li>
+<li>embeddings_initializer: embeddings 矩阵的初始化方法 (详见 initializers)。</li>
+<li>embeddings_regularizer: embeddings matrix 的正则化方法 (详见 regularizer)。</li>
+<li>embeddings_constraint: embeddings matrix 的约束函数 (详见 constraints)。</li>
+<li>mask_zero: 是否把 0 看作为一个应该被遮蔽的特殊的 “padding” 值。 这对于可变长的 循环神经网络层 十分有用。 如果设定为 True，那么接下来的所有层都必须支持 masking，否则就会抛出异常。 如果 mask_zero 为 True，作为结果，索引 0 就不能被用于词汇表中 （input_dim 应该与 vocabulary + 1 大小相同）。</li>
+<li>input_length: 输入序列的长度，当它是固定的时。 如果你需要连接 Flatten 和 Dense 层，则这个参数是必须的 （没有它，dense 层的输出尺寸就无法计算）。<br>其实还可以指定一个<code>weights=</code>，这个是指定自己训练的词向量用的。默认他会通过initializer随机初始化一个，当然这个initializer你也可以指定。</li>
+</ul>
+<h3 id="3-3-词向量"><a href="#3-3-词向量" class="headerlink" title="3.3 词向量"></a>3.3 词向量</h3><p>通常我们想让字典尽可能贴近我们的需求，所以需要自己训练词向量，这个时候就需要Word2Vec了。</p>
+<h4 id="3-2-1-词向量训练前准备"><a href="#3-2-1-词向量训练前准备" class="headerlink" title="3.2.1 词向量训练前准备"></a>3.2.1 词向量训练前准备</h4><p>首先是导包！</p>
+<pre><code class="python">import gensim.models.word2vec;
+</code></pre>
+<p>然后自然是准备词（了），我们可以直接利用上面分完词还未转化为索引的句子，当然有的这里会使用字，有的也会追加停用词。不论怎样，我们最后得到一个字符串组成的列表就可以了。</p>
+<h4 id="3-2-2-词向量训练"><a href="#3-2-2-词向量训练" class="headerlink" title="3.2.2 词向量训练"></a>3.2.2 词向量训练</h4><pre><code class="python">vecModel = gensim.models.Word2Vec();
+</code></pre>
+<p>这里参数很多，说几个这里一般简单用的：</p>
+<ol>
+<li>sentences : 可迭代的对象</li>
+<li>size : 词向量的维数。</li>
+<li>window : 句子中当前词和预测词之间的最大距离。window越大，则与中心词较远的词也会产生上下文关系。</li>
+<li>min_count :最小词频，忽略所有总频率低于此频率的单词</li>
+</ol>
+<p>差不多就这些，剩下可以看<a href="https://radimrehurek.com/gensim/models/word2vec_inner.html" target="_blank" rel="noopener">API</a>。（英文注意！中文百度）</p>
+<p>对于语料库很大的情况，训练词向量需要通过从磁盘加载sentences。循环训练。</p>
+<h4 id="3-2-3-加载现有词向量"><a href="#3-2-3-加载现有词向量" class="headerlink" title="3.2.3 加载现有词向量"></a>3.2.3 加载现有词向量</h4><p>可以通过加载现有词向量来使用。这个方法各不相同，至少Word2vec训练出来可的一通过<code>gensim.models.KeyedVectors.load()</code>来加载，具体参数见<a href="https://radimrehurek.com/gensim/models/keyedvectors.html" target="_blank" rel="noopener">API</a>。（英文注意！中文百度）</p>
+<p>加载完后需要依据你的字典把对应的词的向量添加进来。</p>
+
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre full previous">
+          
+            <a href="/2018/12/12/Hexo-Theme-Sakura/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://static.2heng.xin/wp-content/uploads//2019/02/wallhaven-672007-1-1024x576.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://static.2heng.xin/wp-content/uploads//2019/02/wallhaven-672007-1-1024x576.png">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                Hexo-Theme-Sakura</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+      </section>
+      
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="hojun.cn" class="profile gravatar"><img src="https://wx1.sinaimg.cn/large/006bYVyvgy1ftand2qurdj303c03cdfv.jpg" itemprop="image" alt="hojun" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="hojun.cn" itemprop="url" rel="author">hojun</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一个好奇的人</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+
+                </div>
+                <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+                    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yuuki<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+        <div class="footertext">
+            <div class="img-preload">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/wordpress-rotating-ball-o.svg">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/disqus-preloader.svg">
+            </div>
+            <p style="color: #666666;">&copy 2018</p>
+        </div>
+        <div class="footer-device">
+            <p style="font-family: 'Ubuntu', sans-serif;">
+                <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+            </p>
+        </div>
+    </div>
+    <!-- .site-info -->
+</footer>
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<script src="/js/botui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+<script type="text/javascript" src="/js/restage.js"></script>
+<!-- Pollyfill script -->
+<script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+<!-- Live2DCubismCore script -->
+<script src = "/js/live2dcubismcore.min.js"></script>
+<!-- Build script -->
+<script src = "/js/live2d.min.js"></script>
+<script type="text/javascript" src="/js/add.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "close"
+            },
+            "windowheight": "fixed",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    } else {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "open"
+            },
+            "windowheight": "auto",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    }
+    /* ]]> */
+</script>
+<script>
+    $(document).ready(function() {
+        if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+            if ($(".pattern-center").length > 0) { //有图的情况
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -400,
+                    scrollSmoothOffset: -85
+                });
+            } else {
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -85,
+                    scrollSmoothOffset: -85
+                });
+            }
+            var offsetTop = $('.toc').offset().top - 95;
+            window.onscroll = function() {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop >= offsetTop) {
+                    $('.toc').addClass('toc-fixed');
+                } else {
+                    $('.toc').removeClass('toc-fixed');
+                }
+            }
+        }
+    });
+</script>
+</script>
+                        <div class="openNav no-select" style="height: 50px;">
+                            <div class="iconflat no-select" style="width: 50px; height: 50px;">
+                                <div class="icon"></div>
+                            </div>
+                            <div class="site-branding search-form-submit">
+                                <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+                            </div>
+                        </div>
+        </section>
+        <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">見えなかった雪</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/技术/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/吐槽/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  吐槽
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/资源/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  资源
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/随想/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+        <div id="hide"><div class="label">hide</div></div>
+  <div id="language"><div class="label">jp</div></div>
+  <div id="live2d">
+    <div class="attention"><div id="attentionInfo"></div></div>
+  </div>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+    id="3130796893"
+
+    server="netease"
+
+    type="playlist"
+
+    fixed="true"
+
+    autoplay="false"
+
+    loop="all"
+
+    order="random"
+
+    preload="auto"
+
+    volume="0.7"
+
+    mutex="true"
+
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+    </body>
+
+    </html>

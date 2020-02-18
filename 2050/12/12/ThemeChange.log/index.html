@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+        <title itemprop="name">
+            
+                主题更改记录 |
+                    
+                        SakuraTest
+        </title>
+        
+            <link rel="shortcut icon" href="/img/favicon.ico">
+            
+                <meta http-equiv="x-dns-prefetch-control" content="on">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+                <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+                <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/Animate.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/lib.min.css" media="all">
+                <link rel="stylesheet" href="/css/font.css" media="all">
+                <link rel="stylesheet" href="/css/insight.css" media="all">
+                <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+                <link rel="stylesheet" href="/css/zoom.css" media="all">
+                <link rel="stylesheet" href="/css/restage.css" type="text/css">
+                <link rel="stylesheet" href="/css/live2d.css" type="text/css">
+                <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+                <link rel="stylesheet" type="text/css" href="/css/add.css">
+                <!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+                <script>
+                    /*Initial Variables*/
+                    var mashiro_option = new Object();
+                    var mashiro_global = new Object();
+                    mashiro_option.NProgressON = true;
+                    /* 
+                     * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+                     * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+                     */
+                    mashiro_option.email_domain = "";
+                    mashiro_option.email_name = "";
+                    mashiro_option.cookie_version_control = "";
+                    mashiro_option.qzone_autocomplete = false;
+                    mashiro_option.site_name = "見えなかった雪";
+                    mashiro_option.author_name = "雪";
+                    mashiro_option.site_url = "";
+                    mashiro_option.v_appId = "";
+                    mashiro_option.v_appKey = "";
+                    mashiro_option.mathjax = "0";
+                    mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/";
+                    mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+                    // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+                    // mashiro_option.float_player_on = true;
+
+                    /*End of Initial Variables*/
+                </script>
+                <script type="text/javascript">
+                    var bg = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (1).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (2).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (3).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (4).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (5).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/cover/cover (6).jpg".split(",");
+                    var bgindex = Math.floor(Math.random() * bg.length);
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+                        alert('朋友，IE浏览器未适配哦~');
+                    }
+                </script>
+                
+                <style type="text/css">
+                    .hljs-ln {
+                        border-collapse: collapse
+                    }
+                    
+                    .hljs-ln td {
+                        padding: 0
+                    }
+                    
+                    .hljs-ln-n:before {
+                        content: attr(data-line-number)
+                    }
+                </style>
+                <style type="text/css">
+                .site-top .lower nav {
+                        display: block !important;
+                    }
+                    
+                    .author-profile i,
+                    .post-like a,
+                    .post-share .show-share,
+                    .sub-text,
+                    .we-info a,
+                    span.sitename,
+                    .post-more i:hover,
+                    #pagination a:hover,
+                    .post-content a:hover,
+                    .float-content i:hover {
+                        color: #f782ff
+                    }
+                    
+                    .feature i,
+                    .download,
+                    .navigator i:hover,
+                    .links ul li:before,
+                    .ar-time i,
+                    span.ar-circle,
+                    .object,
+                    .comment .comment-reply-link,
+                    .siren-checkbox-radio:checked+.siren-checkbox-radioInput:after {
+                        background: #f782ff
+                    }
+                    
+                    .download,
+                    .navigator i:hover,
+                    .link-title,
+                    .links ul li:hover,
+                    #pagination a:hover,
+                    .comment-respond input[type='submit']:hover {
+                        border-color: #21c0ff
+                    }
+                    
+                    .entry-content a:hover,
+                    .site-info a:hover,
+                    .comment h4 a,
+                    #comments-navi a.prev,
+                    #comments-navi a.next,
+                    .comment h4 a:hover,
+                    .site-top ul li a:hover,
+                    .entry-title a:hover,
+                    #archives-temp h3,
+                    span.page-numbers.current,
+                    .sorry li a:hover,
+                    .site-title a:hover,
+                    i.iconfont.js-toggle-search.iconsearch:hover,
+                    .comment-respond input[type='submit']:hover {
+                        color: #f782ff
+                    }
+                    
+                    .comments .comments-main {
+                        display: block !important;
+                    }
+                    
+                    .comments .comments-hidden {
+                        display: none !important;
+                    }
+                
+                </style>
+</head></html>
+
+    <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+        <div class="scrollbar" id="bar">
+        </div>
+        <div id="back-to-top" class="animated fadeIn faster">
+            <div class="flow"></div>
+            <span class="percentage animated fadeIn faster">0%</span>
+            <span class="animated fadeIn faster">Topへ</span>
+            <span class="iconfont icon-top02 animated fadeIn faster"></span>
+        </div>
+        <section id="main-container">
+            <div class="headertop filter-dim">
+    <div id="banner_wave_1"></div>
+    <div id="banner_wave_2"></div>
+    <figure id="centerbg" class="centerbg">
+        <div class="focusinfo no-select">
+            <div class="header-tou">
+                <a href="">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+                    <!--  <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg"> -->
+                </a>
+            </div>
+            <div class="header-signature">
+                <span>
+                  摸鱼拯救世界
+              </span>
+            </div>
+            <div class="header-info">
+                <p>
+                    Live your life with passion! With some drive!
+                </p>
+                <div class="top-social_v2">
+                    <li id="bg-pre">
+                        <img class="flipx" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                    </li>
+                    
+                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/github.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="weibo">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/weibo.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="twitter">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/twitter.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/email.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="/#" target="_blank" class="social-github" title="qq">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/social/qq.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                                            
+                                                <li id="bg-next">
+                                                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/next-b.svg">
+                                                </li>
+                </div>
+            </div>
+        </div>
+    </figure>
+    <div id="video-container" style="">
+        <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+        <div id="video-btn" class="loadvideo videolive">
+        </div>
+        <div id="video-add">
+        </div>
+        <div class="video-stu">
+        </div>
+    </div>
+    <div class="headertop-down faa-float animated" onclick="headertop_down()">
+        <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+    </div>
+</div>
+                <div id="page" class="site wrapper contentBG">
+                    <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">見えなかった</span>
+            <span class="shironeko">雪</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/技术/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/吐槽/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          吐槽
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/资源/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          资源
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/随想/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+                        <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      主题更改记录</h1>
+      <p class="entry-census">
+        <span>
+          <a href="">
+            <img src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="">yuuki</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2050-12-12<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h1 id="记录一下改主题的东西吧"><a href="#记录一下改主题的东西吧" class="headerlink" title="记录一下改主题的东西吧"></a>记录一下改主题的东西吧</h1><p>目录什么的不用想了，不存在的。</p>
+<h2 id="CDN"><a href="#CDN" class="headerlink" title="CDN"></a><strong>CDN</strong></h2><p>总有一天会换的。总有一天。</p>
+<hr>
+<h2 id="滚动条和顶部进度条"><a href="#滚动条和顶部进度条" class="headerlink" title="滚动条和顶部进度条"></a><strong>滚动条和顶部进度条</strong></h2><p>这个主要修改CSS和JS的scrollbar类还有-webkit-scroll的相关样式和函数。</p>
+<hr>
+<p>本身不难，就是东西都忘了，改了半天，然后发现在即蠢的一批。<code>background: linear-gradient()</code>的用法其实也是“偷”来的。个人感觉还可以，挺好看的。<br>2019.12.19</p>
+<hr>
+<h2 id="background"><a href="#background" class="headerlink" title="background"></a><strong>background</strong></h2><p>content部分：这部分其实吧，就是加了个<code>background-img: url()</code>。其实一开始想做成能切换背景的样子，但是还是自己太蠢，样式调了半天也没弄出来，暂时放弃了。</p>
+<p>top部分：就是换个url，在<code>_config.yml</code>里改。</p>
+<hr>
+<h2 id="index的centerBG"><a href="#index的centerBG" class="headerlink" title="index的centerBG"></a><strong>index的centerBG</strong></h2><p>在figure下面加了俩div用来装BG图片，改了下sakura-app.js里的<code>nextBG()</code>和<code>preBG()</code>以及其初始化函数。周期性调用<code>nextBG()</code>来换图。</p>
+<p>使用Animate.css通过class进行淡入淡出（感觉好蠢的操作啊）。</p>
+<p>由于是在顶部，position调整为absolute就好了。和contant的BG不一样，那个调成absolute就飞到顶端了。<br>2019.12.20</p>
+<hr>
+<h2 id="aplayer部分"><a href="#aplayer部分" class="headerlink" title="aplayer部分"></a><strong>aplayer部分</strong></h2><p>主要就是改ID和servers，网易云私有的list似乎不能被访问。</p>
+<p>一开始少了俩图标，重新建立个新的只改ID发现就好了，可能是之前瞎改layout的时候碰到点什么。<br>2019.12.21</p>
+<hr>
+<h2 id="Back-to-top-cd-top"><a href="#Back-to-top-cd-top" class="headerlink" title="Back-to-top(cd-top)"></a><strong>Back-to-top(cd-top)</strong></h2><p>把原本的<code>&lt;a&gt;</code>去掉了，CSS还留着，然后“偷”了个球 是<a href="https://tridiamond.me" target="_blank" rel="noopener">A-Obsidian</a>的，本来想改颜色，发现咋改都有点丑。就同意了下蓝色。2333333333</p>
+<p>最后加了个Topへ，就是像给个提示，原主题好像没有，好像。<br>2019.12.25</p>
+<hr>
+<h2 id="nav"><a href="#nav" class="headerlink" title="nav"></a><strong>nav</strong></h2><p>删除了一些，这部分直接从<code>_config.yml</code>直接改，注意后面路径也要改，language下的<code>zh-cn.yml</code>也需要改，只有对应Category和tags存在才会生成文件夹。</p>
+<p>目前不知道改怎么弄，还在调教，2333333</p>
+<hr>
+<h2 id="单页改动"><a href="#单页改动" class="headerlink" title="单页改动"></a><strong>单页改动</strong></h2><p>Archive的部分就是换了个图，改了个名字，<code>_config.yml</code>和language下<code>zh-ch.yml</code>都得改。</p>
+<p>tags下面的似乎和WordPress的不一样，主要是Booklist，变成文章形式了。</p>
+<p>tags要打booklist的名字，categorty不要写，不然会出现在Archive下面。<br>2019.12.26</p>
+<hr>
+<h2 id="扒Re-stage-Re-ステージ！-官网部分"><a href="#扒Re-stage-Re-ステージ！-官网部分" class="headerlink" title="扒Re:stage(Re:ステージ！)官网部分"></a><strong>扒Re:stage(Re:ステージ！)官网部分</strong></h2><p>一直觉得Re:stage的官网效果做的不错（其实也挺简单的动画，但由于是日本人做的，我觉得就很不错了。果然做游戏的审美都不差。哈哈哈），其实之前也偷偷扒拉过。这次完整的算是扒了一个小部分出来。就是角色介绍的那部分。艰难，他用了一个叫TweenMax的库来做动画，定义了一堆函数来回调用，找的我累死了，而且有的语法不再原页面就GG了，但是也没什么影响，可能是找不到元素吧。使用jQuery重写了一些必要的东西，本人很懒，还使用了TweenMax库，这中间真的被自己蠢爆了，名字大小写错了导致jQuery选择器选不到元素卡了半天。CSS很好搞，没什么，到时候微调一下样式就算结束。</p>
+<p>数据部分，暂时没办法从Ejs的模板得到数据，不知道为啥，就是空。也不想一次性把所有人的信息放上来，由于整个bloc都没有用数据库，就这里用一个库感觉还不如整体重构一下。暂时卡住了呢。</p>
+<p>目前是选择查库了，现在基本的取数据，查标签，删除标签都差不多了呢。动画也能很好的跟上。要不要在弄点其他的呢？</p>
+<hr>
+<h2 id="js失效"><a href="#js失效" class="headerlink" title="js失效"></a><strong>js失效</strong></h2><p>一开始是把js都和去哪来的一样放在了<code>footer.ejs</code>里，但是这样一开是首页的时候就加载了，针对其他页面的js事件绑定是失败的。在到其他页面时候时间是不会触发的。似乎是因为用了Pjax进行的是局部刷新，js是不会重新被加载的。即使把js放到局部模块里。第一次是没问题，第二次访问还是失效，似乎是因为局部刷新不会加载第二次外部引用的js。于是想了个很蠢的方法就是在需要的模块前加上个<code>&lt;script&gt;$.getScript();&lt;/script&gt;</code>来重新加载需要的js。<br>2020.01.01</p>
+<h2 id="一些细微调整"><a href="#一些细微调整" class="headerlink" title="一些细微调整"></a>一些细微调整</h2><p>主要是配置文件上的调整，然后看了看有些啥要留下，啥不留下。</p>
+<p>之前一直忙着搞后台，自己本来的东西都忘了。现在争取每天有点进度</p>
+<p>2020.1.19</p>
+<hr>
+<h2 id="live2D"><a href="#live2D" class="headerlink" title="live2D"></a>live2D</h2><p>鼓捣了半天官方的SDK，一直有个属性赋值不成功。然后试了下<a href="https://github.com/EYHN/hexo-helper-live2d" target="_blank" rel="noopener">hexo-helper-live2d</a>，但是发现怎么也换不了模型，可能我有哪里没弄对吧。</p>
+<p>然后又返回来鼓捣官方SDK，一步一步调试发现motion的JSON加载有问题，解包碧蓝航线的Live2D，用的<a href="https://www.perfare.net/" target="_blank" rel="noopener">perfare</a>大佬的<a href="https://github.com/Perfare/UnityLive2DExtractor" target="_blank" rel="noopener">UnityLive2DExtractor</a>提取的。</p>
+<p>发现官方SDK读取motion的JSON时<code>&quot;TotalPointCount&quot;</code>会越界，也就是没等<code>&quot;segments&quot;</code>读完，顶点就用尽了，改一下顶点大小就能用官方的SDK显示了，顶点给多好像也没关系，但是现在我雪風的idle动作丢了很多，比如头发不飘了，耳朵也不动了，这些很明显。但是吸血鬼的似乎没看出来啥丢失的动作，头发也有飘，翅膀、裙子也有动。</p>
+<p>被这个小东西卡了一天我TM也真的是蠢。</p>
+<p>说真的，总有一日天，我会用自己的看板娘。</p>
+<p>2020.01.21</p>
+<p>好的，问题原因很简单，model3.json名字写错了，Idle写成了Idel，自己蠢爆了。</p>
+<p>但是发现loop的的动画和CubismViewerForUnity的loop效果不一致，web的loop再结束一个动作后有一种快速倒放的感觉。</p>
+<p>2020.01.25</p>
+<p>鼓捣了一天，其实有的地方因为嫌烦没有好好看耽误了，目前loop倒放感觉依然不明，但是可以做到TapBody触发动作了<code>model3.json</code>中添加<code>&quot;HitAeras&quot;</code>字段，<code>ID</code>字段要和<code>this._model._model.drawables.ids</code>中相同意思字段吻合。具体内容需要进浏览器console里调试查看。这个可能我觉得可能和moc文件有关（我瞎说的，我什么也不知道，没玩过Editor）。</p>
+<p>关于身体部位，目前只实现了Head和body，Body部分直接JSON里写就好，Head不止需要在JSON定义。<code>lappdefine.ts</code>中需要加入<code>export const MotionGroupTapHead: string = &quot;TapHead&quot;;</code>来定义一个动作控制。其次再<code>lapplive2dmanager.ts</code>的<code>onTap</code>方法里第一个判断头部哪里，原方法若点击头部是变化表情<code>this._models.at(i).setRandomExpression();</code>,有必要的话，换成和下面一样的<code>this._models.at(i).startRandomMotion();</code>，记得传参，第一个是刚刚定义的<code>LAppDefine.MotionGroupTapHead</code>,指定哪一个动作用的，第二个不变<code>LAppDefine.PriorityNormal</code>就好。</p>
+<p>2020.01.27</p>
+<p>放弃了，找不到调整模型的方法，看着一堆眼花缭乱的代码，还有恶心的日语注释。打算还是用别人现成的东西吧。</p>
+<p>2020.01.31</p>
+<p>整理了下心情，好好翻了下manual，找到了放大模型显示的地方。</p>
+<p>1、<code>lapplive2dmanager</code>下渲染前有个<code>onUpdate()</code>函数，在里面把矩阵大小放大就好。<br>2、<code>lappmodel</code>下<code>setupModel()</code>中修改 Layout下<code>_modelMatrix</code>的scrale，这里如果参数是1，1的话是按照模型原本大小显示，一般会很大。做挂件的画一般在1一下。</p>
+<p>模型的移动也可以在上回面两个地方完成，对矩阵调用<code>translate()</code>函数，参数仍是浮点，似乎是按照模型大小为1来计算位移。</p>
+<p>回放问题出在动作没有loop。Sample是将你所有的动作放在了一个motion下的，然后每个动作结束后再选取动作压入队列。对于整个motion的loop没有开启的话不知道为什么就会有一个回放一样的。但是还只针对非人物的部分。你在motion里的loop设置是无效的。</p>
+<p>妈的文档里其实说明了这个loop的问题。淦!!蠢爆了!!!</p>
+<p>2020.02.01</p>
+<hr>
+<p>整理下目前Live2D相关东西。</p>
+<p>整个内容是用官方的Demo改的。目前整个主函数流程为：</p>
+<pre><code class="typescript">window.onload = (): void =&gt; {
+  // create the application instance
+  if (LAppDelegate.getInstance().initialize() == false) {
+    return;
+  }
+
+  LAppDelegate.getInstance().run();
+};
+</code></pre>
+<p><code>main.ts</code>为主程序入口。首先初始化Canvas和WebGL的东西。包括Dom操作，事件函数绑定。接下来就是Live的View（用于显示的组件）和整个Cubism SDK的初始化。</p>
+<p>View初始化就是视口大小和矩阵。</p>
+<p>SDK包括Debug用日志、CubismFramework的初始化、Live2DManager的创建、时钟的更新和背景等其他素材的加载。比如原始Demo上面的那个话模型用的齿轮<br>就是这个时候被加载的。</p>
+<p>Live2DManager的构造函数包括的模型矩阵的设置，模型的创建的场景索引的更新。</p>
+<p>更新场景时会通过LAppDefine中定义好的内容读取路径信息。调用LAppmodel的LoadAssets方法读model3.json的信息，这里用的时<code>fetch()</code>方法，所以是异步的。会继续先执行其他函数。文件加载完后会调用<code>setupMpdel()</code>函数，继续读取moc文件、和Expression、Physics、Motion等相关文件，均为异步执行。</p>
+<p>接下来就是<code>run()</code>函数了。</p>
+<pre><code class="typescript">   public run(): void {
+    // メインループ
+    const loop = (): void =&gt; {
+      // インスタンスの有無の確認
+      if (s_instance == null) {
+        return;
+      }
+
+      // 時間更新
+      LAppPal.updateTime();
+
+      // 画面の初期化
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+      // 深度テストを有効化
+      gl.enable(gl.DEPTH_TEST);
+
+      // 近くにある物体は、遠くにある物体を覆い隠す
+      gl.depthFunc(gl.LEQUAL);
+
+      // カラーバッファや深度バッファをクリアする
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+      gl.clearDepth(1.0);
+
+      // 透過設定
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      // 描画更新
+      this._view.render();
+
+      // ループのために再帰呼び出し
+      requestAnimationFrame(loop);
+    };
+    loop();
+  }
+</code></pre>
+<p>整体来讲定义了一个<code>loop()</code>函数作为主循环递归调用。</p>
+<p>首先确定instance（实例）是否存在。然后是更新时间，画面的清空，启动深度测试，深度函数设置，清空颜色和深度Buffer，混合设置和混合函数设置，然后最最重要的画面渲染<code>render()</code>，最后是个递归的调用写法。（我猜）</p>
+<p>主要说渲染，渲染包括背景和齿轮的绘制，然后用了个<code>flush()</code>，我猜是同步用的。然后获取Live2DManager实例然后调用Live2DManager的<code>onUpdate()</code>函数。</p>
+<p><code>onUpdate()</code>中依然首先整理好视口和Canvas大小以及矩阵的设置。接下来调用Model的<code>Update()</code>方法。这里面重要的就是模型动作的<code>startRandomMotion()</code>.在这个方法里默认调用的是传入的是Idle的参数，所以会重复执行Idle的动作。但是此重复非循环播放。官方文档里说了。不能保证和编译器的循环一致，所以将循环设为false。这里只是因为之前loop的循环而导致一直执行这个函数，从而看起来好像有点别扭的循环Idle动作。</p>
+<p>到这里就是一般的，很简单的说了下流程。要做挂件的话就是再矩阵、视口大小和Canvas的大小上改一改就好。</p>
+<p>下面是点击事件，默认是supportTouch是false的，所以绑定的是click的函数。</p>
+<p><code>clickBegan()</code>没什么，重点是<code>clickEnd()</code>函数。这里获取了点击坐标后会调用view的<code>onTouchesEnded()</code>函数。在这里做了坐标变换。然后调用Live2DManager的<code>onTap()</code>函数。在这里对点击操作进行了<code>hitTest()</code>，判断击中的是那个区域。默认是对Head和Body的检测，检测是需要模型配合，似乎需要再编辑器里确定。然后根据Hit部位，调用<code>startRandomMotion()</code>函数确定动作或调用<code>setRandomExpression()</code>默认是Head调用后者，Body调用前者。</p>
+<hr>
+<p>然后是自己的东西，添加了显示对话功能。通过打乱Demo的代码结构来达成自己不可告人的目的。加入了自己的事件和对话类。对话是储存在json文件里的，可以自己添加和更改。保持读文件操作一致性学习使用了<code>fetch()</code>来异步加载对话。事件就是简单的点击事件，因为Demo用的原生JS。所以依然保持使用基础Dom操作绑定事件。（写的时候有种回到了大一的感觉）</p>
+<p>但是现在点击有时候不会触发动作，这个在原Demo上也有这个问题。</p>
+<h2 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a>已知问题</h2><p>sakura-app.js里的imgError函数突然开始报错说找不到。现在一脸懵逼中</p>
+<p>由于CDN的问题，图片显示不完全和找不到</p>
+<p>顶部导航栏Archive和list部分的下拉菜单突然效果变了</p>
+<p>其实是和Animate.css的Keyframe重名了，改一下就好。</p>
+<p>其实应该重构一下代码的，无奈我很懒，哈哈哈哈哈</p>
+
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2050/12/12/Admin/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                主题Admin更改记录</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2020/01/19/Struts2Framework/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/loader/orange.progress-bar-stripe-loader.svg" data-src="" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                </h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="https://test-1300966770.file.myqcloud.com/image/BG/qwe.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author">yuuki</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一个SB</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+
+                </div>
+                <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+                    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yuuki<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+        <div class="footertext">
+            <div class="img-preload">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/wordpress-rotating-ball-o.svg">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/other/disqus-preloader.svg">
+            </div>
+            <p style="color: #666666;">&copy 2018</p>
+        </div>
+        <div class="footer-device">
+            <p style="font-family: 'Ubuntu', sans-serif;">
+                <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+            </p>
+        </div>
+    </div>
+    <!-- .site-info -->
+</footer>
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<script src="/js/botui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+<script type="text/javascript" src="/js/restage.js"></script>
+<!-- Pollyfill script -->
+<script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+<!-- Live2DCubismCore script -->
+<script src = "/js/live2dcubismcore.min.js"></script>
+<!-- Build script -->
+<script src = "/js/live2d.min.js"></script>
+<script type="text/javascript" src="/js/add.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "close"
+            },
+            "windowheight": "fixed",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    } else {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "open"
+            },
+            "windowheight": "auto",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    }
+    /* ]]> */
+</script>
+<script>
+    $(document).ready(function() {
+        if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+            if ($(".pattern-center").length > 0) { //有图的情况
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -400,
+                    scrollSmoothOffset: -85
+                });
+            } else {
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -85,
+                    scrollSmoothOffset: -85
+                });
+            }
+            var offsetTop = $('.toc').offset().top - 95;
+            window.onscroll = function() {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop >= offsetTop) {
+                    $('.toc').addClass('toc-fixed');
+                } else {
+                    $('.toc').removeClass('toc-fixed');
+                }
+            }
+        }
+    });
+</script>
+</script>
+                        <div class="openNav no-select" style="height: 50px;">
+                            <div class="iconflat no-select" style="width: 50px; height: 50px;">
+                                <div class="icon"></div>
+                            </div>
+                            <div class="site-branding search-form-submit">
+                                <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+                            </div>
+                        </div>
+        </section>
+        <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.3/img/custom/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">見えなかった雪</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/技术/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/吐槽/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  吐槽
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/资源/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  资源
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/随想/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+        <div id="hide"><div class="label">hide</div></div>
+  <div id="language"><div class="label">jp</div></div>
+  <div id="live2d">
+    <div class="attention"><div id="attentionInfo"></div></div>
+  </div>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+    id="3130796893"
+
+    server="netease"
+
+    type="playlist"
+
+    fixed="true"
+
+    autoplay="false"
+
+    loop="all"
+
+    order="random"
+
+    preload="auto"
+
+    volume="0.7"
+
+    mutex="true"
+
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+    </body>
+
+    </html>
