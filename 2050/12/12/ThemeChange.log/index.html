@@ -462,10 +462,10 @@
 <p>好的，问题原因很简单，model3.json名字写错了，Idle写成了Idel，自己蠢爆了。</p>
 <p>但是发现loop的的动画和CubismViewerForUnity的loop效果不一致，web的loop再结束一个动作后有一种快速倒放的感觉。</p>
 <p>2020.01.25</p>
-<p>鼓捣了一天，其实有的地方因为嫌烦没有好好看耽误了，目前loop倒放感觉依然不明，但是可以做到TapBody触发动作了<code>model3.json</code>中添加<code>&quot;HitAeras&quot;</code>字段，<code>ID</code>字段要和<code>this._model._model.drawables.ids</code>中相同意思字段吻合。具体内容需要进浏览器console里调试查看。这个可能我觉得可能和moc文件有关（我瞎说的，我什么也不知道，没玩过Editor）。</p>
+<p>鼓捣了一天，其实有的地方因为嫌烦没有好好看耽误了，目前loop倒放感觉依然不明，但是可以做到TapBody触发动作了<code>model3.json</code>中添加<code>&quot;HitAeras&quot;</code>字段，<code>ID</code>字段要和<code>this._model._model.drawables.ids</code>中相同意思字段吻合。具体内容需要进浏览器console里调试查看。这个可能我觉得可能和moc文件有关（我瞎说的，我什么也不知道，Editor我也只是打开过瞎鼓捣了半天）。</p>
 <p>关于身体部位，目前只实现了Head和body，Body部分直接JSON里写就好，Head不止需要在JSON定义。<code>lappdefine.ts</code>中需要加入<code>export const MotionGroupTapHead: string = &quot;TapHead&quot;;</code>来定义一个动作控制。其次再<code>lapplive2dmanager.ts</code>的<code>onTap</code>方法里第一个判断头部哪里，原方法若点击头部是变化表情<code>this._models.at(i).setRandomExpression();</code>,有必要的话，换成和下面一样的<code>this._models.at(i).startRandomMotion();</code>，记得传参，第一个是刚刚定义的<code>LAppDefine.MotionGroupTapHead</code>,指定哪一个动作用的，第二个不变<code>LAppDefine.PriorityNormal</code>就好。</p>
 <p>2020.01.27</p>
-<p>放弃了，找不到调整模型的方法，看着一堆眼花缭乱的代码，还有恶心的日语注释。打算还是用别人现成的东西吧。</p>
+<p>放弃了，找不到调整模型的方法，看着一堆眼花缭乱的代码，还有恶心的日语注释（主要是片假名看着……）。打算还是用别人现成的东西吧。</p>
 <p>2020.01.31</p>
 <p>整理了下心情，好好翻了下manual，找到了放大模型显示的地方。</p>
 <p>1、<code>lapplive2dmanager</code>下渲染前有个<code>onUpdate()</code>函数，在里面把矩阵大小放大就好。<br>2、<code>lappmodel</code>下<code>setupModel()</code>中修改 Layout下<code>_modelMatrix</code>的scrale，这里如果参数是1，1的话是按照模型原本大小显示，一般会很大。做挂件的画一般在1一下。</p>
@@ -538,7 +538,7 @@
 <p><code>clickBegan()</code>没什么，重点是<code>clickEnd()</code>函数。这里获取了点击坐标后会调用view的<code>onTouchesEnded()</code>函数。在这里做了坐标变换。然后调用Live2DManager的<code>onTap()</code>函数。在这里对点击操作进行了<code>hitTest()</code>，判断击中的是那个区域。默认是对Head和Body的检测，检测是需要模型配合，似乎需要再编辑器里确定。然后根据Hit部位，调用<code>startRandomMotion()</code>函数确定动作或调用<code>setRandomExpression()</code>默认是Head调用后者，Body调用前者。</p>
 <hr>
 <p>然后是自己的东西，添加了显示对话功能。通过打乱Demo的代码结构来达成自己不可告人的目的。加入了自己的事件和对话类。对话是储存在json文件里的，可以自己添加和更改。保持读文件操作一致性学习使用了<code>fetch()</code>来异步加载对话。事件就是简单的点击事件，因为Demo用的原生JS。所以依然保持使用基础Dom操作绑定事件。（写的时候有种回到了大一的感觉）</p>
-<p>但是现在点击有时候不会触发动作，这个在原Demo上也有这个问题。</p>
+<p>但是现在点击有时候不会触发动作，这个在原Demo上也有这个问题（也可能是我已经找不到原Demo误会了）。</p>
 <h2 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a>已知问题</h2><p>sakura-app.js里的imgError函数突然开始报错说找不到。现在一脸懵逼中</p>
 <p>由于CDN的问题，图片显示不完全和找不到</p>
 <p>顶部导航栏Archive和list部分的下拉菜单突然效果变了</p>

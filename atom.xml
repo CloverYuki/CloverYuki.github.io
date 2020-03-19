@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="/"/>
-  <updated>2020-02-18T16:51:52.423Z</updated>
+  <updated>2020-03-19T09:24:11.516Z</updated>
   <id>/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="/2050/12/12/Admin/"/>
     <id>/2050/12/12/Admin/</id>
     <published>2050-12-12T14:16:01.000Z</published>
-    <updated>2020-02-18T16:51:52.423Z</updated>
+    <updated>2020-03-19T09:24:11.516Z</updated>
     
     <summary type="html">
     
@@ -43,7 +43,7 @@
     <link href="/2050/12/12/ThemeChange.log/"/>
     <id>/2050/12/12/ThemeChange.log/</id>
     <published>2050-12-12T14:16:01.000Z</published>
-    <updated>2020-02-18T16:48:47.202Z</updated>
+    <updated>2020-03-19T09:28:14.925Z</updated>
     
     <summary type="html">
     
@@ -87,7 +87,7 @@
     <link href="/2019/12/30/DirectX12.log/"/>
     <id>/2019/12/30/DirectX12.log/</id>
     <published>2019-12-30T14:16:03.000Z</published>
-    <updated>2020-02-18T16:48:48.165Z</updated>
+    <updated>2020-03-19T09:21:57.771Z</updated>
     
     <summary type="html">
     
@@ -101,50 +101,6 @@
       <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="DirectX" scheme="/tags/DirectX/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo-Theme-Sakura-test-passage</title>
-    <link href="/2018/12/12/AnotherTest/"/>
-    <id>/2018/12/12/AnotherTest/</id>
-    <published>2018-12-12T14:16:01.000Z</published>
-    <updated>2020-02-18T16:48:48.631Z</updated>
-    
-    <summary type="html">
-    
-      hexo-sakura主题passage-test
-    
-    </summary>
-    
-      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
-    
-      <category term="web" scheme="/tags/web/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Struts2 Framework log</title>
-    <link href="/2018/12/12/Struts2Framework/"/>
-    <id>/2018/12/12/Struts2Framework/</id>
-    <published>2018-12-12T14:16:01.000Z</published>
-    <updated>2020-02-18T16:49:33.382Z</updated>
-    
-    <summary type="html">
-    
-      第一个后台框架
-    
-    </summary>
-    
-      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
-    
-      <category term="web" scheme="/tags/web/"/>
     
   </entry>
   
