@@ -61,30 +61,6 @@
   </entry>
   
   <entry>
-    <title>D3D渲染管线和Shader的一些事</title>
-    <link href="/2020/03/24/Shader&amp;HLSL/"/>
-    <id>/2020/03/24/Shader&amp;HLSL/</id>
-    <published>2020-03-23T16:00:00.000Z</published>
-    <updated>2020-03-24T12:43:34.343Z</updated>
-    
-    <summary type="html">
-    
-      DirectX12 渲染管线和Shader学习记录
-    
-    </summary>
-    
-      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
-    
-      <category term="DirectX" scheme="/tags/DirectX/"/>
-    
-      <category term="Shader" scheme="/tags/Shader/"/>
-    
-  </entry>
-  
-  <entry>
     <title>NLP_EmotionClassfied</title>
     <link href="/2020/02/12/NLP_EmotionClassfied/"/>
     <id>/2020/02/12/NLP_EmotionClassfied/</id>
