@@ -900,7 +900,7 @@ template {
 a {
     background-color: transparent;
     text-decoration: none;
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/ayuda.cur), auto
+    cursor: pointer, auto
 }
 
 a:active,
@@ -909,7 +909,7 @@ a:hover {
 }
 
 a:active {
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/work.cur), alias
+    cursor: pointer, alias
 }
 
 abbr[title] {
@@ -1092,7 +1092,7 @@ h6 {
 
 p {
     margin-bottom: 1.5em;
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/texto.cur), auto
+    cursor: pointer, auto
 }
 
 dfn,
@@ -1203,7 +1203,7 @@ html {
 body {
     background: #fff;
     background-attachment: fixed;
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/normal.cur), auto
+    cursor: pointer, auto
 }
 
 blockquote:before,
@@ -2819,7 +2819,7 @@ h1.page-title.mb- {
     background-size: contain;
     -webkit-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/No_Disponible.cur), auto;
+    cursor: pointer, auto;
     opacity: 1
 }
 
@@ -4893,7 +4893,7 @@ li.feature-2 {
     }
     .top-social_v2 li {
         margin-right: 0px !important;
-        cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/ayuda.cur), auto !important;
+        cursor: pointer, auto !important;
     }
 }
 
@@ -6706,7 +6706,7 @@ i.iconfont.down {
     border: 0;
     color: #fff;
     line-height: 1;
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/No_Disponible.cur), auto;
+    cursor: pointer, auto;
     font-size: 14px;
     font-weight: 500;
     padding: 7px 15px;
@@ -6844,7 +6844,7 @@ input.botui-actions-text-input::-moz-focus-inner {
     padding: 0
 }
 button.botui-actions-buttons-button {
-    cursor: url(https://cdn.jsdelivr.net/gh/honjun/cdn@1.6/img/cursor/No_Disponible.cur), auto;
+    cursor: pointer, auto;
     -webkit-appearance: button
 }
 .botui-app-container {

@@ -444,7 +444,7 @@
 <p>通过调用两次<code>QueryPerformanceCounter();</code>做差再乘上<code>QueryPerformanceFrequency();</code>即可得到两次调用之间经过的时间.</p>
 <hr>
 <h2 id="Rendering-Pipeline-渲染流水线-渲染管线"><a href="#Rendering-Pipeline-渲染流水线-渲染管线" class="headerlink" title="Rendering Pipeline 渲染流水线(渲染管线)"></a><strong>Rendering Pipeline 渲染流水线(渲染管线)</strong></h2><h3 id="Profile-概述"><a href="#Profile-概述" class="headerlink" title="Profile 概述"></a><strong>Profile 概述</strong></h3><pre><code class="mermaid">graph TD
-A(Input Assembler Stage 输入装配阶段) --&gt; B(Vertex Shader Stage 顶点着色器阶段) --&gt; C(Hull Shader Stage 外壳着色器阶段)--&gt;D(Tessellator Stage 曲面细分阶段)--&gt;E(Domain shader Stage 域着色器阶段)--&gt;F(Geometry Shader Stage 集合着色器阶段)--&gt;G(Stream Output Stage 流输出阶段)--&gt;H(Rasterizer Stage 光栅化阶段)--&gt;I(Pixel Shader Stage 像素着色器阶段)--&gt;J(Output Merger Stage 合并输出阶段)
+A(Input Assembler Stage 输入装配阶段) --&gt; B(Vertex Shader Stage 顶点着色器阶段) --&gt; C(Hull Shader Stage 外壳着色器阶段)--&gt;D(Tessellator Stage 曲面细分阶段)--&gt;E(Domain shader Stage 域着色器阶段)--&gt;F(Geometry Shader Stage 几何着色器阶段)--&gt;G(Stream Output Stage 流输出阶段)--&gt;H(Rasterizer Stage 光栅化阶段)--&gt;I(Pixel Shader Stage 像素着色器阶段)--&gt;J(Output Merger Stage 合并输出阶段)
 </code></pre>
 <hr>
 <h3 id="Input-Assembler-Stage-输入装配阶段-IA"><a href="#Input-Assembler-Stage-输入装配阶段-IA" class="headerlink" title="Input Assembler Stage 输入装配阶段 (IA)"></a><strong>Input Assembler Stage 输入装配阶段 (IA)</strong></h3><p>简单来讲就是从显存中模型的顶点坐标和面索引.<br>注意这里是显存,这就意味之我们在此之前就应该把数据从内存中拷贝到显存里来.</p>

@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+        <title itemprop="name">
+            
+                D3D渲染管线和Shader的一些事 |
+                    
+                        SakuraTest
+        </title>
+        
+            <link rel="shortcut icon" href="/img/favicon.ico">
+            
+                <meta http-equiv="x-dns-prefetch-control" content="on">
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+SerifMerriweather|Merriweather+Sans|Source+Code+Pro|Ubuntu:400,700|Noto+Serif+SC" media="all">
+                <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+                <link rel="stylesheet" id="saukra_css-css" href="/css/style.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/Animate.css" type="text/css" media="all">
+                <link rel="stylesheet" href="/css/lib.min.css" media="all">
+                <link rel="stylesheet" href="/css/font.css" media="all">
+                <link rel="stylesheet" href="/css/insight.css" media="all">
+                <link rel="stylesheet" href="/css/jquery.fancybox.min.css" media="all">
+                <link rel="stylesheet" href="/css/zoom.css" media="all">
+                <link rel="stylesheet" href="/css/restage.css" type="text/css">
+                <link rel="stylesheet" href="/css/live2d.css" type="text/css">
+                <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+                <link rel="stylesheet" type="text/css" href="/css/add.css">
+                <!--   <link rel="stylesheet" id="saukra_css-css" href="https://2heng.xin/wp-content/cache/autoptimize/css/autoptimize_ad42a61f4c7d4bdd9f91afcff6b5dda5.css
+" type="text/css" media="all"> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+                <script>
+                    /*Initial Variables*/
+                    var mashiro_option = new Object();
+                    var mashiro_global = new Object();
+                    mashiro_option.NProgressON = true;
+                    /* 
+                     * 邮箱信息之类的东西可以填在这里，这些js变量基本都作用于sakura-app.js
+                     * 这样的设置仅是为了方便在基于PHP开发的主题中设置js变量，既然移植到了Node上，我想或许可以精简这一逻辑吧
+                     */
+                    mashiro_option.email_domain = "";
+                    mashiro_option.email_name = "";
+                    mashiro_option.cookie_version_control = "";
+                    mashiro_option.qzone_autocomplete = false;
+                    mashiro_option.site_name = "見えなかった雪";
+                    mashiro_option.author_name = "雪";
+                    mashiro_option.site_url = "";
+                    mashiro_option.v_appId = "";
+                    mashiro_option.v_appKey = "";
+                    mashiro_option.mathjax = "0";
+                    mashiro_option.qq_api_url = "https://api.mashiro.top/qqinfo/";
+                    mashiro_option.qq_avatar_api_url = "https://api.mashiro.top/qqinfo/";
+
+                    // mashiro_option.jsdelivr_css_src = "https://cdn.jsdelivr.net/gh/moezx/cdn@3.4.5/css/lib.min.css";
+                    // mashiro_option.float_player_on = true;
+
+                    /*End of Initial Variables*/
+                </script>
+                <script type="text/javascript">
+                    var bg = "https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/cover/cover (1).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/cover/cover (2).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/cover/cover (3).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/cover/cover (4).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/cover/cover (5).jpg,https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/cover/cover (6).jpg".split(",");
+                    var bgindex = Math.floor(Math.random() * bg.length);
+                    if (!!window.ActiveXObject || "ActiveXObject" in window) { //is IE?
+                        alert('朋友，IE浏览器未适配哦~');
+                    }
+                </script>
+                
+                <style type="text/css">
+                    .hljs-ln {
+                        border-collapse: collapse
+                    }
+                    
+                    .hljs-ln td {
+                        padding: 0
+                    }
+                    
+                    .hljs-ln-n:before {
+                        content: attr(data-line-number)
+                    }
+                </style>
+                <style type="text/css">
+                .site-top .lower nav {
+                        display: block !important;
+                    }
+                    
+                    .author-profile i,
+                    .post-like a,
+                    .post-share .show-share,
+                    .sub-text,
+                    .we-info a,
+                    span.sitename,
+                    .post-more i:hover,
+                    #pagination a:hover,
+                    .post-content a:hover,
+                    .float-content i:hover {
+                        color: #f782ff
+                    }
+                    
+                    .feature i,
+                    .download,
+                    .navigator i:hover,
+                    .links ul li:before,
+                    .ar-time i,
+                    span.ar-circle,
+                    .object,
+                    .comment .comment-reply-link,
+                    .siren-checkbox-radio:checked+.siren-checkbox-radioInput:after {
+                        background: #f782ff
+                    }
+                    
+                    .download,
+                    .navigator i:hover,
+                    .link-title,
+                    .links ul li:hover,
+                    #pagination a:hover,
+                    .comment-respond input[type='submit']:hover {
+                        border-color: #21c0ff
+                    }
+                    
+                    .entry-content a:hover,
+                    .site-info a:hover,
+                    .comment h4 a,
+                    #comments-navi a.prev,
+                    #comments-navi a.next,
+                    .comment h4 a:hover,
+                    .site-top ul li a:hover,
+                    .entry-title a:hover,
+                    #archives-temp h3,
+                    span.page-numbers.current,
+                    .sorry li a:hover,
+                    .site-title a:hover,
+                    i.iconfont.js-toggle-search.iconsearch:hover,
+                    .comment-respond input[type='submit']:hover {
+                        color: #f782ff
+                    }
+                    
+                    .comments .comments-main {
+                        display: block !important;
+                    }
+                    
+                    .comments .comments-hidden {
+                        display: none !important;
+                    }
+                
+                </style>
+</head></html>
+
+    <body class="page-template page-template-user page-template-page-analytics page-template-userpage-analytics-php page page-id-1297 chinese-font serif isWebKit">
+        <div class="scrollbar" id="bar">
+        </div>
+        <div id="back-to-top" class="animated fadeIn faster">
+            <div class="flow"></div>
+            <span class="percentage animated fadeIn faster">0%</span>
+            <span class="animated fadeIn faster">Topへ</span>
+            <span class="iconfont icon-top02 animated fadeIn faster"></span>
+        </div>
+        <section id="main-container">
+            <div class="headertop filter-dim">
+    <div id="banner_wave_1"></div>
+    <div id="banner_wave_2"></div>
+    <figure id="centerbg" class="centerbg">
+        <div class="focusinfo no-select">
+            <div class="header-tou">
+                <a href="">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/custom/avatar.jpg">
+                    <!--  <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/custom/avatar.jpg"> -->
+                </a>
+            </div>
+            <div class="header-signature">
+                <span>
+                  摸鱼拯救世界
+              </span>
+            </div>
+            <div class="header-info">
+                <p>
+                    Live your life with passion! With some drive!
+                </p>
+                <div class="top-social_v2">
+                    <li id="bg-pre">
+                        <img class="flipx" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/other/next-b.svg">
+                    </li>
+                    
+                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="github">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/social/github.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="weibo">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/social/weibo.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="twitter">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/social/twitter.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="" target="_blank" class="social-github" title="email">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/social/email.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                            
+                                    <li>
+                                        <a href="/#" target="_blank" class="social-github" title="qq">
+                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/social/qq.svg">
+                  </a>
+                                    </li>
+                                    
+                                        
+                                            
+                                                <li id="bg-next">
+                                                    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/other/next-b.svg">
+                                                </li>
+                </div>
+            </div>
+        </div>
+    </figure>
+    <div id="video-container" style="">
+        <video style="object-fit: fill" id="bgvideo" class="video" video-name="" src="" width="auto" preload="auto">
+    </video>
+        <div id="video-btn" class="loadvideo videolive">
+        </div>
+        <div id="video-add">
+        </div>
+        <div class="video-stu">
+        </div>
+    </div>
+    <div class="headertop-down faa-float animated" onclick="headertop_down()">
+        <span>
+      <i class="fa fa-chevron-down" aria-hidden="true">
+      </i>
+    </span>
+    </div>
+</div>
+                <div id="page" class="site wrapper contentBG">
+                    <header class="site-header no-select gizle sabit" role="banner">
+  <div class="site-top">
+    <div class="site-branding">
+      <span class="site-title">
+        <span class="logolink moe-mashiro">
+          <a href="/">
+            <span class="sakurasono">見えなかった</span>
+            <span class="shironeko">雪</span>
+          </a>
+        </span>
+      </span>
+    </div>
+    <div class="searchbox search-form-submit">
+      <i class="iconfont js-toggle-search iconsearch icon-search">
+      </i>
+    </div>
+    <div id="show-nav" class="showNav mobile-fit">
+      <div class="line line1">
+      </div>
+      <div class="line line2">
+      </div>
+      <div class="line line3">
+      </div>
+    </div>
+    <div class="lower-cantiner">
+      <div class="lower">
+        <nav class="mobile-fit-control hide">
+          <ul id="menu-new" class="menu">
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+                    首页
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+                    归档
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/categories/技术/">
+                          <i class="fa fa-code" aria-hidden="true"></i>
+                          技术
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/吐槽/">
+                          <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                          吐槽
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/资源/">
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                          资源
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/categories/随想/">
+                          <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                          随想
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+              <li>
+                <a href="/comment/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+                    留言板
+                  </span>
+                </a>
+                
+              </li>
+            
+              <li>
+                <a href="/">
+                  <span class="faa-parent animated-hover">
+                    <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+                    关于
+                  </span>
+                </a>
+                
+                  <ul class="sub-menu">
+                    
+                      <li>
+                        <a href="/about/">
+                          <i class="fa fa-meetup" aria-hidden="true"></i>
+                          我？
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/theme-sakura/">
+                          <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                          主题
+                        </a>
+                      </li>
+                    
+                      <li>
+                        <a href="/lab/">
+                          <i class="fa fa-cogs" aria-hidden="true"></i>
+                          Lab
+                        </a>
+                      </li>
+                    
+                  </ul>
+                
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+                        <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+<div class="pattern-center-blank"></div>
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.5/img/passage/vividmemorial_104.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.5/img/passage/vividmemorial_104.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      D3D渲染管线和Shader的一些事</h1>
+      <p class="entry-census">
+        <span>
+          <a href="">
+            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.5/img/passage/vividmemorial_104.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="">yuki</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2020-3-24<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
+  </div>
+
+<div id="content" class="site-content">
+  <div id="primary" class="content-area">
+    <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h2 id="index？"><a href="#index？" class="headerlink" title="index？"></a>index？</h2><ul>
+<li>Input Assembler Stage 输入装配阶段</li>
+<li>Vertex Shader Stage 顶点着色器阶段</li>
+<li>Tessellating Gometry Stage 镶嵌处理阶段<ul>
+<li>Hull Shader Stage 外壳着色器阶段</li>
+<li>Tessellator Stage 曲面细分阶段</li>
+<li>Domain shader Stage 域着色器阶段</li>
+</ul>
+</li>
+<li>Geometry Shader Stage 几何着色器阶段</li>
+<li>Stream Output Stage 流输出阶段</li>
+<li>Rasterizer Stage 光栅化阶段</li>
+<li>Pixel Shader Stage 像素着色器阶段</li>
+<li>Output Merger Stage 合并输出阶段</li>
+</ul>
+<h2 id="1-Input-Assembler-Stage-输入装配阶段"><a href="#1-Input-Assembler-Stage-输入装配阶段" class="headerlink" title="1 Input Assembler Stage 输入装配阶段"></a><strong>1 Input Assembler Stage 输入装配阶段</strong></h2><p>这个阶段其实就是读取显存中我们存储的顶点和索引数据。按照所设置好的图元拓扑根据索引装配顶点。装配结果会被送VS（Vertex Shader）</p>
+<hr>
+<p>这里从顶点的创建开始说明。</p>
+<p>首先需要先定义顶点的结构体比如</p>
+<pre><code class="c++">struct Vertex
+{
+    DirectX::XMFLOAT3 Pos;
+    DirectX::XMFLOAT3 Normal;
+    DirectX::XMFLOAT2 TexC;
+};
+</code></pre>
+<p>接下来，为了让Direct3D知道怎么对待我们的数据，需要填写输入布局描述（Input Layout Description）</p>
+<pre><code class="c++">typedef struct D3D12_INPUT_LAYOUT_DESC {
+  const D3D12_INPUT_ELEMENT_DESC *pInputElementDescs;
+  UINT                           NumElements;
+} D3D12_INPUT_LAYOUT_DESC;
+</code></pre>
+<p>而实际上描述布局的是其中的<code>D3D12_INPUT_ELEMENT_DESC</code></p>
+<pre><code class="c++">typedef struct D3D11_INPUT_ELEMENT_DESC { 
+    LPCSTR SemanticName; 
+    UINT SemanticIndex; 
+    DXGI_FORMAT Format; 
+    UINT InputSlot; 
+    UINT AlignedByteOffset 
+    D3D11_INPUT_CLASSIFICATION InputSlotClass; 
+    UINT InstanceDataStepRate; 
+} D3D11_INPUT_ELEMENT_DESC;
+</code></pre>
+<p><code>LPCSTR SemanticName</code>：关于shader输入参数的HLSL的语义。</p>
+<p><code>UINT SemanticIndex</code>：语义的索引，用于给相同语义的变量，比如一个顶点由两组Texture，可以再不引入新语义的情况下区分他们。未指定默认为1。</p>
+<p><code>DXGI_FORMAT Format</code>：通过<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/dxgiformat/ne-dxgiformat-dxgi_format" target="_blank" rel="noopener">DXGI_FORMAT</a>的变量来指定元素的类型。</p>
+<p><code>UINT InputSlot</code>：指定元素传入的输入槽，Direct3D支持16个（0~15）输入槽。可以通过输入槽来向输入装配阶段传递顶点数据。</p>
+<p><code>UINT AlignedByteOffset</code>：输入槽中数据的偏移量，一个结构体元素中会有多个变量，需要确定偏移量才能正确找到变量。</p>
+<p><code>D3D11_INPUT_CLASSIFICATION InputSlotClass</code>：单个输入槽的表示类。具体参照<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/ne-d3d12-d3d12_input_classification" target="_blank" rel="noopener">D3D12_INPUT_CLASSIFICATION</a></p>
+<p><code>UINT InstanceDataStepRate</code>：与实例化技术有关，置为1意味着要是用实例化技术。</p>
+<p>针对上述顶点，<code>D3D11_INPUT_ELEMENT_DESC</code>可填写为</p>
+<pre><code class="c++">{
+    { &quot;POSITION&quot;, 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+    { &quot;NORMAL&quot;, 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+    { &quot;TEXCOORD&quot;, 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+    };
+</code></pre>
+<p>接下来就要准备顶点数据了。为了让GPU能得到数据，需要把顶点数据放到GPU资源（显存）中。DirectX12中使用<code>ID3D12Resource</code>来管理。</p>
+<p>要创建<code>ID3D12Resource</code>首先需要填写<code>D3D12_RESOURCE_DESC</code></p>
+<pre><code class="c++">typedef struct D3D12_RESOURCE_DESC {
+  D3D12_RESOURCE_DIMENSION Dimension;
+  UINT64                   Alignment;
+  UINT64                   Width;
+  UINT                     Height;
+  UINT16                   DepthOrArraySize;
+  UINT16                   MipLevels;
+  DXGI_FORMAT              Format;
+  DXGI_SAMPLE_DESC         SampleDesc;
+  D3D12_TEXTURE_LAYOUT     Layout;
+  D3D12_RESOURCE_FLAGS     Flags;
+} D3D12_RESOURCE_DESC;
+</code></pre>
+<p><code>D3D12_RESOURCE_DIMENSION Dimension</code>：资源维度，使用<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/ne-d3d12-d3d12_resource_dimension" target="_blank" rel="noopener">D3D12_RESOURCE_DIMENSION </a>填写。</p>
+<p><code>UINT64 Alignment;</code>：没查到，一般为0。</p>
+<p><code>UINT64 Width;</code>：资源的宽度，对于缓冲区资源则是缓冲占用字节数。</p>
+<p><code>UINT Height;</code>：资源的高度。</p>
+<p><code>UINT16 DepthOrArraySize;</code>：资源深度（对于3DTexture），对于1D、2DTexture则表示数组大小。</p>
+<p><code>UINT16 MipLevels</code>：minmap的层数。</p>
+<p><code>DXGI_FORMAT Format;</code>：资源格式，使用<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/dxgiformat/ne-dxgiformat-dxgi_format" target="_blank" rel="noopener">DXGI_FORMAT</a>填写</p>
+<p><code>DXGI_SAMPLE_DESC SampleDesc;</code>：采样器描述，使用<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/dxgicommon/ns-dxgicommon-dxgi_sample_desc" target="_blank" rel="noopener">DXGI_SAMPLE_DESC</a>填写，实际上和多重采样（MSAA）有关，描述中设置了采样质量级别和采样次数。</p>
+<p><code>D3D12_TEXTURE_LAYOUT Layout;</code>：资源的layout，使用<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/ne-d3d12-d3d12_texture_layout" target="_blank" rel="noopener">D3D12_TEXTURE_LAYOUT</a>填写。</p>
+<p><code>D3D12_RESOURCE_FLAGS Flags;</code>：与资源有关的杂项标志位，使用<br><a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/ne-d3d12-d3d12_resource_flags" target="_blank" rel="noopener">D3D12_RESOURCE_FLAGS</a>填写。</p>
+<p>填写完描述后就可以用它来再现存上开辟一块适合的空间了。创建该堆使用的是<code>ID3D12Device::CreateCommittedResource</code>方法</p>
+<pre><code class="c++">HRESULT CreateCommittedResource(
+  const D3D12_HEAP_PROPERTIES *pHeapProperties,
+  D3D12_HEAP_FLAGS            HeapFlags,
+  const D3D12_RESOURCE_DESC   *pDesc,
+  D3D12_RESOURCE_STATES       InitialResourceState,
+  const D3D12_CLEAR_VALUE     *pOptimizedClearValue,
+  REFIID                      riidResource,
+  void                        **ppvResource
+);
+</code></pre>
+<p><a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12device-createcommittedresource" target="_blank" rel="noopener">CreateCommittedResource</a><br>解释会补的。</p>
+<p>这里其实还有一种创建资源堆的方式<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12device-createplacedresource" target="_blank" rel="noopener">ID3D12Device :: CreatePlacedResource</a>后续会说。</p>
+<p>这里其实Direct3D 12提供了个包装类<code>CD3DX12_RESOURCE_DESC</code>，他派生自<code>D3D12_RESOURCE_DESC</code>，可以简化我们的创建过程。</p>
+<p>关于显存上堆的资源类型</p>
+<pre><code class="c++">typedef enum D3D12_HEAP_TYPE {
+  D3D12_HEAP_TYPE_DEFAULT,
+  D3D12_HEAP_TYPE_UPLOAD,
+  D3D12_HEAP_TYPE_READBACK,
+  D3D12_HEAP_TYPE_CUSTOM
+} ;
+</code></pre>
+<p><code>D3D12_HEAP_TYPE_DEFAULT</code>：默认堆，只允许GPU访问，所以速度最快。<br><code>D3D12_HEAP_TYPE_UPLOAD</code>：上传堆，向这里提交的都是要CPU上传到GPU的资源。<br><code>D3D12_HEAP_TYPE_READBACK</code>：回传堆，向这里提交的资源是需要CPU读取的资源。<br><code>D3D12_HEAP_TYPE_CUSTOM</code>：应用于高级特性。</p>
+<p>显然，我们需要让GPU读取顶点资源，放在默认堆是比较合适的。但是CPU又不能直接访问，于是需要使用上传堆来完成顶点资源向显存的移动。这就需要创建两个堆，一个使用<code>D3D12_HEAP_TYPE_DEFAULT</code>一个使用<code>D3D12_HEAP_TYPE_UPLOAD</code>。</p>
+<p>然后为了告诉Direct3D我们要提交什么样的数据，需要填写一个描述<code>D3D12_SUBRESOURCE_DATA</code></p>
+<pre><code class="c++">typedef struct D3D12_SUBRESOURCE_DATA {
+  const void *pData;
+  LONG_PTR   RowPitch;
+  LONG_PTR   SlicePitch;
+} D3D12_SUBRESOURCE_DATA;
+</code></pre>
+<p>然后就可以使用<a href="https://docs.microsoft.com/en-us/windows/win32/direct3d12/updatesubresources1" target="_blank" rel="noopener">UpdateSubresources</a>函数来上传顶点资源了。</p>
+<p>当然这里是CPU和GPU“一起工作”，这自然就遇到同步问题。对于D3D12，我们用资源屏障<a href="https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_resource_barrier" target="_blank" rel="noopener">D3D12_RESOURCE_BARRIER</a>来同步资源状态。</p>
+<pre><code class="c++">typedef struct D3D12_RESOURCE_BARRIER {
+  D3D12_RESOURCE_BARRIER_TYPE  Type;
+  D3D12_RESOURCE_BARRIER_FLAGS Flags;
+  union {
+    D3D12_RESOURCE_TRANSITION_BARRIER Transition;
+    D3D12_RESOURCE_ALIASING_BARRIER   Aliasing;
+    D3D12_RESOURCE_UAV_BARRIER        UAV;
+  };
+} D3D12_RESOURCE_BARRIER;
+</code></pre>
+<p>然后就可以使用<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-resourcebarrier" target="_blank" rel="noopener">ID3D12GraphicsCommandList::ResourceBarrier</a>方法来设置资源屏障。在使用资源之前和使用后都要记得同步资源属性。<br>同样，依然有一个包装类<a href="https://docs.microsoft.com/en-us/windows/win32/direct3d12/cd3dx12-resource-barrier" target="_blank" rel="noopener">CD3DX12_RESOURCE_BARRIER</a>可以帮助我们简化创建操作。</p>
+<p>当然，不是所有的顶点都会被送到默认堆上，一些需要频繁改动的对象的顶点这么操作就不合适，所以这类顶点可以就放在上传堆上。</p>
+<hr>
+<p>到这里我们的数据才算是准备好了，接下在就是真正的输入装配阶段。我们需要调用三个方法来完成这个阶段</p>
+<p><a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetvertexbuffers" target="_blank" rel="noopener">ID3D12GraphicsCommandList::IASetVertexBuffers</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetindexbuffer" target="_blank" rel="noopener">ID3D12GraphicsCommandList::IASetIndexBuffer</a></p>
+<p><a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12graphicscommandlist-iasetprimitivetopology" target="_blank" rel="noopener">ID3D12GraphicsCommandList::IASetPrimitiveTopology</a></p>
+<p>首先第一个方法是向渲染管线提供顶点，接下来分别是提供顶点索引和设置图元拓扑(primitive topology)。</p>
+<p>为什么要提供顶点索引和图元拓扑，因为一堆顶点可以有许多种连接方式，而我们想要的只是其中的一种。图元拓扑就是说明顶点之间应该以什么方式进行连接。而图元拓扑从<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_primitive_topology" target="_blank" rel="noopener">D3D_PRIMITIVE_TOPOLOGY</a>选择。</p>
+<h2 id="2-Vertex-Shader-Stage-顶点着色器阶段"><a href="#2-Vertex-Shader-Stage-顶点着色器阶段" class="headerlink" title="2 Vertex Shader Stage 顶点着色器阶段"></a><strong>2 Vertex Shader Stage 顶点着色器阶段</strong></h2><p>图元被装配完毕后，顶点就会被送入VS(Vertex Shader)。这时候就需要使用着色器语言(Shader Language)来编写VS。VS可以实现很多东西，例如变换，光照，位移贴图等。而最多应用的就是顶点的变换处理。</p>
+<p>我们知道3D模型的顶点都是按照局部空间的方式储存的。所以我们需要将局部空间坐标变换为世界空间坐标。而要做的只是仅仅需要给顶点坐标乘上以个世界坐标矩阵就可以了。但是这其实还不算完，我们只是将局部坐标变成了世界坐标。为了构建场景的2D图形，还需要一台摄像机，对世界坐标做取景变换(view transform)，取景变换使用的矩阵成为变换矩阵(view matrix)。最后我们需要做的就是把坐标投影到齐次剪裁空间中，就是我们得到的画面坐标。投影要做的被称为透视投影变换(perspective projection transformation)。</p>
+<p>所以,基本的VS写法应该为:<br>以顶点下列顶点为例</p>
+<pre><code class="c++">struct Vertex
+{
+    DirectX::XMFLOAT3 Pos;
+    DirectX::XMFLOAT3 Normal;
+  ......
+};
+</code></pre>
+<p>则顶点着色器可以写成下列形式</p>
+<pre><code>// 定义输入顶点,应与c++文件中定义一致
+struct VertexIn
+{
+  // 冒号后为语义，和之前填写的输入布局描述的语义相同
+      float3 PosL  : POSITION; 
+    float4 Color : COLOR;
+    ......
+};
+
+// 定义输出顶点,可根据需要增加变量
+struct VertexOut
+{
+      float4 PosH  : SV_POSITION;
+    float4 Color : COLOR;
+    ......
+};
+// 定义顶点着色器
+VertexOut VS(VertexIn vin)
+{
+    // 定义输出顶点
+      VertexOut vout;
+    // 顶点坐标与世界矩阵相乘,局部坐标变换为世界坐标
+    float4 posW = mul(float4(vin.PosL, 1.0f), gWorld); 
+    // 世界坐标与观察矩阵和投影矩阵相乘,投影到齐次剪裁空间中
+    vout.PosH = mul(posW, gViewProj);
+    // 顶点的颜色处理后和处理前保持一致
+    vout.Color = vin.Color;
+    ......
+    ......
+    // 返回变换后顶点
+    return vout;
+}
+</code></pre><p>顶点着色器会对每个顶点调用一次，但是是在GPU中进行，会并行计算，速度还是很快的。</p>
+<p>接下来如果没有其他需求,就可以直接送入<a href="#PS">像素着色器</a>了</p>
+<h2 id="3-Tessellating-Gometry-Stage-镶嵌处理阶段"><a href="#3-Tessellating-Gometry-Stage-镶嵌处理阶段" class="headerlink" title="3 Tessellating Gometry Stage 镶嵌处理阶段"></a><strong>3 Tessellating Gometry Stage 镶嵌处理阶段</strong></h2><p>作为一个可选阶段，曲面细分阶段是渲染管线中对几何图形进行向前处理的三个阶段————外壳着色器阶段，镶嵌器阶段和域着色器阶段。<br>这里所做的工作就是把几何体细分成更小的三角形，并以某种方式，把生成的顶点偏移到合适的位置。说白了就是在这个阶段通过几个着色器把低模变高模。</p>
+<p>那为什么不直接使用高模？</p>
+<ol>
+<li>考虑如果一个物体距离摄像机很远，那么这个时候对于这种物体人们一般很少注意，所以，使用高模就很浪费空间，也为后面计算增加负担。在这里就可以通过距离摄像机判断是否进行和进行什么程度的镶嵌化处理。</li>
+<li>在考虑如果一个物体根本不在视锥体（摄像机所看到的范围）内，那么就可以删除掉这部分的片面。如果是高模，这部分计算也会比较庞大，低模通过较小的代价，可以减少后续的一些计算，而且还省内存。</li>
+</ol>
+<p>如果要进行曲面细分，我就不向输入装配阶段提交三角形。而是提交具有若干控制点的面片。图元类型使用<a href="https://docs.microsoft.com/en-us/windows/win32/api/d3dcommon/ne-d3dcommon-d3d_primitive_topology" target="_blank" rel="noopener">D3D_PRIMITIVE_TOPOLOGY</a>中的类型。当然三角形可以看作具有三个控制点的面片，所以依然可以提交普通的三角形网络。</p>
+<h3 id="3-1-Hull-Shader-Stage-外壳着色器阶段"><a href="#3-1-Hull-Shader-Stage-外壳着色器阶段" class="headerlink" title="3.1 Hull Shader Stage 外壳着色器阶段"></a><strong>3.1 Hull Shader Stage 外壳着色器阶段</strong></h3><p>首先，外壳着色器（HS）实际上由两种着色器组成：</p>
+<ul>
+<li>常量外壳着色器(constant hull shader)</li>
+<li>控制点外壳着色器(control point hull shader)<h4 id="3-1-1-常量外壳着色器-constant-hull-shader"><a href="#3-1-1-常量外壳着色器-constant-hull-shader" class="headerlink" title="3.1.1 常量外壳着色器(constant hull shader)"></a><strong>3.1.1 常量外壳着色器(constant hull shader)</strong></h4></li>
+</ul>
+<p>常量外壳着色器将每一个面片的控制点作为输入（即一次只输入一个面片中的控制点），每处理一个面片就会调用一次。其工作是输出网格的曲面细分因子(Tessellation factor)。曲面细分因子指的是面片将要在曲面细分阶段中镶嵌处理后的份数。<br>现在说一个将一个具有四个控制点的四边形面片从各方面分成三份的例子：</p>
+<pre><code>// 首先要定义每个片面需要的信息作为常量外壳着色器的输出
+struct PatchTess
+{
+  // SV_TessFactor语义表示几何图形边缘细分份数
+    float EdgeTess[4]   : SV_TessFactor;
+  // SV_InsideTessFactor语义表示几何图形内部细分份数
+    float InsideTess[2] : SV_InsideTessFactor;
+  ......
+};
+// 然后可以正式定义常量着色器
+// 外壳着色器在顶点着色器之后，自然使用顶点着色器的输出作为输入。在这里就用InputPatch&lt;&gt;模板定义，VertexOut是VS的输出结构体，4代表我们的面片具有4个控制点。SV_PrimitiveID语义提供了面片的位标识。
+PatchTess ConstantHS(InputPatch&lt;VertexOut, 4&gt; patch, uint patchID : SV_PrimitiveID)
+{
+  // 声明输出变量。
+    PatchTess pt;
+
+    pt.EdgeTess[0] = 3; // 面片左边缘份数
+    pt.EdgeTess[1] = 3; // 面片上边缘份数
+    pt.EdgeTess[2] = 3; // 面片右边缘份数
+    pt.EdgeTess[3] = 3; // 面片下边缘份数
+
+    pt.InsideTess[0] = 3; // 面片内部细分列数
+    pt.InsideTess[1] = 3; // 面片内部细分行数
+
+  ......
+    return pt;
+}
+</code></pre><p>对于四边形，镶嵌化处理有两个部分，</p>
+<ul>
+<li>4个边缘曲面细分因子对应边缘细分份数</li>
+<li>两个内部曲面细分因子说明了如何对内部进行镶嵌化处理。</li>
+</ul>
+<p>对于三角形来说，镶嵌化也是两个部分，</p>
+<ul>
+<li>3个边缘曲面细分因子对应边缘细分份数</li>
+<li>一个内部曲面细分因子表示三角形面片的镶嵌份数。</li>
+</ul>
+<h4 id="3-1-2-控制点外壳着色器-control-point-hull-shader"><a href="#3-1-2-控制点外壳着色器-control-point-hull-shader" class="headerlink" title="3.1.2 控制点外壳着色器(control point hull shader)"></a><strong>3.1.2 控制点外壳着色器(control point hull shader)</strong></h4><p>控制点外壳着色器将控制点作为输入和输出，对每个控制点都会调用一次控制点外壳着色器。其应用之一是改变曲面的表示方式，如将一个普通的三角形转换成三次贝塞尔三角形面片（一个具有10个控制点的面片）<br>一个简单的例子：</p>
+<pre><code>// 定义HS的输出
+struct HullOut
+{
+    float3 PosL : POSITION;
+};
+
+[domain(&quot;quad&quot;)]
+[partitioning(&quot;integer&quot;)]
+[outputtopology(&quot;triangle_cw&quot;)]
+[outputcontrolpoints(4)]
+[patchconstantfunc(&quot;ConstantHS&quot;)]
+[maxtessfactor(64.0f)]
+HullOut HS(InputPatch&lt;VertexOut, 4&gt; p, 
+           uint i : SV_OutputControlPointID,
+           uint patchId : SV_PrimitiveID)
+{
+  // 声明输出变量
+    HullOut hout;
+    // 这里的HS其实是就是个传递的作用，没有改变什么值
+    hout.PosL = p[i].PosL;
+
+    return hout;
+}
+</code></pre><p>我们可以看到HS的前面多了很多[]括起来的内容，和C#的Attribute相似。没错，这个是Shader Model中的东西。更多可以看看<a href="https://docs.microsoft.com/zh-cn/windows/win32/direct3dhlsl/d3d11-graphics-reference-sm5-attributes" target="_blank" rel="noopener">Shader Model 5 Attributes</a>这里就解释一下上面提到的</p>
+<ol>
+<li><code>domain()</code>:定义了HS中使用的面片类型。可选参数为”tri”、”quad”、”isoline”</li>
+<li><code>partitioning()</code>：定义了HS使用的镶嵌方案(tesselation scheme,不知道翻译好没)，可选参数为”integer”、”fractional_even”、”fractional_odd”、” pow2”。</li>
+<li></li>
+</ol>
+<h3 id="3-2-Tessellator-Stage-曲面细分（镶嵌器）阶段"><a href="#3-2-Tessellator-Stage-曲面细分（镶嵌器）阶段" class="headerlink" title="3.2 Tessellator Stage 曲面细分（镶嵌器）阶段"></a><strong>3.2 Tessellator Stage 曲面细分（镶嵌器）阶段</strong></h3><p>这个阶段由硬件自动完成，程序员无法干预。对于镶嵌化处理的结果，emmmmmmm，放两张图吧。<br><a href></a><a href></a></p>
+<h3 id="3-3-Domain-shader-Stage-域着色器阶段"><a href="#3-3-Domain-shader-Stage-域着色器阶段" class="headerlink" title="3.3 Domain shader Stage 域着色器阶段"></a><strong>3.3 Domain shader Stage 域着色器阶段</strong></h3><p>镶嵌器阶段会输出新生成的顶点与三角形。对于此阶段所创建的所有顶点都会依次调用域着色器(DS)。所以DS实际上和顶点着色器类似，是对已镶嵌完成的顶点进行处理的着色器。DS以曲面细分因子、控制点以及镶嵌画处理后的定点位置参数坐标(u,v)作为输入。这里的定点位置参数不是实际位置，而是位于面片域空间(patch domain space)的参数坐标。可以利用控制点和这些坐标来求出真正的坐标。下面使用双线性插值来求。（其他也可以，只是书中例子是这个）</p>
+<pre><code>struct DomainOut
+{
+    float4 PosH : SV_POSITION;
+};
+
+[domain(&quot;quad&quot;)]
+DomainOut DS(PatchTess patchTess, 
+             float2 uv : SV_DomainLocation, 
+             const OutputPatch&lt;HullOut, 4&gt; quad)
+{
+  // 声明输出变量
+    DomainOut dout;
+
+  // 这里就是双线性插值
+  //lerp(u,v,t)是基于t∈[0，1]，在u，v之间进行线性插值
+    float3 v1 = lerp(quad[0].PosL, quad[1].PosL, uv.x); 
+    float3 v2 = lerp(quad[2].PosL, quad[3].PosL, uv.x); 
+    float3 p  = lerp(v1, v2, uv.y); 
+    // 转换为世界坐标
+    float4 posW = mul(float4(p, 1.0f), gWorld);
+  // 投影到齐次剪裁矩阵中
+    dout.PosH = mul(posW, gViewProj);
+
+    return dout;
+}
+</code></pre><h2 id="4-Geometry-Shader-Stage-几何着色器阶段"><a href="#4-Geometry-Shader-Stage-几何着色器阶段" class="headerlink" title="4 Geometry Shader Stage 几何着色器阶段"></a><strong>4 Geometry Shader Stage 几何着色器阶段</strong></h2><p>由于曲面细分阶段是一个可选阶段，几何着色器（GS）输入数据是一组完整的图元（其实也就是一组顶点？？），输出为几何着色器一大特点就是可以创建和销毁几何图形。利用GS可以做到点精灵的拓展、动态粒子系统、皮毛的申城、阴影体积的生成等效果。<br>比较巧的是GS有一个简单的模板可以套用：</p>
+<pre><code>// 输出顶点的最大数量
+[maxvertexcount(N)]
+void Name (PrimitiveType InputVertexType InputNmae[NumElements],inout StreamOutputObject&lt;OutputVertexType&gt; OutputName)
+{
+  ......
+}
+</code></pre><p>GS每次调用前必须先制定可输出的定点最大数量，这里用属性<code>[maxvertexcount()]</code>来指定。</p>
+<p>对于参数，第一个参数的构成为 图元类型 输入定点类型 数据名字，图元类型可用”point”（点）、”line”（线）、”triangle”（三角形）、”lineadj”（线列表及其邻接图元或线条带及其临界图元）、”triangleadj（三角型列表及其邻接图元或三角形带及其邻接图元）”，第二个参数首先是inout关键字，这个一定要有，而且他使用了一个模板类型流类型。流类型存有一系列顶点，定义了几何着色器输出的几何图形。几何着色器可以通过内置方法<code>Append()</code>向输出流添加顶点。<br><code>void StreamOutputObject&lt;OutputVertexType&gt;::Append(OutputVertexType v);</code></p>
+<p>对于流类型，其模板参数用指定输出顶点的类型，并且有三种类型。</p>
+<pre><code>PointStream&lt;OutPutVertexType&gt;     // 一系列顶点所定义的点列表
+LineStream&lt;OutPutVertexType&gt;      // 一系列顶点所定义线条带
+TriangleStream&lt;OutPutVertexType&gt;  // 一系列顶点所定义三角形带
+</code></pre><p>几何着色器输出的顶点会构成由流类型指定的图元，但是流类型未包括线条列表和三角形列表。其实可以使用内置函数<code>RestartStrip()</code>来实现线条列表和三角形列表。<br><code>void StreamOutputObject&lt;OutputVertexType&gt;::RestartStript();</code><br>想要实现三角形列表，需要在每次向流输出追加三个顶点后调用一次<code>RestartStript()</code>。<br>线条列表则是没追加两个顶点后调用<code>RestartStript()</code>。<br>这里给出一个将一个点拓展成一个四边形的例子，也就是“公告牌技术”</p>
+<pre><code>// 这里假设不进行曲面镶嵌阶段，所以直接使用VS的输出
+
+struct VertexOut
+{
+    float3 CenterW : POSITION;
+    float2 SizeW   : SIZE;
+};
+
+// 定义几何着色器的输出
+struct GeoOut
+{
+    float4 PosH    : SV_POSITION;
+    float3 PosW    : POSITION;
+    float3 NormalW : NORMAL;
+    float2 TexC    : TEXCOORD;
+    uint   PrimID  : SV_PrimitiveID;
+};
+
+// 指定GS输出顶点数最多为4个
+[maxvertexcount(4)]
+void GS(point VertexOut gin[1], 
+        uint primID : SV_PrimitiveID, 
+        inout TriangleStream&lt;GeoOut&gt; triStream)
+{    
+  //这里计算精灵(Sprite)的局部坐标系与世界空间的相对关系。使得之后的四边形与和y轴对齐并面向观察者
+    float3 up = float3(0.0f, 1.0f, 0.0f);
+    float3 look = gEyePosW - gin[0].CenterW;
+    look.y = 0.0f;  // 对齐y轴，使四边形立在xz平面上
+    look = normalize(look);
+    float3 right = cross(up, look);
+
+    // 计算四边形的宽和高，用来计算顶点坐标
+    float halfWidth  = 0.5f*gin[0].SizeW.x;
+    float halfHeight = 0.5f*gin[0].SizeW.y;
+
+  // 开始计算顶点坐标
+    float4 v[4];
+    v[0] = float4(gin[0].CenterW + halfWidth*right - halfHeight*up, 1.0f);
+    v[1] = float4(gin[0].CenterW + halfWidth*right + halfHeight*up, 1.0f);
+    v[2] = float4(gin[0].CenterW - halfWidth*right - halfHeight*up, 1.0f);
+    v[3] = float4(gin[0].CenterW - halfWidth*right + halfHeight*up, 1.0f);
+
+  // 贴图的操作
+    float2 texC[4] = 
+    {
+        float2(0.0f, 1.0f),
+        float2(0.0f, 0.0f),
+        float2(1.0f, 1.0f),
+        float2(1.0f, 0.0f)
+    };
+
+  // 将四边形的顶点变化为世界坐标，并且以三角形带形式输出。
+    GeoOut gout;
+  // for循环属性 unroll指的是展开循环，直到停止执行。
+    [unroll]
+    for(int i = 0; i &lt; 4; ++i)
+    {
+        gout.PosH     = mul(v[i], gViewProj);
+        gout.PosW     = v[i].xyz;
+        gout.NormalW  = look;
+        gout.TexC     = texC[i];
+        gout.PrimID   = primID;
+
+        triStream.Append(gout);
+    }
+}
+</code></pre><p>关于for循环的属性可以看<a href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-for" target="_blank" rel="noopener">这里</a></p>
+<p>SV_PrimitiveID语义是一个无符号的整形参数，指定了这个语义，输入装配阶段就会自动为每个图元生成一个ID，每个ID的都是唯一的。尽管这里没有使用，但是GS将ID写入顶点中，下面的像色着色器中可以使用。</p>
+<h2 id="Stream-Output-Stage-流输出阶段"><a href="#Stream-Output-Stage-流输出阶段" class="headerlink" title="Stream Output Stage 流输出阶段"></a><strong>Stream Output Stage 流输出阶段</strong></h2><p>流输出阶段就是将集合着色器的顶点数据连续输出到一个或多个缓冲区中，和几何着色器紧密联系在一起的。</p>
+<h2 id="6-Rasterizer-Stage-光栅化阶段"><a href="#6-Rasterizer-Stage-光栅化阶段" class="headerlink" title="6 Rasterizer Stage 光栅化阶段"></a><strong>6 Rasterizer Stage 光栅化阶段</strong></h2><p>其实在光栅化之前还有一个阶段叫裁剪，在这个阶段会将完全位于视锥体之外的几何体全部丢弃，而对于一部分在外面的几何体也会被实施裁剪(clip)的操作。</p>
+<p>光栅化阶段实际也是一个不可编程阶段，其功能是为投影在主屏幕上的3D三角形计算出对应的像素颜色。光栅化阶段中主要干了以下事情</p>
+<ul>
+<li>视口变换</li>
+<li>背面剔除</li>
+<li>顶点属性插值<h3 id="6-1-视口变换"><a href="#6-1-视口变换" class="headerlink" title="6.1 视口变换"></a><strong>6.1 视口变换</strong></h3></li>
+</ul>
+<p>裁剪完成后硬件会通过透视除法，将物体从齐次裁剪空间变化为规格化设备坐(NDC)。一旦物体顶点坐标在NDC空间内，构成2D图像的2D顶点x，y坐标就会被变换到后台缓冲区中被称为视口(view port)的矩形中。变换完成后顶点坐标都是以像素为单位的。视口变换不会影响深度值（z坐标）。</p>
+<h3 id="6-2-背面剔除"><a href="#6-2-背面剔除" class="headerlink" title="6.2 背面剔除"></a><strong>6.2 背面剔除</strong></h3><p>这里我们需要先了解什么是正面,什么是背面。</p>
+<p>对于一个顶点为V<sub>0</sub>、V<sub>1</sub>、V<sub>2</sub>的三角形</p>
+<p>$e_0 = V_1 - V_0$</p>
+<p>$e_1 = V_2 - V_0$</p>
+<p>法向量为<br>$$<br>n = \tfrac{e_0 \times e_1}{e_0 \times e_2}<br>$$<br>法向量从正面射出,则另一面为背面。 若观察者看到的是正面,则称三角形是正面朝向(front-facing)的否则称三角形为背面朝向(back-facing)的。</p>
+<p>对于大多数物体而言,背面朝向的三角形都被正面朝向的所遮挡,绘制他们是没用的,所以背面剔除就是除去这些没用三角形.</p>
+<h3 id="6-3-顶点属性插值"><a href="#6-3-顶点属性插值" class="headerlink" title="6.3 顶点属性插值"></a><strong>6.3 顶点属性插值</strong></h3><p>顶点中不止可以存放位置信息,还可以存放像颜色、法向量、纹理坐标等属性。视口变换后需要为三角形的每个像素所附有的属性进行插值。这部分使用的插值方法为透视矫正插值(perspective correct interpolation)，这个计算由硬件完成。</p>
+<h2 id="7-Pixel-Shader-Stage-像素着色器阶段"><a href="#7-Pixel-Shader-Stage-像素着色器阶段" class="headerlink" title="7 Pixel Shader Stage 像素着色器阶段"></a><strong><span id="PS">7 Pixel Shader Stage 像素着色器阶段</span></strong></h2><p>像素着色器(PS)的输入是光栅化阶段期间输出的对顶点属性的插值。PS会对每一个像素片段进行处理,并根据顶点的插值属性作为输入来计算出对应的所以像素颜色,PS既可以返回一种单一恒定颜色,以实现逐像素光照(per-pixel linghting)、反射(reflection)、阴影(shadow)等效果。</p>
+<p>像素片段并不一定是最后写入后台缓冲区中，有时候会有多个像素片段。需要通过一些规则来确定最后写入后台缓冲区的像素片段是哪一个。<br>也就是说，像素着色器所做的工作就是为了计算颜色。<br>最简单的像素着色器可以写成下列形式</p>
+<pre><code>// 定义输入顶点,应与c++文件中定义一致
+struct VertexIn
+{
+  // 冒号后为语义，和之前填写的输入布局描述的语义相同
+      float3 PosL  : POSITION; 
+    float4 Color : COLOR;
+    ......
+};
+
+// 定义输出顶点,可根据需要增加变量
+struct VertexOut
+{
+      float4 PosH  : SV_POSITION;
+    float4 Color : COLOR;
+    ......
+};
+// 这里假设只存在VS和PS，所以VS输出就是PS输入
+// SV_Target语义表示返回值类型应当与目标格式（render targer format）相匹配
+// 而着色器本身只是输出了颜色插值
+float4 PS(VertexOut pin) : SV_Target
+{
+    return pin.Color;
+};
+</code></pre><h2 id="8-Output-Merger-Stage-合并输出阶段"><a href="#8-Output-Merger-Stage-合并输出阶段" class="headerlink" title="8 Output Merger Stage 合并输出阶段"></a><strong>8 Output Merger Stage 合并输出阶段</strong></h2><p>也是一个不可编程阶段<br>像素着色器生成的像素片段会会被送到合并输出阶段(OM)，该阶段中一些像素片段就会被丢弃。剩下的将会写入后台缓冲中。其中混合(Blend)操作也是在这个阶段实现的。</p>
+
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2050/12/12/ThemeChange.log/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                主题更改记录</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2020/02/12/NLP_EmotionClassfied/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                NLP_EmotionClassfied</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
+      
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.5/img/passage/vividmemorial_104.jpg" itemprop="image" alt="yuki" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author">yuki</a>
+            </h3>
+          </div>
+        </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一个好奇的人</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
+</div>
+
+
+
+                </div>
+                <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="请输入关键词..."/>
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            // PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+                    <!-- <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 yuuki<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer> -->
+<footer id="colophon" class="site-footer" role="contentinfo">
+    <div class="site-info">
+        <div class="footertext">
+            <div class="img-preload">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/other/wordpress-rotating-ball-o.svg">
+                <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/other/disqus-preloader.svg">
+            </div>
+            <p style="color: #666666;">&copy 2018</p>
+        </div>
+        <div class="footer-device">
+            <p style="font-family: 'Ubuntu', sans-serif;">
+                <span style="color: #b9b9b9;">Theme <a href="https://github.com/honjun/hexo-theme-sakura" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Sakura</a> <i class="iconfont icon-sakura rotating" style="color: #ffc0cb;display:inline-block"></i> by <a href="https://2heng.xin/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Mashiro</a>&<a href="https://www.hojun.cn/" target="_blank" style="color: #b9b9b9;;text-decoration: underline dotted rgba(0, 0, 0, .1);">Hojun</a>, Powered by Hexo, Hosted by Coding Pages</a>
+        </span>
+            </p>
+        </div>
+    </div>
+    <!-- .site-info -->
+</footer>
+
+<!-- <script src="/js/tocbot.js"></script> -->
+<script type="text/javascript" src="/js/lib.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" src="/js/InsightSearch.js"></script>
+<script type="text/javascript" src="/js/jquery.fancybox.min.js"></script>
+<script type="text/javascript" src="/js/zoom.min.js"></script>
+<script type="text/javascript" src="/js/sakura-app.js"></script>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine@1.3.4/dist/Valine.min.js'></script>
+<script src="/js/botui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>
+<script type="text/javascript" src="/js/restage.js"></script>
+<!-- Pollyfill script -->
+<script src="https://unpkg.com/core-js-bundle@3.6.1/minified.js"></script>
+<!-- Live2DCubismCore script -->
+<script src = "/js/live2dcubismcore.min.js"></script>
+<!-- Build script -->
+<script src = "/js/live2d.min.js"></script>
+<script type="text/javascript" src="/js/add.js"></script>
+<!-- 不蒜子 网页计数器 -->
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<script type="text/javascript">
+    /* <![CDATA[ */
+    if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "close"
+            },
+            "windowheight": "fixed",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    } else {
+        var Poi = {
+            "pjax": "1",
+            "movies": {
+                "url": "video",
+                "name": "0012.mp4",
+                "live": "open"
+            },
+            "windowheight": "auto",
+            "codelamp": "close",
+            "ajaxurl": "",
+            "order": "asc",
+            "formpostion": "bottom"
+        };
+    }
+    /* ]]> */
+</script>
+<script>
+    $(document).ready(function() {
+        if ($(".toc").length > 0 && document.body.clientWidth > 1200) {
+            if ($(".pattern-center").length > 0) { //有图的情况
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -400,
+                    scrollSmoothOffset: -85
+                });
+            } else {
+                tocbot.init({
+                    // Where to render the table of contents.
+                    tocSelector: '.toc', // 放置目录的容器
+                    // Where to grab the headings to build the table of contents.
+                    contentSelector: '.entry-content', // 正文内容所在
+                    // Which headings to grab inside of the contentSelector element.
+                    scrollSmooth: true,
+                    headingSelector: 'h1, h2, h3, h4, h5', // 需要索引的标题级别
+                    headingsOffset: -85,
+                    scrollSmoothOffset: -85
+                });
+            }
+            var offsetTop = $('.toc').offset().top - 95;
+            window.onscroll = function() {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop >= offsetTop) {
+                    $('.toc').addClass('toc-fixed');
+                } else {
+                    $('.toc').removeClass('toc-fixed');
+                }
+            }
+        }
+    });
+</script>
+</script>
+                        <div class="openNav no-select" style="height: 50px;">
+                            <div class="iconflat no-select" style="width: 50px; height: 50px;">
+                                <div class="icon"></div>
+                            </div>
+                            <div class="site-branding search-form-submit">
+                                <i class="iconfont js-toggle-search iconsearch icon-search"></i>
+                            </div>
+                        </div>
+        </section>
+        <div id="mo-nav" class="">
+  <div class="m-avatar">
+    <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/custom/avatar.jpg">
+  </div>
+  <p style="text-align: center; color: #333; font-weight: 900; font-family: 'Ubuntu', sans-serif; letter-spacing: 1.5px">見えなかった雪</p>
+  <p style="text-align: center; word-spacing: 20px;">
+    
+      
+        <a href="" class="fa fa-github" target="_blank" style="color: #333; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-weibo" target="_blank" style="color: #dd4b39; margin-left:20px"></a>
+      
+        <a href="" class="fa fa-qq" target="_blank" style="color: #25c6fe; margin-left:20px"></a>
+      
+    
+  </p>
+  <ul id="menu-new-1" class="menu">
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-fort-awesome faa-shake" aria-hidden="true"></i>
+            首页
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/archives">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-archive faa-shake" aria-hidden="true"></i>
+            归档
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/categories/技术/">
+                  <i class="fa fa-code" aria-hidden="true"></i>
+                  技术
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/吐槽/">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  吐槽
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/资源/">
+                  <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                  资源
+                </a>
+              </li>
+            
+              <li>
+                <a href="/categories/随想/">
+                  <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                  随想
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+      <li>
+        <a href="/comment/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-pencil-square-o faa-tada" aria-hidden="true"></i>
+            留言板
+          </span>
+        </a>
+        
+      </li>
+    
+      <li>
+        <a href="/">
+          <span class="faa-parent animated-hover">
+            <i class="fa  fa-leaf faa-wrench" aria-hidden="true"></i>
+            关于
+          </span>
+        </a>
+        
+          <ul class="sub-menu">
+            
+              <li>
+                <a href="/about/">
+                  <i class="fa fa-meetup" aria-hidden="true"></i>
+                  我？
+                </a>
+              </li>
+            
+              <li>
+                <a href="/theme-sakura/">
+                  <i class="fa iconfont icon-sakura" aria-hidden="true"></i>
+                  主题
+                </a>
+              </li>
+            
+              <li>
+                <a href="/lab/">
+                  <i class="fa fa-cogs" aria-hidden="true"></i>
+                  Lab
+                </a>
+              </li>
+            
+          </ul>
+        
+      </li>
+    
+  </ul>
+  <p style="text-align: center; font-size: 13px; color: #b9b9b9;">&copy 2019 hexo-sakura</p>
+</div>
+<button onclick="topFunction()" class="mobile-cd-top" id="moblieGoTop" title="Go to top" style="display: none;"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+        <div id="hide"><div class="label">hide</div></div>
+  <div id="language"><div class="label">jp</div></div>
+  <div id="live2d">
+    <div id="attention"><div id="attentionInfo"></div></div>
+  </div>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+<!-- require MetingJS -->
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<style>
+  .aplayer .aplayer-lrc {
+    height: 35px;
+  }
+  .aplayer .aplayer-lrc p{
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 18px !important;
+  }
+  .aplayer .aplayer-lrc p.aplayer-lrc-current{
+    color: #FF1493;
+  }
+  .aplayer.aplayer-narrow .aplayer-body{
+    left: -66px !important;
+  }
+  .aplayer.aplayer-fixed .aplayer-lrc {
+    display: none;
+  }
+  .aplayer .aplayer-lrc.aplayer-lrc-hide {
+      display:none !important;
+  }
+  .aplayer.aplayer-fixed .lrc-show {
+    display: block;
+    background: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<meting-js
+
+    id="3130796893"
+
+    server="netease"
+
+    type="playlist"
+
+    fixed="true"
+
+    autoplay="false"
+
+    loop="all"
+
+    order="random"
+
+    preload="auto"
+
+    volume="0.7"
+
+    mutex="true"
+
+</meting-js>
+<script>
+  $(function(){
+    $('body').on('click', '.aplayer', function(){
+      if($('.aplayer-button').hasClass('aplayer-play')) {
+        $('.aplayer-lrc').removeClass('lrc-show');
+      } else {
+        $('.aplayer-lrc').addClass('lrc-show');
+      }
+    })
+  });
+</script>
+    </body>
+
+    </html>
