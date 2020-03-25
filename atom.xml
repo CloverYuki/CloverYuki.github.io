@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>SakuraTest</title>
+  <title>CloverYuki</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="/"/>
-  <updated>2020-03-24T12:43:27.343Z</updated>
+  <updated>2020-03-25T08:06:47.696Z</updated>
   <id>/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="/2050/12/12/Admin/"/>
     <id>/2050/12/12/Admin/</id>
     <published>2050-12-11T16:00:00.000Z</published>
-    <updated>2020-03-24T12:43:27.343Z</updated>
+    <updated>2020-03-25T08:06:47.696Z</updated>
     
     <summary type="html">
     
@@ -65,7 +65,7 @@
     <link href="/2020/03/24/Shader&amp;HLSL/"/>
     <id>/2020/03/24/Shader&amp;HLSL/</id>
     <published>2020-03-23T16:00:00.000Z</published>
-    <updated>2020-03-24T13:11:01.188Z</updated>
+    <updated>2020-03-25T02:53:55.111Z</updated>
     
     <summary type="html">
     
@@ -111,7 +111,7 @@
     <link href="/2019/12/30/DirectX12.log/"/>
     <id>/2019/12/30/DirectX12.log/</id>
     <published>2019-12-29T16:00:00.000Z</published>
-    <updated>2020-03-24T12:43:24.879Z</updated>
+    <updated>2020-03-25T08:08:36.973Z</updated>
     
     <summary type="html">
     

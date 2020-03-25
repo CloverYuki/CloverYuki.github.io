@@ -9,7 +9,7 @@
             
                 D3D渲染管线和Shader的一些事 |
                     
-                        SakuraTest
+                        CloverYuki
         </title>
         
             <link rel="shortcut icon" href="/img/favicon.ico">
@@ -615,7 +615,7 @@ VertexOut VS(VertexIn vin)
 <li>控制点外壳着色器(control point hull shader)<h4 id="3-1-1-常量外壳着色器-constant-hull-shader"><a href="#3-1-1-常量外壳着色器-constant-hull-shader" class="headerlink" title="3.1.1 常量外壳着色器(constant hull shader)"></a><strong>3.1.1 常量外壳着色器(constant hull shader)</strong></h4></li>
 </ul>
 <p>常量外壳着色器将每一个面片的控制点作为输入（即一次只输入一个面片中的控制点），每处理一个面片就会调用一次。其工作是输出网格的曲面细分因子(Tessellation factor)。曲面细分因子指的是面片将要在曲面细分阶段中镶嵌处理后的份数。<br>现在说一个将一个具有四个控制点的四边形面片从各方面分成三份的例子：</p>
-<pre><code>// 首先要定义每个片面需要的信息作为常量外壳着色器的输出
+<pre><code class="HLSL">// 首先要定义每个片面需要的信息作为常量外壳着色器的输出
 struct PatchTess
 {
   // SV_TessFactor语义表示几何图形边缘细分份数
@@ -642,7 +642,8 @@ PatchTess ConstantHS(InputPatch&lt;VertexOut, 4&gt; patch, uint patchID : SV_Pri
     ......
     return pt;
 }
-</code></pre><p>对于四边形，镶嵌化处理有两个部分，</p>
+</code></pre>
+<p>对于四边形，镶嵌化处理有两个部分，</p>
 <ul>
 <li>4个边缘曲面细分因子对应边缘细分份数</li>
 <li>两个内部曲面细分因子说明了如何对内部进行镶嵌化处理。</li>
@@ -653,7 +654,7 @@ PatchTess ConstantHS(InputPatch&lt;VertexOut, 4&gt; patch, uint patchID : SV_Pri
 <li>一个内部曲面细分因子表示三角形面片的镶嵌份数。</li>
 </ul>
 <h4 id="3-1-2-控制点外壳着色器-control-point-hull-shader"><a href="#3-1-2-控制点外壳着色器-control-point-hull-shader" class="headerlink" title="3.1.2 控制点外壳着色器(control point hull shader)"></a><strong>3.1.2 控制点外壳着色器(control point hull shader)</strong></h4><p>控制点外壳着色器将控制点作为输入和输出，对每个控制点都会调用一次控制点外壳着色器。其应用之一是改变曲面的表示方式，如将一个普通的三角形转换成三次贝塞尔三角形面片（一个具有10个控制点的面片）<br>一个简单的例子：</p>
-<pre><code>// 定义HS的输出
+<pre><code class="HLSL">// 定义HS的输出
 struct HullOut
 {
     float3 PosL : POSITION;
@@ -676,7 +677,8 @@ HullOut HS(InputPatch&lt;VertexOut, 4&gt; p,
 
     return hout;
 }
-</code></pre><p>我们可以看到HS的前面多了很多[]括起来的内容，和C#的Attribute相似。没错，这个是Shader Model中的东西。更多可以看看<a href="https://docs.microsoft.com/zh-cn/windows/win32/direct3dhlsl/d3d11-graphics-reference-sm5-attributes" target="_blank" rel="noopener">Shader Model 5 Attributes</a>这里就解释一下上面提到的</p>
+</code></pre>
+<p>我们可以看到HS的前面多了很多[]括起来的内容，和C#的Attribute相似。没错，这个是Shader Model中的东西。更多可以看看<a href="https://docs.microsoft.com/zh-cn/windows/win32/direct3dhlsl/d3d11-graphics-reference-sm5-attributes" target="_blank" rel="noopener">Shader Model 5 Attributes</a>这里就解释一下上面提到的</p>
 <ol>
 <li><code>domain()</code>:定义了HS中使用的面片类型。可选参数为”tri”、”quad”、”isoline”</li>
 <li><code>partitioning()</code>：定义了HS使用的镶嵌方案(tesselation scheme,不知道翻译好没)，可选参数为”integer”、”fractional_even”、”fractional_odd”、” pow2”。</li>
@@ -684,7 +686,7 @@ HullOut HS(InputPatch&lt;VertexOut, 4&gt; p,
 </ol>
 <h3 id="3-2-Tessellator-Stage-曲面细分（镶嵌器）阶段"><a href="#3-2-Tessellator-Stage-曲面细分（镶嵌器）阶段" class="headerlink" title="3.2 Tessellator Stage 曲面细分（镶嵌器）阶段"></a><strong>3.2 Tessellator Stage 曲面细分（镶嵌器）阶段</strong></h3><p>这个阶段由硬件自动完成，程序员无法干预。对于镶嵌化处理的结果，emmmmmmm，放两张图吧。<br><a href></a><a href></a></p>
 <h3 id="3-3-Domain-shader-Stage-域着色器阶段"><a href="#3-3-Domain-shader-Stage-域着色器阶段" class="headerlink" title="3.3 Domain shader Stage 域着色器阶段"></a><strong>3.3 Domain shader Stage 域着色器阶段</strong></h3><p>镶嵌器阶段会输出新生成的顶点与三角形。对于此阶段所创建的所有顶点都会依次调用域着色器(DS)。所以DS实际上和顶点着色器类似，是对已镶嵌完成的顶点进行处理的着色器。DS以曲面细分因子、控制点以及镶嵌画处理后的定点位置参数坐标(u,v)作为输入。这里的定点位置参数不是实际位置，而是位于面片域空间(patch domain space)的参数坐标。可以利用控制点和这些坐标来求出真正的坐标。下面使用双线性插值来求。（其他也可以，只是书中例子是这个）</p>
-<pre><code>struct DomainOut
+<pre><code class="HLSL">struct DomainOut
 {
     float4 PosH : SV_POSITION;
 };
@@ -709,21 +711,23 @@ DomainOut DS(PatchTess patchTess,
 
     return dout;
 }
-</code></pre><h2 id="4-Geometry-Shader-Stage-几何着色器阶段"><a href="#4-Geometry-Shader-Stage-几何着色器阶段" class="headerlink" title="4 Geometry Shader Stage 几何着色器阶段"></a><strong>4 Geometry Shader Stage 几何着色器阶段</strong></h2><p>由于曲面细分阶段是一个可选阶段，几何着色器（GS）输入数据是一组完整的图元（其实也就是一组顶点？？），输出为几何着色器一大特点就是可以创建和销毁几何图形。利用GS可以做到点精灵的拓展、动态粒子系统、皮毛的申城、阴影体积的生成等效果。<br>比较巧的是GS有一个简单的模板可以套用：</p>
-<pre><code>// 输出顶点的最大数量
+</code></pre>
+<h2 id="4-Geometry-Shader-Stage-几何着色器阶段"><a href="#4-Geometry-Shader-Stage-几何着色器阶段" class="headerlink" title="4 Geometry Shader Stage 几何着色器阶段"></a><strong>4 Geometry Shader Stage 几何着色器阶段</strong></h2><p>由于曲面细分阶段是一个可选阶段，几何着色器（GS）输入数据是一组完整的图元（其实也就是一组顶点？？），输出为几何着色器一大特点就是可以创建和销毁几何图形。利用GS可以做到点精灵的拓展、动态粒子系统、皮毛的申城、阴影体积的生成等效果。<br>比较巧的是GS有一个简单的模板可以套用：</p>
+<pre><code class="HLSL">// 输出顶点的最大数量
 [maxvertexcount(N)]
 void Name (PrimitiveType InputVertexType InputNmae[NumElements],inout StreamOutputObject&lt;OutputVertexType&gt; OutputName)
 {
   ......
 }
-</code></pre><p>GS每次调用前必须先制定可输出的定点最大数量，这里用属性<code>[maxvertexcount()]</code>来指定。</p>
+</code></pre>
+<p>GS每次调用前必须先制定可输出的定点最大数量，这里用属性<code>[maxvertexcount()]</code>来指定。</p>
 <p>对于参数，第一个参数的构成为 图元类型 输入定点类型 数据名字，图元类型可用”point”（点）、”line”（线）、”triangle”（三角形）、”lineadj”（线列表及其邻接图元或线条带及其临界图元）、”triangleadj（三角型列表及其邻接图元或三角形带及其邻接图元）”，第二个参数首先是inout关键字，这个一定要有，而且他使用了一个模板类型流类型。流类型存有一系列顶点，定义了几何着色器输出的几何图形。几何着色器可以通过内置方法<code>Append()</code>向输出流添加顶点。<br><code>void StreamOutputObject&lt;OutputVertexType&gt;::Append(OutputVertexType v);</code></p>
 <p>对于流类型，其模板参数用指定输出顶点的类型，并且有三种类型。</p>
 <pre><code>PointStream&lt;OutPutVertexType&gt;     // 一系列顶点所定义的点列表
 LineStream&lt;OutPutVertexType&gt;      // 一系列顶点所定义线条带
 TriangleStream&lt;OutPutVertexType&gt;  // 一系列顶点所定义三角形带
 </code></pre><p>几何着色器输出的顶点会构成由流类型指定的图元，但是流类型未包括线条列表和三角形列表。其实可以使用内置函数<code>RestartStrip()</code>来实现线条列表和三角形列表。<br><code>void StreamOutputObject&lt;OutputVertexType&gt;::RestartStript();</code><br>想要实现三角形列表，需要在每次向流输出追加三个顶点后调用一次<code>RestartStript()</code>。<br>线条列表则是没追加两个顶点后调用<code>RestartStript()</code>。<br>这里给出一个将一个点拓展成一个四边形的例子，也就是“公告牌技术”</p>
-<pre><code>// 这里假设不进行曲面镶嵌阶段，所以直接使用VS的输出
+<pre><code class="HLSL">// 这里假设不进行曲面镶嵌阶段，所以直接使用VS的输出
 
 struct VertexOut
 {
@@ -789,7 +793,8 @@ void GS(point VertexOut gin[1],
         triStream.Append(gout);
     }
 }
-</code></pre><p>关于for循环的属性可以看<a href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-for" target="_blank" rel="noopener">这里</a></p>
+</code></pre>
+<p>关于for循环的属性可以看<a href="https://docs.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-for" target="_blank" rel="noopener">这里</a></p>
 <p>SV_PrimitiveID语义是一个无符号的整形参数，指定了这个语义，输入装配阶段就会自动为每个图元生成一个ID，每个ID的都是唯一的。尽管这里没有使用，但是GS将ID写入顶点中，下面的像色着色器中可以使用。</p>
 <h2 id="Stream-Output-Stage-流输出阶段"><a href="#Stream-Output-Stage-流输出阶段" class="headerlink" title="Stream Output Stage 流输出阶段"></a><strong>Stream Output Stage 流输出阶段</strong></h2><p>流输出阶段就是将集合着色器的顶点数据连续输出到一个或多个缓冲区中，和几何着色器紧密联系在一起的。</p>
 <h2 id="6-Rasterizer-Stage-光栅化阶段"><a href="#6-Rasterizer-Stage-光栅化阶段" class="headerlink" title="6 Rasterizer Stage 光栅化阶段"></a><strong>6 Rasterizer Stage 光栅化阶段</strong></h2><p>其实在光栅化之前还有一个阶段叫裁剪，在这个阶段会将完全位于视锥体之外的几何体全部丢弃，而对于一部分在外面的几何体也会被实施裁剪(clip)的操作。</p>
@@ -809,7 +814,7 @@ void GS(point VertexOut gin[1],
 <h3 id="6-3-顶点属性插值"><a href="#6-3-顶点属性插值" class="headerlink" title="6.3 顶点属性插值"></a><strong>6.3 顶点属性插值</strong></h3><p>顶点中不止可以存放位置信息,还可以存放像颜色、法向量、纹理坐标等属性。视口变换后需要为三角形的每个像素所附有的属性进行插值。这部分使用的插值方法为透视矫正插值(perspective correct interpolation)，这个计算由硬件完成。</p>
 <h2 id="7-Pixel-Shader-Stage-像素着色器阶段"><a href="#7-Pixel-Shader-Stage-像素着色器阶段" class="headerlink" title="7 Pixel Shader Stage 像素着色器阶段"></a><strong><span id="PS">7 Pixel Shader Stage 像素着色器阶段</span></strong></h2><p>像素着色器(PS)的输入是光栅化阶段期间输出的对顶点属性的插值。PS会对每一个像素片段进行处理,并根据顶点的插值属性作为输入来计算出对应的所以像素颜色,PS既可以返回一种单一恒定颜色,以实现逐像素光照(per-pixel linghting)、反射(reflection)、阴影(shadow)等效果。</p>
 <p>像素片段并不一定是最后写入后台缓冲区中，有时候会有多个像素片段。需要通过一些规则来确定最后写入后台缓冲区的像素片段是哪一个。<br>也就是说，像素着色器所做的工作就是为了计算颜色。<br>最简单的像素着色器可以写成下列形式</p>
-<pre><code>// 定义输入顶点,应与c++文件中定义一致
+<pre><code class="HLSL">// 定义输入顶点,应与c++文件中定义一致
 struct VertexIn
 {
     // 冒号后为语义，和之前填写的输入布局描述的语义相同
@@ -832,7 +837,8 @@ float4 PS(VertexOut pin) : SV_Target
 {
     return pin.Color;
 };
-</code></pre><p>关于像素着色器其实有很多很多有用的地方，值得好好弄弄，之后有机会也会说说。</p>
+</code></pre>
+<p>关于像素着色器其实有很多很多有用的地方，值得好好弄弄，之后有机会也会说说。</p>
 <h2 id="8-Output-Merger-Stage-合并输出阶段"><a href="#8-Output-Merger-Stage-合并输出阶段" class="headerlink" title="8 Output Merger Stage 合并输出阶段"></a><strong>8 Output Merger Stage 合并输出阶段</strong></h2><p>也是一个不可编程阶段<br>像素着色器生成的像素片段会会被送到合并输出阶段(OM)，该阶段中一些像素片段就会被丢弃。剩下的将会写入后台缓冲中。其中混合(Blend)操作也是在这个阶段实现的。</p>
 
         </div>
