@@ -7,7 +7,7 @@
     
         <title itemprop="name">
             
-                网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经 |
+                2020米哈游春季校园招聘程序B卷凉凉经 |
                     
                         CloverYuki
         </title>
@@ -387,15 +387,15 @@
 
   <div class="pattern-center single-center">
     <!-- 有配图默认渲染第一张 -->
-    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Ama+Kaze%20KANZUME011_012.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Ama+Kaze%20KANZUME011_012.jpg">
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Mvv.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Mvv.jpg">
     </div>
     <header class="pattern-header single-header">
       <h1 class="entry-title">
-      网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经</h1>
+      2020米哈游春季校园招聘程序B卷凉凉经</h1>
       <p class="entry-census">
         <span>
           <a href="">
-            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Ama+Kaze%20KANZUME011_012.jpg">
+            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Mvv.jpg">
           </a>
         </span>
         <span>
@@ -403,7 +403,7 @@
         </span>
         <span class="bull">
         ·</span>
-        2020-3-29<span class="bull">
+        2020-4-3<span class="bull">
         ·</span>
       <span id="busuanzi_value_page_pv"></span>次阅读</p>
     </header>
@@ -417,230 +417,28 @@
         <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
         
         <div class="entry-content">
-          <h1 id="网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经"><a href="#网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经" class="headerlink" title="网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经"></a>网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经</h1><p>第一次笔试心里慌得很，四个小时下来膀胱快炸了也不敢离开（向夏哥看齐）。脑细一片混乱，只记得写大概。把能记得的写一下</p>
-<h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><p>斐波那契数列问题相关。<br>给定两个字符串F1，F2，F3=F2+F1，F4=F3+F2…………，求Fn中每个字母出现次数，<br>F1、F2小于10；N&lt;40</p>
-<p>这个第一眼看上去好家伙求Fn再统计嘛，</p>
-<pre><code class="c++">string f1,f2,res;
-for (int i = 3; i &lt;= n; ++i)
-{
-        res = f1 + f2;
-        f1 = f2;
-        f2 = res;
-}
-</code></pre>
-<p>这个会爆内存，然后就想着先统计f1,f2中个数，再用斐波那契去求。这里就用到了map。但是当时不知道怎么想的，可能觉得，呀，这么简单的怎么WA了，被吓到了，逻辑一下十分混乱。导致胡乱判断，胡乱使用函数。这里贴一下，记录下自己的SB行为。SB的地方注释见</p>
-<details><br><summary>小心污染智商</summary><br><br><code>c++
-#include&lt;iostream&gt;
-#include&lt;string&gt;
-#include&lt;map&gt;
-#include&lt;algorithm&gt;
-using namespace std;
-int main()
-{
-    int n = 0;
-    cin &gt;&gt; n;
-    string f1, f2;
-    map&lt;char, int&gt; mapf1;
-    map&lt;char, int&gt; mapf2;
-    cin &gt;&gt; f1 &gt;&gt; f2;
-    for(int i=0;i&lt;f1.size();++i)
-    {
-        int counter = count(f1.begin(),f1.end(),f1[i]);
-        //这里本来统计出出现次数了，相同情况下应直接等或不做处理，但是当时混乱的莫名其妙就+=了。要是有aaa这样的字符串，第一步就错了。
-        if(mapf1.find(f1[i])==mapf1.end())
-            mapf1[f1[i]] = counter;
-        else
-            mapf1[f1[i]] += counter;
-    }
-     for(int i=0;i&lt;f2.size();++i)
-    {
-        int counter = count(f2.begin(),f2.end(),f2[i]);
-        //和上面一样。
-       if(mapf2.find(f2[i])==mapf2.end())
-            mapf2[f2[i]] = counter;
-        else
-            mapf2[f2[i]] += counter;
-    }
-    // 这里，这里是不熟悉map导致的，明明不可能却满脑子想的map怎么直接对位加，还怕中间声明个temp结束循环数据会丢。后来试了一下发现好像不会丢。所以res和temp字面意义与实际用途相反了。
-    map&lt;char, int&gt; temp(mapf1);
-    for (int i = 3; i &lt;= n; ++i)
-    {
-        map&lt;char, int&gt; res(mapf1);
-        // 这里好像也有点问题，但是具体在哪里呢？
-        for (auto it = mapf2.begin(); it != mapf2.end(); ++it)
-        {
-            if (res.find(it-&gt;first) == res.end())
-                res[it-&gt;first] = it-&gt;second;
-            else
-                res[it-&gt;first] += it-&gt;second;
-        }
-        mapf1 = mapf2;
-        mapf2 = res;
-        temp = res;
-    }
-    for (auto it = temp.begin(); it != temp.end(); ++it)
-    {
-        cout &lt;&lt; it-&gt;first &lt;&lt; &quot;:&quot; &lt;&lt; it-&gt;second &lt;&lt; endl;
-    }
-    return 0;
-}</code><br></details>
-
-<p>这里再各贴一个事后稍微冷静下的，由于没有合适的OJ判断，我也不知道能不能过，但是我觉得应该差不多了</p>
-<pre><code class="c++">#include&lt;iostream&gt;
-#include&lt;map&gt;
-#include&lt;string&gt;
-int main()
-{
-    int n;
-    std::cin&gt;&gt;n;
-    std::string f1,f2;
-    std::map&lt;char,int&gt; mapf1;
-    std::map&lt;char,int&gt; mapf2;
-    std::map&lt;char,int&gt; mapres;
-    std::cin&gt;&gt;f1&gt;&gt;f2;
-    for(int i=0;i&lt;f1.size();++i)
-    {
-        mapf1[f1[i]]++;
-    }
-    for(int i=0;i&lt;f2.size();++i)
-    {
-        mapf2[f2[i]]++;
-    }
-    if(n==1)
-        mapres=mapf1;
-    if(n==2)
-        mapres=mapf2;
-    for(int i=3;i&lt;=n;++i)
-    {
-        for(auto it = mapf2.begin();it!=mapf2.end();++it)
-        {
-            mapf1[it-&gt;first]+=it-&gt;second;
-        }
-        mapres = mapf1;
-        mapf1 = mapf2;
-        mapf2 = mapres;
-    }
-    for(auto it = mapres.begin();it!=mapres.end();++it)
-    {
-        std::cout&lt;&lt;it-&gt;first&lt;&lt;&quot;:&quot;&lt;&lt;it-&gt;second&lt;&lt;std::endl;
-    }
-    system(&quot;pause&quot;);
-    return 0;
-}
-</code></pre>
-<h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><p>打怪的<br>有N个怪物，击杀每只怪物用Tmin，每只怪物经过Lmin后逃走，战斗中怪物不会逃跑。击杀后获得经验值E<br>求最多可获得多少经验。</p>
-<p>这个题一开始吓到我了，给的样例一开始也没看懂，瞬间失去思路，然后跑去看第三题，结果大脑变得更加混乱不堪了。</p>
-<p>这个题最后想法是，按照逻辑走一遍。也就是贪心。<br>每次挑单位时间内获取经验值最多的怪来打。直到所有怪逃走。<br>这里再次贴出精神污染，其中有一个超级超级蠢的错误，导致贪心都没贪对</p>
-<details><br><summary>严重精污</summary><br><br><code>c++
-#include&lt;iostream&gt;
-#include&lt;string&gt;
-#include&lt;vector&gt;
-#include&lt;algorithm&gt;
-using namespace std;
-const int N = 1000000;
-struct Monster {
-    int t;
-    int e;
-    float v;
-};
-bool cmp(const Monster a, const Monster b)
-{
-    return a.v &gt; b.v;
-}
-void value(vector&lt;Monster&gt; &amp;monsters, const int t)
-{
-    // 说老实话，这个函数我自己看着都恶心
-    for (int i = 0; i &lt; monsters.size(); ++i)
-    {
-        monsters[i].t -= t;
-        if (monsters[i].t &lt;= 0)
-        {
-            monsters.erase(monsters.begin() + i);
-            i--;
-            continue;
-        }
-        else
-            monsters[i].v = (float)monsters[i].e / monsters[i].t;
-    }
-}
-int main()
-{
-    int n, t;
-    cin &gt;&gt; n &gt;&gt; t;
-    vector&lt;Monster&gt; monsters;
-    for (int i = 0; i &lt; n; ++i)
-    {
-        Monster m;
-        cin &gt;&gt; m.t &gt;&gt; m.e;
-        m.v = (float)m.e / m.t;
-        monsters.push_back(m);
-    }
-    //注意这里。
-    sort(monsters.begin(), monsters.end(), cmp);
-    int exp = 0;
-    while (monsters.size() != 0)
-    {
-        // 重点来了，这里一定少点啥。
-        exp += monsters[0].e;
-        monsters.erase(monsters.begin());
-        value(monsters, t);
-        //对没错，少再排序，不说了，我是蠢死的
-    }
-    cout &lt;&lt; exp &lt;&lt; endl;
-    return 0;
-}</code><br></details>
-
-<p>但是就算加上排序我觉得应该还是过不了，所有又有个想法。计算出每只怪物能撑我几个T，这个数暂时设为x，然后再x相同的怪物中选出经验最多的哪个来打。然后累加这些最大的经验。</p>
-<p>这里还是贴一下这个想法的代码，当然不知道能不能过，我觉得比我上面那个靠谱。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
-#include&lt;vector&gt;
-struct Monster{
-    int leave;
-    int exp;
-};
-int main()
-{
-    int n,t;
-    std::cin&gt;&gt;n&gt;&gt;t;
-    std::vector&lt;Monster&gt; vec(n);
-    std::vector&lt;int&gt; exps(n);
-    for(int i=0;i&lt;n;++i)
-    {
-        std::cin&gt;&gt;vec[i].leave;
-        std::cin&gt;&gt;vec[i].exp;
-    }
-    for(int i=0;i&lt;n;++i)
-    {
-        exps[vec[i].leave/t+(vec[i].leave%t==0?0:1)] =std::max(exps[i],vec[i].exp);
-    }
-    int exp=0;
-    for(int i=0;i&lt;n;++i)
-    {
-        exp+=exps[i];
-    }
-    std::cout&lt;&lt;exp&lt;&lt;std::endl;
-    return 0;
-}
-</code></pre>
-<h2 id="第三题"><a href="#第三题" class="headerlink" title="第三题"></a>第三题</h2><p>这个题很长很长，第四题更长，文字有点多，加上心乱了。说句实话没读好题，可能连最简单的部分都理解错了。下面是我回想起的逻辑和题意。</p>
-<p>在一个空节点下面有一些组件。<br>组件类型有文字和图片，文字属性有中心坐标x，y，宽和高w，h，和实例ID，图片属性有中心坐标x，y，宽和高w，h，实例ID和贴图名称。<br>贴图有名字和ID，字体有ID，<br>字体的ID就文字的ID，贴图的ID就是图片的ID。</p>
-<p>再一个节点下，组件依靠深度值排列，</p>
-<p>深度值计算，若一个组件不和任何组件重合，depth=1</p>
-<p>若有重合，看能不能batch（贴图相同或字体类型相同）</p>
-<p>若能batch则深度相同，</p>
-<p>若不能则取深度最大？还是+1来着？</p>
-<p>若深度相同看实例id<br>若有多个可取，取不能batch的哪个</p>
-<p>然后依照depth排序。</p>
-<p>计算DrawCall的数量。<br>能Batch的算一次。</p>
-<p>具体真的记不清了，等能拿到题的话再做一遍。</p>
-<p>关键就是要注意坐标问题，长宽记得要除2，y坐标是负的。（然而这些下来才反应过来的呢）接下来就是判断物体间是否重合（碰撞检测？？），然后是深度计算。读清楚题应该是没问题的。被引擎惯坏的，看着很亲切，实则很混乱。现在反应过来自己连题都没看懂就死磕了2个多小时。连考试都不会了。</p>
-<h2 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h2><p>简单看了一下，和动画有关系，坐标的旋转问题。彻底没动。<br>也是，能拿到题的话好好看看。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>心态还是不稳，不如说越来越不稳了，容易慌，得想想办法了。</li>
-<li>看懂题是真的重要，仔细读题，要沉下心来。</li>
-<li>基础东西基本忘光了，现在开始要捡起来，先不要再纠结其他的了，这次看来基础是相当重要的。</li>
-<li>想到什么大胆尝试一下，不要畏畏缩缩，就算WA再换方法嘛。</li>
+          <h1 id="2020米哈游春季校园招聘程序B卷凉凉经"><a href="#2020米哈游春季校园招聘程序B卷凉凉经" class="headerlink" title="2020米哈游春季校园招聘程序B卷凉凉经"></a>2020米哈游春季校园招聘程序B卷凉凉经</h1><p>我草泥马自己实在是太菜了，菜死了，垃圾啊！</p>
+<h2 id="第一部分-不定项选择"><a href="#第一部分-不定项选择" class="headerlink" title="第一部分 不定项选择"></a>第一部分 不定项选择</h2><p>考察下列内容</p>
+<ol>
+<li>c++ 虚函数部分</li>
+<li>操作系统 </li>
+<li>组原？</li>
+<li>Linux fork clone exec</li>
+<li>计算机网络 IP和一个select什么的？？？ 不了解</li>
+<li>基本读程序</li>
+<li>栈<br>忘了</li>
 </ol>
+<h2 id="第二部分"><a href="#第二部分" class="headerlink" title="第二部分"></a>第二部分</h2><ol>
+<li>正则表达式</li>
+<li>二叉树<br>真巧我这两个都没复习到。直接凉凉<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3>给出一个字符串s 给出一个规则，规则包括(、)、.、<em>,()表示必须匹配（）内字符。.表示匹配任意字符，</em>表示匹配前面0个活多个字符。<br>输出为s是否满足规则。</li>
+</ol>
+<p>感觉好像能直接用regex？</p>
+<p>其实后来写了个把字符串按规则扫一遍的代码，但是。。。最后一秒也没交上去。主要他给的格式是牛客上《剑指Offer》那个格式，是个类。而个人做题还是面向过程的main函数。所以忙着看复制到哪里合适的时候，时间到了，惨 菜鸡 惨。<br>而代码，，，不小心给覆盖掉了所以。没留底。哇，祸不单行。</p>
+<h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><p>一个计算机连接系统连接方式为二叉树方法，给出一个字符串，1代表有计算机，0代表没有。字符串组成只有0、1.字符串的是按BFS给出的。现在要设置监控计算机，每个监控计算机只能监控一个计算机。问，若所有计算机（监控计算机除外）都被监控，问监控计算机有多少台，若无法完成监控并没有重复监控的情况下输出0；</p>
+<p>例：字符串为“11100111”，监控计算机为字符串位置的 1 6 7号计算机。</p>
+<p>就是每个监控节点变成只能监控一个的监控二叉树。</p>
+<p>说实话没啥好说的，菜的一批，啥也不会。</p>
+<p>有时间还是返回来看。</p>
 
         </div>
         <!-- .entry-content -->
@@ -662,15 +460,15 @@ int main()
           
             <div class="post-nepre half previous">
           
-            <a href="/2050/12/12/ThemeChange.log/" rel="prev">
+            <a href="/2020/04/11/网易互娱笔试凉经/" rel="prev">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/vividmemorial_001.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/vividmemorial_001.jpg">
               </div>
               <span class="label">
               Previous Post</span>
               <div class="info">
                 <h3>
-                主题更改记录</h3>
+                网易互娱2021届实习生招聘在线笔试－游戏研发工程师 凉凉经？？</h3>
                 <hr>
               </div>
             </a>
@@ -680,15 +478,15 @@ int main()
           
             <div class="post-nepre half next">
           
-            <a href="/2020/03/24/Shader&HLSL/" rel="next">
+            <a href="/2020/03/29/网易雷火笔试凉经/" rel="next">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.5/img/passage/vividmemorial_104.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.5/img/passage/vividmemorial_104.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Ama+Kaze%20KANZUME011_012.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Ama+Kaze%20KANZUME011_012.jpg">
               </div>
               <span class="label">
               Next Post</span>
               <div class="info">
                 <h3>
-                D3D渲染管线和Shader的一些事</h3>
+                网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经</h3>
                 <hr>
               </div>
             </a>
@@ -698,7 +496,7 @@ int main()
       
       <section class="author-profile">
         <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Ama+Kaze%20KANZUME011_012.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/Mvv.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
           <div class="meta">
             <span class="title">Author</span>
             <h3 itemprop="name">
