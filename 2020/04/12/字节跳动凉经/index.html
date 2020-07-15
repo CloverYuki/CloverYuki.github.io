@@ -421,7 +421,7 @@
 <h2 id="第一题-数组转换问题"><a href="#第一题-数组转换问题" class="headerlink" title="第一题 数组转换问题"></a>第一题 数组转换问题</h2><p>给出两个数组A，B，其中再A中找出一个区间r-l，使得这个区间的所有数都加上K后和B一样。输出A是否可以转换为B</p>
 <p>这个挺简单的。遍历一遍，在第一个不同的地方差一下。然后用这个差去判断剩下不一致的地方差是否一样，不一样就不能，并且区间只能存在一个。出现第二个区间也不能。</p>
 <p>这里贴一个比较菜鸡的AC代码吧，说实话代码烂的自己也看不下去。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;vector&gt;
 #include&lt;cmath&gt;
 int main()
@@ -501,41 +501,44 @@ int main()
 
 输出 248
 </code></pre><p>利用这个想法实现的代码（个人写的）只过了40% 超时（我觉得我贴对代码了）</p>
-<details><br><summary>精污提醒</summary><br><br><code>c++
-#include&lt;iostream&gt;
-#include&lt;deque&gt;
-#include&lt;algorithm&gt;
+<details>
+<summary>精污提醒</summary>
+
+```c++
+#include<iostream>
+#include<deque>
+#include<algorithm>
 int main()
 {
     int n, m;
-    std::cin &gt;&gt; n &gt;&gt; m;
-    std::deque&lt;int&gt; discount(n);
-    std::deque&lt;int&gt; buy(m);
-    for (int i = 0; i &lt; n; ++i)
-        std::cin &gt;&gt; discount[i];
-    for (int i = 0; i &lt; m; ++i)
-        std::cin &gt;&gt; buy[i];
+    std::cin >> n >> m;
+    std::deque<int> discount(n);
+    std::deque<int> buy(m);
+    for (int i = 0; i < n; ++i)
+        std::cin >> discount[i];
+    for (int i = 0; i < m; ++i)
+        std::cin >> buy[i];
     std::sort(discount.begin(), discount.end());
     std::sort(buy.begin(), buy.end());
     long long res = 0;
     int i = 0 ;
     if (n == 0 || m == 0)
     {
-        for (int i = 0; i &lt; m; ++i)
+        for (int i = 0; i < m; ++i)
             res += buy[i];
-        std::cout &lt;&lt; res &lt;&lt; std::endl;
+        std::cout << res << std::endl;
         return 0;
     }
     while (!buy.empty())
     {
-        if (i &gt;= discount.size())
+        if (i >= discount.size())
         {
             res += (buy[0] - discount[discount.size() - 1]);
             i = 0;
             buy.pop_front();
             continue;
         }
-        if (buy[0] &gt;= discount[i])
+        if (buy[0] >= discount[i])
             i++;
         else
         {
@@ -547,10 +550,12 @@ int main()
             i = 0;
         }
     }
-    std::cout &lt;&lt; res &lt;&lt; std::endl;
-    system(&quot;pause&quot;);
+    std::cout << res << std::endl;
+    system("pause");
     return 0;
-}</code><br></details>
+}
+```
+</int></int></algorithm></deque></iostream></details>
 
 <p>这里我觉得优化的放在于优惠券。应该在一个时间点删除一定量优惠券。我觉得可以如果用的优惠券是第二张就删除第一张。</p>
 <p>为什么没写呢？因为其实这里是第一次使用deque，对他不是很熟悉。尤其是<code>pop_front()</code>复杂度是O(1)还是O(n)。也就是他要不要把所有元素前移。事实是，不需要移动。但是当时以为是O(n)，就换用优先队列，其实也行，但是有一点。STL优先队列是大顶堆。笔试时候忘了这一点，浪费了半个多小时。最后2min才想起来。然后改小顶堆时候格式还忘了需要指定容器类型。哇。悲惨。看源码他默认是vector以为一直就按默认走了。没想到指定比较规则后需要显示直指定容器类型。<code>priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt;</code>就是一个小顶堆了，记住啊！！！！！</p>

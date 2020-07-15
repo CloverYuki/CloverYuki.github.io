@@ -430,7 +430,7 @@
 </code></pre><p>答案是2</p>
 <p>因为我在（1，2）位置，最近的是（1，3）的道具，刀为1；可以砍刀，然后刀长为2，接下来最近的是（3，3），离（1，2）有$\sqrt{5}$的长度，大于刀长，所以最终为2.</p>
 <p>整个题就是读入道具坐标和道具数值，然后计算道具距离主角距离。按距离从小到大排序，依次看能不能砍道就好，一个小贪心。<br>贴出一个一般般的AC代码吧</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;vector&gt;
 #include&lt;algorithm&gt;
 struct item {
@@ -508,65 +508,59 @@ bool distancecmp(item a, item b)
 <p>这里其实刚做题目的时候第二个操作没看懂，如果要独立的元素时头头的话，他底下的元素是独立出N个集合？还是合并到其中一个里去？最后看样子似乎是第一种，独立出N个集合。</p>
 <p>当时看到这个题整个人都是CNM的状态，听说7号互联网那边考了个并查集，觉得互娱不会考这个，难度应该接近雷火前两个吧。结果考了个并查集，然后我还忘了怎么压缩路径。啊！天啊！其实就是find里变了个<code>x =find()</code>！！！！蠢哭了自己。</p>
 <p>这里给个垃圾的一批的70%代码吧</p>
-<details><br><summary>降智打击</summary><br><br><code>c++
-#include&lt;iostream&gt;
-#include&lt;vector&gt;
+<details>
+<summary>降智打击</summary>
+
+```c++
+#include<iostream>
+#include<vector>
 struct element {
     int value;
-    std::vector&lt;int&gt; next;
+    std::vector<int> next;
     int pre;
     int num;
 };
-int find(std::vector&lt;element&gt; &amp;v, int x)
+int find(std::vector<element> &v, int x)
 {
     return v[x].pre == x ? x : find(v, v[x].pre);
 }
-void Union(std::vector&lt;element&gt; &amp;v, int x, int y);
-void cut(std::vector&lt;element&gt; &amp;v, int x);
-int count(std::vector&lt;element&gt; &amp;v, int x);
+void Union(std::vector<element> &v, int x, int y);
+void cut(std::vector<element> &v, int x);
+int count(std::vector<element> &v, int x);
 int main()
 {
     int t;
-    std::cin &gt;&gt; t;
+    std::cin >> t;
     while (t--)
     {
         int n, m;
-        std::cin &gt;&gt; n &gt;&gt; m;
-        std::vector&lt;element&gt; v(n + 1);
-        for (int i = 1; i &lt;= n; ++i)
-        {
-            v[i].value = i;
-            v[i].pre = i;
-            v[i].num = 1;
-        }
-        for (int i = 0; i &lt; m; ++i)
-        {
-            int op;
-            std::cin &gt;&gt; op;
+        std::cin >> n >> m;
+        std::vector<element> v(n + 1);
+        for (int i = 1; i <= n; ++i) { v[i].value="i;" v[i].pre="i;" v[i].num="1;" } for (int i="0;" < m; int op; std::cin>> op;
             if (op == 1)
             {
                 int x, y;
-                std::cin &gt;&gt; x &gt;&gt; y;
+                std::cin >> x >> y;
                 Union(v, x, y);
             }
             else if (op == 2)
             {
                 int x;
-                std::cin &gt;&gt; x;
+                std::cin >> x;
                 cut(v, x);
             }
             else if (op == 3)
             {
                 int x;
-                std::cin &gt;&gt; x;
-                std::cout &lt;&lt; count(v, x) &lt;&lt; std::endl;
+                std::cin >> x;
+                std::cout << count(v, x) << std::endl;
             }
         }
     }
-    system(&quot;pause&quot;);
+    system("pause");
     return 0;
 }
-void Union(std::vector&lt;element&gt; &amp;v, int x, int y)
+void Union(std::vector<element> &v, int x, int y)
 {
     x = find(v, x);
     y = find(v, y);
@@ -576,9 +570,9 @@ void Union(std::vector&lt;element&gt; &amp;v, int x, int y)
     v[y].pre = x;
     v[x].next.push_back(y);
 }
-void cut(std::vector&lt;element&gt; &amp;v, int x)
+void cut(std::vector<element> &v, int x)
 {
-    if (v[x].next.size() == 0 &amp;&amp; v[x].pre != v[x].value)
+    if (v[x].next.size() == 0 && v[x].pre != v[x].value)
     {
         v[find(v, x)].num--;
         int y = v[x].pre;
@@ -587,11 +581,11 @@ void cut(std::vector&lt;element&gt; &amp;v, int x)
         return;
     }
 
-    if (v[x].pre == x &amp;&amp; v[x].next.size() == 0)
+    if (v[x].pre == x && v[x].next.size() == 0)
         return;
     if (v[x].pre == x)
     {
-        for (int i = 0; i &lt; v[x].next.size();++i)
+        for (int i = 0; i < v[x].next.size();++i)
         {
             v[v[x].next[i]].pre = v[x].next[i];
         }
@@ -602,7 +596,7 @@ void cut(std::vector&lt;element&gt; &amp;v, int x)
     {
         v[find(v, x)].num--;
         int z = v[x].pre;
-        for (int i = 0; i &lt; v[x].next.size(); ++i)
+        for (int i = 0; i < v[x].next.size(); ++i)
         {
             v[z].next.push_back(v[x].next[i]);
             v[v[x].next[i]].pre = z;
@@ -613,15 +607,18 @@ void cut(std::vector&lt;element&gt; &amp;v, int x)
     }
 
 }
-int count(std::vector&lt;element&gt; &amp;v, int x)
+int count(std::vector<element> &v, int x)
 {
     return v[find(v,x)].num;
-}</code><br></details>
+}
+```
+</element></element></element></=></element></element></element></element></element></int></vector></iostream></details>
 
 <p>加入路径压缩代码应该不用贴了。。就改一个地方，当然不知道能不能过。但是应该比70%要再高一点。</p>
 <h2 id="第三题-数学？"><a href="#第三题-数学？" class="headerlink" title="第三题 数学？"></a>第三题 数学？</h2><p>个人感觉是个数学问题。题目引子是组合问题中的错排问题。就是简单看了一下题，没看懂就。。。。简单说一下吧</p>
 <p>错排就是与原排列每个位置上的数都不一样的排列<br>比如1 2 3 的一个错排就是 2 3 1。而 3 2 1不是，因为2的位置是一样的。</p>
-<p>给出一个排列A，让你找一个错排B<br>然后定义了一个距离<br>$$ Distance(A,B)=V_1|Pos_{A1} - Pos_{B1}| + V_2|Pos_{A2} - Pos_{B2}| + \cdots + V_n|Pos_{An} - Pos_{Bn}| $$<br>求这个距离的最小值。</p>
+<p>给出一个排列A，让你找一个错排B<br>然后定义了一个距离</p>
+<script type="math/tex; mode=display">Distance(A,B)=V_1|Pos_{A1} - Pos_{B1}| + V_2|Pos_{A2} - Pos_{B2}| + \cdots + V_n|Pos_{An} - Pos_{Bn}|</script><p>求这个距离的最小值。</p>
 <p>个人就是这个距离怎么也没看懂。</p>
 <p>样例：</p>
 <p>输入 123 123 输出 7</p>

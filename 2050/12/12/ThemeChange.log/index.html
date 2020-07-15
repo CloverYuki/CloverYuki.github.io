@@ -476,7 +476,7 @@
 <hr>
 <p>整理下目前Live2D相关东西。</p>
 <p>整个内容是用官方的Demo改的。目前整个主函数流程为：</p>
-<pre><code class="typescript">window.onload = (): void =&gt; {
+<pre><code class="lang-typescript">window.onload = (): void =&gt; {
   // create the application instance
   if (LAppDelegate.getInstance().initialize() == false) {
     return;
@@ -491,7 +491,7 @@
 <p>Live2DManager的构造函数包括的模型矩阵的设置，模型的创建的场景索引的更新。</p>
 <p>更新场景时会通过LAppDefine中定义好的内容读取路径信息。调用LAppmodel的LoadAssets方法读model3.json的信息，这里用的时<code>fetch()</code>方法，所以是异步的。会继续先执行其他函数。文件加载完后会调用<code>setupMpdel()</code>函数，继续读取moc文件、和Expression、Physics、Motion等相关文件，均为异步执行。</p>
 <p>接下来就是<code>run()</code>函数了。</p>
-<pre><code class="typescript">   public run(): void {
+<pre><code class="lang-typescript">   public run(): void {
     // メインループ
     const loop = (): void =&gt; {
       // インスタンスの有無の確認
@@ -563,36 +563,19 @@
       <div class="toc" style="background: none;"></div>
       <section class="post-squares nextprev">
         
+        
           
-            <div class="post-nepre half previous">
+            <div class="post-nepre full next">
           
-            <a href="/2050/12/12/Admin/" rel="prev">
+            <a href="/2050/12/12/Admin/" rel="next">
               <div class="background">
                 <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png">
-              </div>
-              <span class="label">
-              Previous Post</span>
-              <div class="info">
-                <h3>
-                主题Admin更改记录</h3>
-                <hr>
-              </div>
-            </a>
-          </div>
-        
-        
-          
-            <div class="post-nepre half next">
-          
-            <a href="/2020/05/11/2020字节跳动校园招聘算法方向第三场考试 凉经/" rel="next">
-              <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://raw.githubusercontent.com/CloverYuki/cdn/master/img/passage/shiina.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://raw.githubusercontent.com/CloverYuki/cdn/master/img/passage/shiina.jpg">
               </div>
               <span class="label">
               Next Post</span>
               <div class="info">
                 <h3>
-                2020字节跳动校园招聘算法方向第三场考试 凉凉经</h3>
+                主题Admin更改记录</h3>
                 <hr>
               </div>
             </a>

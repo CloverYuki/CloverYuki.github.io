@@ -423,7 +423,7 @@
 <p>POP不取得数据，无法POP时输出-1。<br>TOP无数据时候输出-1，有数据输出队首。</p>
 <p>这里看着真的是很简单，实际上也是简单。这里我一开始想着用vector的思路去写了，没注意到它的操作数最大是1000个操作。然后在另外开辟内存这里可能有点问题，导致总是过不去（看来真的需要看一眼源码了）。最后还是开了个大于操作数的数组来实现，最后过了。</p>
 <p>这里贴一下代码吧。其实挺恶心的代码。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;string.h&gt;
 #include&lt;string&gt;
 struct Queue {
@@ -529,7 +529,7 @@ int main()
 <h2 id="第二题-点对间最短距离"><a href="#第二题-点对间最短距离" class="headerlink" title="第二题 点对间最短距离"></a>第二题 点对间最短距离</h2><p>给出一个集合A，里面又坐标点（x,y），在给出一个集合B里面也有一些点。求这两个集合的点对之间的最短距离（欧式距离）。</p>
 <p>这个题，说实话一开始想到的是平面内点对最小距离那个题，但好像思路不是很对。最后直接暴力了，但是很奇怪，暴力为什么是过0%且超时。好像应该是着急i，j写错了。</p>
 <p>到时候再看看有没有什么好方法。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;cmath&gt;
 #include &lt;iomanip&gt;
 #include&lt;vector&gt;
@@ -579,7 +579,7 @@ int main()
 <p>思路简单，准备两个栈in和out，如果有push直接压入in，当有top和pop时，如果out为空，再将in压入out，否则直接返回out或pop out。</p>
 <p>这个题我可能也是侥幸，因为第一次交75%超时，手抖了一下又交了一遍95%超时，再交一回，过了！</p>
 <p>玄学</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;stack&gt;
 #include&lt;string&gt;
 int main()
@@ -633,7 +633,7 @@ int main()
 <h2 id="第五题-二叉树"><a href="#第五题-二叉树" class="headerlink" title="第五题 二叉树"></a>第五题 二叉树</h2><p>给出一个无限深的满二叉树，节点标号从1开始，再给出一个节点编号x和深度k。求x在k深度的父亲节点编号，没有输出-1。</p>
 <p>这个思路很简单，先找到x的深度d，然后比较k和d，若k小于d，向上找就行，否则就-1。</p>
 <p>但是很神奇，牛客的样例我过了，但是交题告诉我格式不正确，再跑样例的时候就自动交卷了。（悲）！！！<br>好像这个还要快速幂才能过。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 int main()
 {
     int t;
@@ -681,15 +681,15 @@ int main()
           
             <div class="post-nepre half previous">
           
-            <a href="/2020/05/11/2020字节跳动校园招聘算法方向第三场考试 凉经/" rel="prev">
+            <a href="/2020/05/08/Light&Matrial/" rel="prev">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://raw.githubusercontent.com/CloverYuki/cdn/master/img/passage/shiina.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://raw.githubusercontent.com/CloverYuki/cdn/master/img/passage/shiina.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaka_miyu_rira.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaka_miyu_rira.jpg">
               </div>
               <span class="label">
               Previous Post</span>
               <div class="info">
                 <h3>
-                2020字节跳动校园招聘算法方向第三场考试 凉凉经</h3>
+                光照与材质</h3>
                 <hr>
               </div>
             </a>

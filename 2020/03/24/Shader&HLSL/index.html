@@ -436,7 +436,7 @@
 <hr>
 <p>这里从顶点的创建开始说明。</p>
 <p>首先需要先定义顶点的结构体比如</p>
-<pre><code class="c++">struct Vertex
+<pre><code class="lang-c++">struct Vertex
 {
     DirectX::XMFLOAT3 Pos;
     DirectX::XMFLOAT3 Normal;
@@ -444,13 +444,13 @@
 };
 </code></pre>
 <p>接下来，为了让Direct3D知道怎么对待我们的数据，需要填写输入布局描述（Input Layout Description）</p>
-<pre><code class="c++">typedef struct D3D12_INPUT_LAYOUT_DESC {
+<pre><code class="lang-c++">typedef struct D3D12_INPUT_LAYOUT_DESC {
   const D3D12_INPUT_ELEMENT_DESC *pInputElementDescs;
   UINT                           NumElements;
 } D3D12_INPUT_LAYOUT_DESC;
 </code></pre>
 <p>而实际上描述布局的是其中的<code>D3D12_INPUT_ELEMENT_DESC</code></p>
-<pre><code class="c++">typedef struct D3D11_INPUT_ELEMENT_DESC { 
+<pre><code class="lang-c++">typedef struct D3D11_INPUT_ELEMENT_DESC { 
     LPCSTR SemanticName; 
     UINT SemanticIndex; 
     DXGI_FORMAT Format; 
@@ -468,7 +468,7 @@
 <p><code>D3D11_INPUT_CLASSIFICATION InputSlotClass</code>：单个输入槽的表示类。具体参照<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/ne-d3d12-d3d12_input_classification" target="_blank" rel="noopener">D3D12_INPUT_CLASSIFICATION</a></p>
 <p><code>UINT InstanceDataStepRate</code>：与实例化技术有关，置为1意味着要是用实例化技术。</p>
 <p>针对上述顶点，<code>D3D11_INPUT_ELEMENT_DESC</code>可填写为</p>
-<pre><code class="c++">{
+<pre><code class="lang-c++">{
     { &quot;POSITION&quot;, 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
     { &quot;NORMAL&quot;, 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
     { &quot;TEXCOORD&quot;, 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
@@ -476,7 +476,7 @@
 </code></pre>
 <p>接下来就要准备顶点数据了。为了让GPU能得到数据，需要把顶点数据放到GPU资源（显存）中。DirectX12中使用<code>ID3D12Resource</code>来管理。</p>
 <p>要创建<code>ID3D12Resource</code>首先需要填写<code>D3D12_RESOURCE_DESC</code></p>
-<pre><code class="c++">typedef struct D3D12_RESOURCE_DESC {
+<pre><code class="lang-c++">typedef struct D3D12_RESOURCE_DESC {
   D3D12_RESOURCE_DIMENSION Dimension;
   UINT64                   Alignment;
   UINT64                   Width;
@@ -501,7 +501,7 @@
 <p><code>D3D12_RESOURCE_FLAGS Flags;</code>：与资源有关的杂项标志位，使用<br><a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/ne-d3d12-d3d12_resource_flags" target="_blank" rel="noopener">D3D12_RESOURCE_FLAGS</a>填写。</p>
 <p>这里其实Direct3D 12提供了个包装类<code>CD3DX12_RESOURCE_DESC</code>，他派生自<code>D3D12_RESOURCE_DESC</code>，可以简化我们的创建过程。</p>
 <p>填写完描述后就可以用它来再现存上开辟一块适合的空间了。创建该堆使用的是<code>ID3D12Device::CreateCommittedResource</code>方法</p>
-<pre><code class="c++">HRESULT CreateCommittedResource(
+<pre><code class="lang-c++">HRESULT CreateCommittedResource(
   const D3D12_HEAP_PROPERTIES *pHeapProperties,
   D3D12_HEAP_FLAGS            HeapFlags,
   const D3D12_RESOURCE_DESC   *pDesc,
@@ -520,7 +520,7 @@
 <p>  <code>void **ppvResource</code>：新建的资源的指针。</p>
 <p>这里其实还有一种创建资源堆的方式<a href="https://docs.microsoft.com/zh-cn/windows/win32/api/d3d12/nf-d3d12-id3d12device-createplacedresource" target="_blank" rel="noopener">ID3D12Device :: CreatePlacedResource</a>有机会会说。</p>
 <p> 关于显存上堆的资源类型</p>
-<pre><code class="c++">typedef enum D3D12_HEAP_TYPE {
+<pre><code class="lang-c++">typedef enum D3D12_HEAP_TYPE {
   D3D12_HEAP_TYPE_DEFAULT,
   D3D12_HEAP_TYPE_UPLOAD,
   D3D12_HEAP_TYPE_READBACK,
@@ -530,7 +530,7 @@
 <p><code>D3D12_HEAP_TYPE_DEFAULT</code>：默认堆，只允许GPU访问，所以速度最快。<br><code>D3D12_HEAP_TYPE_UPLOAD</code>：上传堆，向这里提交的都是要CPU上传到GPU的资源。<br><code>D3D12_HEAP_TYPE_READBACK</code>：回传堆，向这里提交的资源是需要CPU读取的资源。<br><code>D3D12_HEAP_TYPE_CUSTOM</code>：应用于高级特性。</p>
 <p>显然，我们需要让GPU读取顶点资源，放在默认堆是比较合适的。但是CPU又不能直接访问，于是需要使用上传堆来完成顶点资源向显存的移动。这就需要创建两个堆，一个使用<code>D3D12_HEAP_TYPE_DEFAULT</code>一个使用<code>D3D12_HEAP_TYPE_UPLOAD</code>。</p>
 <p>然后为了告诉Direct3D我们要提交什么样的数据，需要填写一个描述<code>D3D12_SUBRESOURCE_DATA</code></p>
-<pre><code class="c++">typedef struct D3D12_SUBRESOURCE_DATA {
+<pre><code class="lang-c++">typedef struct D3D12_SUBRESOURCE_DATA {
   const void *pData;
   LONG_PTR   RowPitch;
   LONG_PTR   SlicePitch;
@@ -538,7 +538,7 @@
 </code></pre>
 <p>然后就可以使用<a href="https://docs.microsoft.com/en-us/windows/win32/direct3d12/updatesubresources1" target="_blank" rel="noopener">UpdateSubresources</a>函数来上传顶点资源了。</p>
 <p>当然这里是CPU和GPU“一起工作”，这自然就遇到同步问题。对于D3D12，我们用资源屏障<a href="https://docs.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_resource_barrier" target="_blank" rel="noopener">D3D12_RESOURCE_BARRIER</a>来同步资源状态。</p>
-<pre><code class="c++">typedef struct D3D12_RESOURCE_BARRIER {
+<pre><code class="lang-c++">typedef struct D3D12_RESOURCE_BARRIER {
   D3D12_RESOURCE_BARRIER_TYPE  Type;
   D3D12_RESOURCE_BARRIER_FLAGS Flags;
   union {
@@ -560,7 +560,7 @@
 <h2 id="2-Vertex-Shader-Stage-顶点着色器阶段"><a href="#2-Vertex-Shader-Stage-顶点着色器阶段" class="headerlink" title="2 Vertex Shader Stage 顶点着色器阶段"></a><strong>2 Vertex Shader Stage 顶点着色器阶段</strong></h2><p>图元被装配完毕后，顶点就会被送入VS(Vertex Shader)。这时候就需要使用着色器语言(Shader Language)来编写VS。VS可以实现很多东西，例如变换，光照，位移贴图等。而最多应用的就是顶点的变换处理。</p>
 <p>我们知道3D模型的顶点都是按照局部空间的方式储存的。所以我们需要将局部空间坐标变换为世界空间坐标。而要做的只是仅仅需要给顶点坐标乘上以个世界坐标矩阵就可以了。但是这其实还不算完，我们只是将局部坐标变成了世界坐标。为了构建场景的2D图形，还需要一台摄像机，对世界坐标做取景变换(view transform)，取景变换使用的矩阵成为变换矩阵(view matrix)。最后我们需要做的就是把坐标投影到齐次剪裁空间中，就是我们得到的画面坐标。投影要做的被称为透视投影变换(perspective projection transformation)。</p>
 <p>所以,基本的VS写法应该为:<br>以顶点下列顶点为例</p>
-<pre><code class="c++">struct Vertex
+<pre><code class="lang-c++">struct Vertex
 {
     DirectX::XMFLOAT3 Pos;
     DirectX::XMFLOAT3 Normal;
@@ -615,7 +615,7 @@ VertexOut VS(VertexIn vin)
 <li>控制点外壳着色器(control point hull shader)<h4 id="3-1-1-常量外壳着色器-constant-hull-shader"><a href="#3-1-1-常量外壳着色器-constant-hull-shader" class="headerlink" title="3.1.1 常量外壳着色器(constant hull shader)"></a><strong>3.1.1 常量外壳着色器(constant hull shader)</strong></h4></li>
 </ul>
 <p>常量外壳着色器将每一个面片的控制点作为输入（即一次只输入一个面片中的控制点），每处理一个面片就会调用一次。其工作是输出网格的曲面细分因子(Tessellation factor)。曲面细分因子指的是面片将要在曲面细分阶段中镶嵌处理后的份数。<br>现在说一个将一个具有四个控制点的四边形面片从各方面分成三份的例子：</p>
-<pre><code class="HLSL">// 首先要定义每个片面需要的信息作为常量外壳着色器的输出
+<pre><code class="lang-HLSL">// 首先要定义每个片面需要的信息作为常量外壳着色器的输出
 struct PatchTess
 {
   // SV_TessFactor语义表示几何图形边缘细分份数
@@ -654,7 +654,7 @@ PatchTess ConstantHS(InputPatch&lt;VertexOut, 4&gt; patch, uint patchID : SV_Pri
 <li>一个内部曲面细分因子表示三角形面片的镶嵌份数。</li>
 </ul>
 <h4 id="3-1-2-控制点外壳着色器-control-point-hull-shader"><a href="#3-1-2-控制点外壳着色器-control-point-hull-shader" class="headerlink" title="3.1.2 控制点外壳着色器(control point hull shader)"></a><strong>3.1.2 控制点外壳着色器(control point hull shader)</strong></h4><p>控制点外壳着色器将控制点作为输入和输出，对每个控制点都会调用一次控制点外壳着色器。其应用之一是改变曲面的表示方式，如将一个普通的三角形转换成三次贝塞尔三角形面片（一个具有10个控制点的面片）<br>一个简单的例子：</p>
-<pre><code class="HLSL">// 定义HS的输出
+<pre><code class="lang-HLSL">// 定义HS的输出
 struct HullOut
 {
     float3 PosL : POSITION;
@@ -686,7 +686,7 @@ HullOut HS(InputPatch&lt;VertexOut, 4&gt; p,
 </ol>
 <h3 id="3-2-Tessellator-Stage-曲面细分（镶嵌器）阶段"><a href="#3-2-Tessellator-Stage-曲面细分（镶嵌器）阶段" class="headerlink" title="3.2 Tessellator Stage 曲面细分（镶嵌器）阶段"></a><strong>3.2 Tessellator Stage 曲面细分（镶嵌器）阶段</strong></h3><p>这个阶段由硬件自动完成，程序员无法干预。对于镶嵌化处理的结果，emmmmmmm，放两张图吧。<br><a href></a><a href></a></p>
 <h3 id="3-3-Domain-shader-Stage-域着色器阶段"><a href="#3-3-Domain-shader-Stage-域着色器阶段" class="headerlink" title="3.3 Domain shader Stage 域着色器阶段"></a><strong>3.3 Domain shader Stage 域着色器阶段</strong></h3><p>镶嵌器阶段会输出新生成的顶点与三角形。对于此阶段所创建的所有顶点都会依次调用域着色器(DS)。所以DS实际上和顶点着色器类似，是对已镶嵌完成的顶点进行处理的着色器。DS以曲面细分因子、控制点以及镶嵌画处理后的定点位置参数坐标(u,v)作为输入。这里的定点位置参数不是实际位置，而是位于面片域空间(patch domain space)的参数坐标。可以利用控制点和这些坐标来求出真正的坐标。下面使用双线性插值来求。（其他也可以，只是书中例子是这个）</p>
-<pre><code class="HLSL">struct DomainOut
+<pre><code class="lang-HLSL">struct DomainOut
 {
     float4 PosH : SV_POSITION;
 };
@@ -713,7 +713,7 @@ DomainOut DS(PatchTess patchTess,
 }
 </code></pre>
 <h2 id="4-Geometry-Shader-Stage-几何着色器阶段"><a href="#4-Geometry-Shader-Stage-几何着色器阶段" class="headerlink" title="4 Geometry Shader Stage 几何着色器阶段"></a><strong>4 Geometry Shader Stage 几何着色器阶段</strong></h2><p>由于曲面细分阶段是一个可选阶段，几何着色器（GS）输入数据是一组完整的图元（其实也就是一组顶点？？），输出为几何着色器一大特点就是可以创建和销毁几何图形。利用GS可以做到点精灵的拓展、动态粒子系统、皮毛的申城、阴影体积的生成等效果。<br>比较巧的是GS有一个简单的模板可以套用：</p>
-<pre><code class="HLSL">// 输出顶点的最大数量
+<pre><code class="lang-HLSL">// 输出顶点的最大数量
 [maxvertexcount(N)]
 void Name (PrimitiveType InputVertexType InputNmae[NumElements],inout StreamOutputObject&lt;OutputVertexType&gt; OutputName)
 {
@@ -727,7 +727,7 @@ void Name (PrimitiveType InputVertexType InputNmae[NumElements],inout StreamOutp
 LineStream&lt;OutPutVertexType&gt;      // 一系列顶点所定义线条带
 TriangleStream&lt;OutPutVertexType&gt;  // 一系列顶点所定义三角形带
 </code></pre><p>几何着色器输出的顶点会构成由流类型指定的图元，但是流类型未包括线条列表和三角形列表。其实可以使用内置函数<code>RestartStrip()</code>来实现线条列表和三角形列表。<br><code>void StreamOutputObject&lt;OutputVertexType&gt;::RestartStript();</code><br>想要实现三角形列表，需要在每次向流输出追加三个顶点后调用一次<code>RestartStript()</code>。<br>线条列表则是没追加两个顶点后调用<code>RestartStript()</code>。<br>这里给出一个将一个点拓展成一个四边形的例子，也就是“公告牌技术”</p>
-<pre><code class="HLSL">// 这里假设不进行曲面镶嵌阶段，所以直接使用VS的输出
+<pre><code class="lang-HLSL">// 这里假设不进行曲面镶嵌阶段，所以直接使用VS的输出
 
 struct VertexOut
 {
@@ -809,12 +809,14 @@ void GS(point VertexOut gin[1],
 <p>对于一个顶点为V<sub>0</sub>、V<sub>1</sub>、V<sub>2</sub>的三角形</p>
 <p>$e_0 = V_1 - V_0$</p>
 <p>$e_1 = V_2 - V_0$</p>
-<p>法向量为<br>$$<br>n = \tfrac{e_0 \times e_1}{e_0 \times e_2}<br>$$<br>法向量从正面射出,则另一面为背面。 若观察者看到的是正面,则称三角形是正面朝向(front-facing)的否则称三角形为背面朝向(back-facing)的。</p>
+<p>法向量为</p>
+<script type="math/tex; mode=display">
+n = \tfrac{e_0 \times e_1}{e_0 \times e_2}</script><p>法向量从正面射出,则另一面为背面。 若观察者看到的是正面,则称三角形是正面朝向(front-facing)的否则称三角形为背面朝向(back-facing)的。</p>
 <p>对于大多数物体而言,背面朝向的三角形都被正面朝向的所遮挡,绘制他们是没用的,所以背面剔除就是除去这些没用三角形.</p>
 <h3 id="6-3-顶点属性插值"><a href="#6-3-顶点属性插值" class="headerlink" title="6.3 顶点属性插值"></a><strong>6.3 顶点属性插值</strong></h3><p>顶点中不止可以存放位置信息,还可以存放像颜色、法向量、纹理坐标等属性。视口变换后需要为三角形的每个像素所附有的属性进行插值。这部分使用的插值方法为透视矫正插值(perspective correct interpolation)，这个计算由硬件完成。</p>
 <h2 id="7-Pixel-Shader-Stage-像素着色器阶段"><a href="#7-Pixel-Shader-Stage-像素着色器阶段" class="headerlink" title="7 Pixel Shader Stage 像素着色器阶段"></a><strong><span id="PS">7 Pixel Shader Stage 像素着色器阶段</span></strong></h2><p>像素着色器(PS)的输入是光栅化阶段期间输出的对顶点属性的插值。PS会对每一个像素片段进行处理,并根据顶点的插值属性作为输入来计算出对应的所以像素颜色,PS既可以返回一种单一恒定颜色,以实现逐像素光照(per-pixel linghting)、反射(reflection)、阴影(shadow)等效果。</p>
 <p>像素片段并不一定是最后写入后台缓冲区中，有时候会有多个像素片段。需要通过一些规则来确定最后写入后台缓冲区的像素片段是哪一个。<br>也就是说，像素着色器所做的工作就是为了计算颜色。<br>最简单的像素着色器可以写成下列形式</p>
-<pre><code class="HLSL">// 定义输入顶点,应与c++文件中定义一致
+<pre><code class="lang-HLSL">// 定义输入顶点,应与c++文件中定义一致
 struct VertexIn
 {
     // 冒号后为语义，和之前填写的输入布局描述的语义相同

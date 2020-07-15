@@ -430,7 +430,7 @@
 <hr>
 <h3 id="Vue路由"><a href="#Vue路由" class="headerlink" title="Vue路由"></a><strong>Vue路由</strong></h3><p>选的主题发现没有登陆选项，因为后台是和小伙伴一起用的，所以需要区别下，背景啦，上传URL啦什么的。然后学习了下路由，由于源码就是用了一个嵌套路由，默认<code>path</code>是<code>&#39;/&#39;</code>然后<code>redirect</code>到一个<code>/dashboard</code>下面。如果把原<code>path</code>改成别的会导致部分组件不显示。</p>
 <p>明发现内部组件更换和<code>TopNavBar</code>下<code>compute()</code>方法有关</p>
-<pre><code class="js"> routeName() {
+<pre><code class="lang-js"> routeName() {
         const { name } = this.$route;
         return this.capitalizeFirstLetter(name);
  }
@@ -456,19 +456,36 @@
       <div class="toc" style="background: none;"></div>
       <section class="post-squares nextprev">
         
-        
           
-            <div class="post-nepre full next">
+            <div class="post-nepre half previous">
           
-            <a href="/2050/12/12/ThemeChange.log/" rel="next">
+            <a href="/2050/12/12/ThemeChange.log/" rel="prev">
               <div class="background">
                 <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                主题更改记录</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2020/06/12/Unity_LoadFXDynamically/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg">
               </div>
               <span class="label">
               Next Post</span>
               <div class="info">
                 <h3>
-                主题更改记录</h3>
+                Unity动态加载特效</h3>
                 <hr>
               </div>
             </a>

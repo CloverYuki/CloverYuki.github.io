@@ -422,7 +422,7 @@
 <p>3 k 表示输出第k个字符</p>
 <p>4 表示撤销上次操作，指的是撤销1 2 操作。</p>
 <p>这个其实很简单，就是字符串操作，撤销可以用个栈来维护之前1 2 的操作， 感觉数据很水所以很好过。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;string&gt;
 int main()
 {
@@ -470,7 +470,6 @@ int main()
     system(&quot;pause&quot;);
     return 0;
 }
-
 </code></pre>
 <h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><p>原题说给一篇文章，再给本词典，问有多少种翻译。<br>不能翻译输出0</p>
 <p>实际上是给一个字符串，再给个单词表，问有多少种划分能使每个部分都是单词表里的。<br>例：</p>
@@ -487,7 +486,7 @@ a | bc |ba
 </code></pre><p>说实话这个题除了暴力枚举我想不到别的做法，感觉像DP但是又不会DP</p>
 <p>我暴力样例过了但是。。肯定超时对不对啊，不会优化了。</p>
 <p>不要脸的贴代码了</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;unordered_map&gt;
 #include&lt;string&gt;
 #include&lt;algorithm&gt;
@@ -543,7 +542,7 @@ int main()
 <p>然而这里有一点，递归次数肯定不是m次，所以需要先保存每天要穿的袜子编号，然后再递归。</p>
 <p>没错我就错在这里，哈哈哈哈哈哈哈哈哈哈，淦！</p>
 <p>修改后不知道能不能过，反正现在我不要脸的贴出来了。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;vector&gt;
 #include&lt;algorithm&gt;
 int res = 0x3f3f3f3f;
@@ -588,7 +587,6 @@ int main()
     system(&quot;pause&quot;);
     return 0;
 }
-
 </code></pre>
 <h2 id="第四题"><a href="#第四题" class="headerlink" title="第四题"></a>第四题</h2><p>说实话看不懂忘了，找最长连续子序列并且要求序列中是完全平方数。</p>
 <p>对我不懂完全平方数。</p>
@@ -615,15 +613,15 @@ int main()
           
             <div class="post-nepre half previous">
           
-            <a href="/2050/12/12/ThemeChange.log/" rel="prev">
+            <a href="/2020/05/26/Unity_CharacterController&Rigidbody/" rel="prev">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/passageshiina_2.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/passageshiina_2.jpg">
               </div>
               <span class="label">
               Previous Post</span>
               <div class="info">
                 <h3>
-                主题更改记录</h3>
+                Unity角色控制</h3>
                 <hr>
               </div>
             </a>
@@ -633,15 +631,15 @@ int main()
           
             <div class="post-nepre half next">
           
-            <a href="/2020/04/26/腾讯笔试凉经/" rel="next">
+            <a href="/2020/05/08/Light&Matrial/" rel="next">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/vividgarden_129.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.6/img/passage/vividgarden_129.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaka_miyu_rira.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaka_miyu_rira.jpg">
               </div>
               <span class="label">
               Next Post</span>
               <div class="info">
                 <h3>
-                腾讯暑期实习生招聘-常规批-软件开发综合凉凉经凉凉经</h3>
+                光照与材质</h3>
                 <hr>
               </div>
             </a>

@@ -428,7 +428,7 @@
 <li>训练。</li>
 </ol>
 <h2 id="2-详细说明"><a href="#2-详细说明" class="headerlink" title="2. 详细说明"></a>2. 详细说明</h2><h3 id="2-0-导包"><a href="#2-0-导包" class="headerlink" title="2.0 导包"></a>2.0 导包</h3><p>其实这是句废话，不导包怎写代码？</p>
-<pre><code class="python">import numpy as np;
+<pre><code class="lang-python">import numpy as np;
 import tensorflow as tf;
 import jieba;                   # 用于分词
 import re;                      # 用于删除特殊字符
@@ -438,14 +438,14 @@ import pandas as pd;            # 用于统计词频，其实也可以用Tensorf
 <p>简单来讲需要分成两个list，一个<code>label</code>用来存放标情感标记。一个<code>sentencesList</code>用于存放句子。</p>
 <p>这里用自己的txt来举例子。</p>
 <p>首先数据格式如下</p>
-<pre><code class="txt">1,&quot;距离川沙公路较近,但是公交指示不对,如果是&quot;&quot;蔡陆线&quot;&quot;的话,会非常麻烦.建议用别的路线.房间较为简单.&quot;
+<pre><code class="lang-txt">1,&quot;距离川沙公路较近,但是公交指示不对,如果是&quot;&quot;蔡陆线&quot;&quot;的话,会非常麻烦.建议用别的路线.房间较为简单.&quot;
 ···
 ···
 0,说实在的我很失望，之前看了其他人的点评后觉得还可以才去的，结果让我们大跌眼镜。我想这家酒店以后无论如何我都不会再去了。
 </code></pre>
 <p>第一个为label,1表示积极，0表示消极，之后为语句。<br>我们只需要按行读取，先存标记，然后出去标点等特殊符号，接着将语句存入list就好。</p>
 <p>在这个部分其实就可以使用jieba进行分词操作。这里就加上了。</p>
-<pre><code class="python">lineList = [];
+<pre><code class="lang-python">lineList = [];
 lable = [];
 with open(&quot;ChnSentiCorp_htl_all.txt&quot;,encoding=&quot;utf-8&quot;) as file:
     for line in file:
@@ -461,7 +461,7 @@ with open(&quot;ChnSentiCorp_htl_all.txt&quot;,encoding=&quot;utf-8&quot;) as fi
 <h3 id="2-2-分词操作"><a href="#2-2-分词操作" class="headerlink" title="2.2 分词操作"></a>2.2 分词操作</h3><p>上面确实做了，如果没错可以在这里做。当然暂时我为了求快没有按字分。可能以后会写吧。</p>
 <h3 id="2-3-统计词（字）频，建立字典"><a href="#2-3-统计词（字）频，建立字典" class="headerlink" title="2.3 统计词（字）频，建立字典"></a>2.3 统计词（字）频，建立字典</h3><p>建立字典是为了其实是为了下一步的索引，索引是为了方便计算，数字的计算和查找要比字符串方便而且快得多。所以最后训练数据是很多条索引组成的句子。</p>
 <p>这里使用的pandas来统计。</p>
-<pre><code class="python">word_dictionary =[];
+<pre><code class="lang-python">word_dictionary =[];
 for line in lineList:
     for word in line:
         word_dictionary.append(word);
@@ -472,12 +472,12 @@ wordNum = wordNum[wordNum&gt;=5];
 </code></pre>
 <p>首先是个笨办法，遍历每一个单词，然后添加进一个list（因为list不去重）。接着就是建立一个pandas.Series对象调用<code>value_counts()</code>方法统计词频。返回值是一个Series对象。里面储存了词和次出现的次数。</p>
 <h3 id="2-4-对每个词（字）建立索引。"><a href="#2-4-对每个词（字）建立索引。" class="headerlink" title="2.4 对每个词（字）建立索引。"></a>2.4 对每个词（字）建立索引。</h3><p>这里做的很简单，就是把频率换成索引就好。但是要注意，索引要从1开始，0用于填充补齐。还有就是，我们选择出现频率比较高的词，因为计算速度。但实际上低频词也未必不起到关键作用，滑稽保命之类的对吧？</p>
-<pre><code class="python">wordNum = wordNum[wordNum&gt;=5];              # 保留词频大于等于5的词
+<pre><code class="lang-python">wordNum = wordNum[wordNum&gt;=5];              # 保留词频大于等于5的词
 wordNum[:] = list(range(1,len(wordNum)+1)); # 依照频率高低将频率换成索引，
 wordNum[&#39;&#39;] = 0;                            # 添加空的索引为0
 </code></pre>
 <p>首先是提取词频大于5的词，然后将频率换成索引，然后添加0索引。</p>
-<h3 id="2-5-用索引替换句子"><a href="#2-5-用索引替换句子" class="headerlink" title="2.5 用索引替换句子"></a>2.5 用索引替换句子</h3><pre><code class="python">sentencesi = [];
+<h3 id="2-5-用索引替换句子"><a href="#2-5-用索引替换句子" class="headerlink" title="2.5 用索引替换句子"></a>2.5 用索引替换句子</h3><pre><code class="lang-python">sentencesi = [];
 for line in lineList:
     sentenceindex = [];
     for word in line:
@@ -487,11 +487,11 @@ for line in lineList:
 </code></pre>
 <p>就是个替换，我觉得没啥可说的，就是遍历一遍所有单词，如果词再字典里那么久转换成索引添加进来，没有就放弃。</p>
 <h3 id="2-6-调整句子长度，多的截取，少的补0。"><a href="#2-6-调整句子长度，多的截取，少的补0。" class="headerlink" title="2.6 调整句子长度，多的截取，少的补0。"></a>2.6 调整句子长度，多的截取，少的补0。</h3><p>为了计算速度，这里同时使用固定长度的句子，因此就要多截少补。</p>
-<pre><code class="python">X =list(tf.keras.preprocessing.sequence.pad_sequences(sentencesi,maxlen=50));
+<pre><code class="lang-python">X =list(tf.keras.preprocessing.sequence.pad_sequences(sentencesi,maxlen=50));
 </code></pre>
 <p>这里选取最大长度为50。当然好一点的方法是先统计一下句子长度，找一个能包含大多数完整句子的长度。</p>
 <h3 id="2-7-建立模型和训练。"><a href="#2-7-建立模型和训练。" class="headerlink" title="2.7 建立模型和训练。"></a>2.7 建立模型和训练。</h3><p>模型这里很简单的随便建立了一个，层数，损失函数和优化函数都可以看情况换，我是看有篇文章这么做了，我就这么写了。</p>
-<pre><code class="python">x_train = np.array(X);
+<pre><code class="lang-python">x_train = np.array(X);
 y_train = np.array(lable);
 
 model = tf.keras.Sequential();
@@ -523,10 +523,10 @@ model.fit(x_train, y_train, batch_size=16, epochs=250);
 </ul>
 <h3 id="3-3-词向量"><a href="#3-3-词向量" class="headerlink" title="3.3 词向量"></a>3.3 词向量</h3><p>通常我们想让字典尽可能贴近我们的需求，所以需要自己训练词向量，这个时候就需要Word2Vec了。</p>
 <h4 id="3-2-1-词向量训练前准备"><a href="#3-2-1-词向量训练前准备" class="headerlink" title="3.2.1 词向量训练前准备"></a>3.2.1 词向量训练前准备</h4><p>首先是导包！</p>
-<pre><code class="python">import gensim.models.word2vec;
+<pre><code class="lang-python">import gensim.models.word2vec;
 </code></pre>
 <p>然后自然是准备词（了），我们可以直接利用上面分完词还未转化为索引的句子，当然有的这里会使用字，有的也会追加停用词。不论怎样，我们最后得到一个字符串组成的列表就可以了。</p>
-<h4 id="3-2-2-词向量训练"><a href="#3-2-2-词向量训练" class="headerlink" title="3.2.2 词向量训练"></a>3.2.2 词向量训练</h4><pre><code class="python">vecModel = gensim.models.Word2Vec();
+<h4 id="3-2-2-词向量训练"><a href="#3-2-2-词向量训练" class="headerlink" title="3.2.2 词向量训练"></a>3.2.2 词向量训练</h4><pre><code class="lang-python">vecModel = gensim.models.Word2Vec();
 </code></pre>
 <p>这里参数很多，说几个这里一般简单用的：</p>
 <ol>

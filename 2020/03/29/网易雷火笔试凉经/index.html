@@ -420,7 +420,7 @@
           <h1 id="网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经"><a href="#网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经" class="headerlink" title="网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经"></a>网易游戏雷火2020春招游戏研发工程师笔试0329凉凉经</h1><p>第一次笔试心里慌得很，四个小时下来膀胱快炸了也不敢离开（向夏哥看齐）。脑细一片混乱，只记得写大概。把能记得的写一下</p>
 <h2 id="第一题"><a href="#第一题" class="headerlink" title="第一题"></a>第一题</h2><p>斐波那契数列问题相关。<br>给定两个字符串F1，F2，F3=F2+F1，F4=F3+F2…………，求Fn中每个字母出现次数，<br>F1、F2小于10；N&lt;40</p>
 <p>这个第一眼看上去好家伙求Fn再统计嘛，</p>
-<pre><code class="c++">string f1,f2,res;
+<pre><code class="lang-c++">string f1,f2,res;
 for (int i = 3; i &lt;= n; ++i)
 {
         res = f1 + f2;
@@ -429,50 +429,32 @@ for (int i = 3; i &lt;= n; ++i)
 }
 </code></pre>
 <p>这个会爆内存，然后就想着先统计f1,f2中个数，再用斐波那契去求。这里就用到了map。但是当时不知道怎么想的，可能觉得，呀，这么简单的怎么WA了，被吓到了，逻辑一下十分混乱。导致胡乱判断，胡乱使用函数。这里贴一下，记录下自己的SB行为。SB的地方注释见</p>
-<details><br><summary>小心污染智商</summary><br><br><code>c++
-#include&lt;iostream&gt;
-#include&lt;string&gt;
-#include&lt;map&gt;
-#include&lt;algorithm&gt;
+<details>
+<summary>小心污染智商</summary>
+
+```c++
+#include<iostream>
+#include<string>
+#include<map>
+#include<algorithm>
 using namespace std;
 int main()
 {
     int n = 0;
-    cin &gt;&gt; n;
+    cin >> n;
     string f1, f2;
-    map&lt;char, int&gt; mapf1;
-    map&lt;char, int&gt; mapf2;
-    cin &gt;&gt; f1 &gt;&gt; f2;
-    for(int i=0;i&lt;f1.size();++i)
-    {
-        int counter = count(f1.begin(),f1.end(),f1[i]);
-        //这里本来统计出出现次数了，相同情况下应直接等或不做处理，但是当时混乱的莫名其妙就+=了。要是有aaa这样的字符串，第一步就错了。
-        if(mapf1.find(f1[i])==mapf1.end())
-            mapf1[f1[i]] = counter;
-        else
-            mapf1[f1[i]] += counter;
-    }
-     for(int i=0;i&lt;f2.size();++i)
-    {
-        int counter = count(f2.begin(),f2.end(),f2[i]);
-        //和上面一样。
-       if(mapf2.find(f2[i])==mapf2.end())
-            mapf2[f2[i]] = counter;
-        else
-            mapf2[f2[i]] += counter;
-    }
-    // 这里，这里是不熟悉map导致的，明明不可能却满脑子想的map怎么直接对位加，还怕中间声明个temp结束循环数据会丢。后来试了一下发现好像不会丢。所以res和temp字面意义与实际用途相反了。
-    map&lt;char, int&gt; temp(mapf1);
-    for (int i = 3; i &lt;= n; ++i)
-    {
-        map&lt;char, int&gt; res(mapf1);
+    map<char, int> mapf1;
+    map<char, int> mapf2;
+    cin >> f1 >> f2;
+    for(int i=0;i<f1.size();++i) { int counter="count(f1.begin(),f1.end(),f1[i]);" 这里本来统计出出现次数了，相同情况下应直接等或不做处理，但是当时混乱的莫名其妙就+="了。要是有aaa这样的字符串，第一步就错了。" if(mapf1.find(f1[i])="=mapf1.end())" mapf1[f1[i]]="counter;" else +="counter;" } for(int i="0;i<f2.size();++i)" 和上面一样。 if(mapf2.find(f2[i])="=mapf2.end())" mapf2[f2[i]]="counter;" 这里，这里是不熟悉map导致的，明明不可能却满脑子想的map怎么直接对位加，还怕中间声明个temp结束循环数据会丢。后来试了一下发现好像不会丢。所以res和temp字面意义与实际用途相反了。 map<char,> temp(mapf1);
+    for (int i = 3; i <= n; ++i) { map<char, int> res(mapf1);
         // 这里好像也有点问题，但是具体在哪里呢？
         for (auto it = mapf2.begin(); it != mapf2.end(); ++it)
         {
-            if (res.find(it-&gt;first) == res.end())
-                res[it-&gt;first] = it-&gt;second;
+            if (res.find(it->first) == res.end())
+                res[it->first] = it->second;
             else
-                res[it-&gt;first] += it-&gt;second;
+                res[it->first] += it->second;
         }
         mapf1 = mapf2;
         mapf2 = res;
@@ -480,13 +462,15 @@ int main()
     }
     for (auto it = temp.begin(); it != temp.end(); ++it)
     {
-        cout &lt;&lt; it-&gt;first &lt;&lt; &quot;:&quot; &lt;&lt; it-&gt;second &lt;&lt; endl;
+        cout << it->first << ":" << it->second << endl;
     }
     return 0;
-}</code><br></details>
+}
+```
+</=></f1.size();++i)></char,></char,></algorithm></map></string></iostream></details>
 
 <p>这里再各贴一个事后稍微冷静下的，由于没有合适的OJ判断，我也不知道能不能过，但是我觉得应该差不多了</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;map&gt;
 #include&lt;string&gt;
 int main()
@@ -531,11 +515,14 @@ int main()
 <h2 id="第二题"><a href="#第二题" class="headerlink" title="第二题"></a>第二题</h2><p>打怪的<br>有N个怪物，击杀每只怪物用Tmin，每只怪物经过Lmin后逃走，战斗中怪物不会逃跑。击杀后获得经验值E<br>求最多可获得多少经验。</p>
 <p>这个题一开始吓到我了，给的样例一开始也没看懂，瞬间失去思路，然后跑去看第三题，结果大脑变得更加混乱不堪了。</p>
 <p>这个题最后想法是，按照逻辑走一遍。也就是贪心。<br>每次挑单位时间内获取经验值最多的怪来打。直到所有怪逃走。<br>这里再次贴出精神污染，其中有一个超级超级蠢的错误，导致贪心都没贪对</p>
-<details><br><summary>严重精污</summary><br><br><code>c++
-#include&lt;iostream&gt;
-#include&lt;string&gt;
-#include&lt;vector&gt;
-#include&lt;algorithm&gt;
+<details>
+<summary>严重精污</summary>
+
+```c++
+#include<iostream>
+#include<string>
+#include<vector>
+#include<algorithm>
 using namespace std;
 const int N = 1000000;
 struct Monster {
@@ -545,33 +532,20 @@ struct Monster {
 };
 bool cmp(const Monster a, const Monster b)
 {
-    return a.v &gt; b.v;
+    return a.v > b.v;
 }
-void value(vector&lt;Monster&gt; &amp;monsters, const int t)
+void value(vector<monster> &monsters, const int t)
 {
     // 说老实话，这个函数我自己看着都恶心
-    for (int i = 0; i &lt; monsters.size(); ++i)
+    for (int i = 0; i < monsters.size(); ++i)
     {
         monsters[i].t -= t;
-        if (monsters[i].t &lt;= 0)
-        {
-            monsters.erase(monsters.begin() + i);
-            i--;
-            continue;
-        }
-        else
-            monsters[i].v = (float)monsters[i].e / monsters[i].t;
-    }
-}
-int main()
-{
-    int n, t;
-    cin &gt;&gt; n &gt;&gt; t;
-    vector&lt;Monster&gt; monsters;
-    for (int i = 0; i &lt; n; ++i)
+        if (monsters[i].t <= 0) { monsters.erase(monsters.begin() + i); i--; continue; } else monsters[i].v="(float)monsters[i].e" monsters[i].t; int main() n, t; cin>> n >> t;
+    vector<monster> monsters;
+    for (int i = 0; i < n; ++i)
     {
         Monster m;
-        cin &gt;&gt; m.t &gt;&gt; m.e;
+        cin >> m.t >> m.e;
         m.v = (float)m.e / m.t;
         monsters.push_back(m);
     }
@@ -586,13 +560,15 @@ int main()
         value(monsters, t);
         //对没错，少再排序，不说了，我是蠢死的
     }
-    cout &lt;&lt; exp &lt;&lt; endl;
+    cout << exp << endl;
     return 0;
-}</code><br></details>
+}
+```
+</monster></=></monster></algorithm></vector></string></iostream></details>
 
 <p>但是就算加上排序我觉得应该还是过不了，所有又有个想法。计算出每只怪物能撑我几个T，这个数暂时设为x，然后再x相同的怪物中选出经验最多的哪个来打。然后累加这些最大的经验。</p>
 <p>这里还是贴一下这个想法的代码，当然不知道能不能过，我觉得比我上面那个靠谱。</p>
-<pre><code class="c++">#include&lt;iostream&gt;
+<pre><code class="lang-c++">#include&lt;iostream&gt;
 #include&lt;vector&gt;
 struct Monster{
     int leave;
