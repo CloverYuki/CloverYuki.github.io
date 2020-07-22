@@ -7,7 +7,7 @@
     
         <title itemprop="name">
             
-                主题Admin更改记录 |
+                实习小“总结”：NGUI 滑动菜单 |
                     
                         CloverYuki
         </title>
@@ -387,15 +387,15 @@
 
   <div class="pattern-center single-center">
     <!-- 有配图默认渲染第一张 -->
-    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png">
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg">
     </div>
     <header class="pattern-header single-header">
       <h1 class="entry-title">
-      主题Admin更改记录</h1>
+      实习小“总结”：NGUI 滑动菜单</h1>
       <p class="entry-census">
         <span>
           <a href="">
-            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png">
+            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg">
           </a>
         </span>
         <span>
@@ -403,7 +403,7 @@
         </span>
         <span class="bull">
         ·</span>
-        2050-12-12<span class="bull">
+        2020-7-8<span class="bull">
         ·</span>
       <span id="busuanzi_value_page_pv"></span>次阅读</p>
     </header>
@@ -417,28 +417,117 @@
         <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
         
         <div class="entry-content">
-          <h1 id="记录一下Admin的进度"><a href="#记录一下Admin的进度" class="headerlink" title="记录一下Admin的进度"></a>记录一下Admin的进度</h1><h2 id="2020-01-05"><a href="#2020-01-05" class="headerlink" title="2020.01.05"></a>2020.01.05</h2><h3 id="主题选择"><a href="#主题选择" class="headerlink" title="主题选择"></a><strong>主题选择</strong></h3><p>看上个Vue写的Admin，虽然当初讲Vue的时候基本没听，但也还好其实。</p>
-<p>用的是<a href="https://www.creative-tim.com/product/black-dashboard" target="_blank" rel="noopener">Vue Black Dashboard - v1.1.0</a></p>
-<hr>
-<h3 id="MarkDown"><a href="#MarkDown" class="headerlink" title="MarkDown"></a><strong>MarkDown</strong></h3><p>其实一开始是想自己写的，写了半天吧，发现有点烦，于是就打算用现成的了。</p>
-<p>由于是Vue，本来想用editor.md的，无奈不懂为什么有个CSS样式一直报错，说找不到。</p>
-<p>后来只能决定用mavon-editor，因为网上我看好多人都是用这个的。就从众了，因为默认主题颜色是白的，首先就是改颜色。</p>
-<p>然后，呵呵，改了一天，不知道为什么第三方组件有的样式改了是不生效的。尤其是mavon-editor的<code>textarea</code>文字颜色，怎么改也该不出来，好家伙最后发现是<code>mavon-editor.js</code>里居然把Auto-text里的样式用js全重写了一遍！！！ 难过……</p>
-<hr>
-<h2 id="2020-01-06"><a href="#2020-01-06" class="headerlink" title="2020.01.06"></a>2020.01.06</h2><h3 id="MarkDown-1"><a href="#MarkDown-1" class="headerlink" title="MarkDown"></a><strong>MarkDown</strong></h3><p>样式基本调好后，解决了一下图片上传的问题。目前的想法是，上传图片后先将图片送到服务器上暂时保存，删除图片时也会从服务器上删除，最后在发布文章的时候再一次性从服务器上上传到腾讯的COS。现在可以暂存图片，COS上传还在解决子账户的问题。</p>
-<p>上传图片时发现系统权限不够无法创建文件夹。不知道为什么windows默认使用的是user用户，明明还有很多可选偏偏选这个。使用<code>axios</code>时出现not define的错误，这个网上一堆，类比下就出来了。<br>有时间真的要看看文件操作这部分。</p>
-<hr>
-<h3 id="Vue路由"><a href="#Vue路由" class="headerlink" title="Vue路由"></a><strong>Vue路由</strong></h3><p>选的主题发现没有登陆选项，因为后台是和小伙伴一起用的，所以需要区别下，背景啦，上传URL啦什么的。然后学习了下路由，由于源码就是用了一个嵌套路由，默认<code>path</code>是<code>&#39;/&#39;</code>然后<code>redirect</code>到一个<code>/dashboard</code>下面。如果把原<code>path</code>改成别的会导致部分组件不显示。</p>
-<p>明发现内部组件更换和<code>TopNavBar</code>下<code>compute()</code>方法有关</p>
-<pre><code class="lang-js"> routeName() {
-        const { name } = this.$route;
-        return this.capitalizeFirstLetter(name);
- }
+          <h2 id="NGUI-滑动菜单"><a href="#NGUI-滑动菜单" class="headerlink" title="NGUI 滑动菜单"></a>NGUI 滑动菜单</h2><h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><p>一个滑动菜单，总共有100个物体，显示5个，但只能用创建100个物体，只能用6个。</p>
+<h2 id="结构："><a href="#结构：" class="headerlink" title="结构："></a>结构：</h2><p>UI Root-&gt;Camera/Scroll View-&gt;Grid-&gt;items。</p>
+<p>Grid用来整理布局。item使用NGUI的Texture。</p>
+<h2 id="实现描述："><a href="#实现描述：" class="headerlink" title="实现描述："></a>实现描述：</h2><p>搭好结构后需要在item上添加Box Collider和UI Drag ScrollView脚本。并且设置UI Drag ScrollView中的ScrollView为自身父级的那个ScrollView。同时需要注意Box Collider有没有match整个item，没有的话可以点击UI Widget下Collider的auto-adjust to match勾选框。</p>
+<p>Box Collider用于监听触摸滑动事件，据说是NGUI的标准操作，UIDragScrollView会find ScrollView，然后直接调用ScrollView的Drag、Press、Scroll。这样就可以拖动了。</p>
+<p>以纵向滑动为例：</p>
+<p>需要实现向下翻将上面的元素移到下面，向上翻要把下面的移动到上面。</p>
+<p>这个可以通过调整Grid中item的LocalPosition来完成。当顶层item消失在显示区域时，将消失的item从当前位置移动当前位置+Grid的Child数量*Grid的Cell高度，也就是设置LocalPosition为这个值。然后改变item的内容即可。</p>
+<p>使用list来储存数据，用索引来记录当前显示数据的头和尾。</p>
+<p>首先需要获得所有item的位置信息。接下来其更改顶层item的信息和位置，最后更新索引和阈值。<br>如何判断元素完全消失，可以使用UIPanel的clipOffset来判断。当offset大于或小于一个item的高度时候就说明这个这个item消失了。上下移动都是一样的。</p>
+<p>其实也可以获取Grid下的item，并且更新数据，绑定OnDrag事件。事件绑定使用UIEventListener的Get().OnDrag。这个OnDrag接受的函数参数为(GameObject，Vector2)其中vector2就是移动的向量。通过判断这个向量的y，就能知道向上还是向下滑动。</p>
+<p>关于ScrollBar，通过UIPanel的clipOffest属性除（list中的数量*Grid一个cell的高度）就可以的到相对位置。设置ScrollBar的value就可以通过ScrollView来控制ScrollBar。</p>
+<p>但是这个情况下不能使用ScrollBar的OnValueChange控制滑动窗口。因为对ScrollBar的Value设置一次值也会出发OnValueChange。</p>
+<p>如果想ScrollBar对滑动窗口也进行设置的话，个人做法是选择重排列表，通过OnValueChange触发重排，通过ScrollBar的Value可以计算出应显示的是从第几个开始，然后将所有item从这个位置开始排。</p>
+<p>有个小BUG，不知道为什么有时候调整滑块后会回弹。</p>
+<p>回弹原因可能是ScrollView的Momentum Amount原因，导致滑动后会有个力的反应，导致item依然在滑动，这时候操作ScrollBar就会导致有参数没有及时更新而出错。把这个值设为0就好了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>说实话，这个有很大问题，因为实际上重排每回都被触发，在ScrollView上滑动回西安出发重排然后再移动元素，不是很好。但是效果上看是没什么没问题的。</p>
+<pre><code class="lang-c#">using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Roll : MonoBehaviour
+{
+    public UIGrid grid;
+    public UIPanel panel;
+    public UIScrollBar scrollBar;
+    public List&lt;ItemProperty&gt; list = new List&lt;ItemProperty&gt;();
+    public int itemNum = 3;
+    public float cellHeight = 0.0f;
+    float nextHeight = 120.0f;
+    float preHeight = 1.0f;
+    int frontIndex = 0;
+    int tailIndex = 4;
+    int realFrontIndex = 0;
+    int realTailIndex = 4;
+    List&lt;string&gt; nameList = new List&lt;string&gt;();
+    void Start()
+    {
+        SetRandomName();
+        list = GridItemUtil.GetItems(grid.gameObject);
+        for (int i = 0; i &lt; list.Count; ++i)
+        {
+            grid.gameObject.transform.GetChild(i).gameObject.transform.Find(&quot;Label&quot;).GetComponent&lt;UILabel&gt;().text = nameList[i];
+            UIEventListener.Get(grid.gameObject.transform.GetChild(i).gameObject).onDrag = ChangeScrollValue;
+        }
+    }
+    void ChangeScrollValue(GameObject go, Vector2 deltaVector2)
+    {
+        if (deltaVector2.y &gt; 0)
+            MoveToBottom();
+        else
+            MoveToTop();
+        scrollBar.value = -(panel.clipOffset.y) / ((nameList.Count - itemNum) * cellHeight);
+    }
+    public void ChangeScrollView()
+    {
+        float offset = scrollBar.value * (nameList.Count - itemNum) * cellHeight;
+        panel.clipOffset = new Vector2(0, -offset);
+        panel.gameObject.transform.localPosition = new Vector3(0, offset, 0);
+        int c = (int)(offset / cellHeight);
+        c = c &gt; nameList.Count - list.Count ? nameList.Count - list.Count : c;
+        for (int i = 0; i &lt; list.Count; ++i)
+        {
+            list[i].reName(nameList[c]);
+            list[i].item.transform.localPosition = new Vector3(0, -c * cellHeight, 0);
+            grid.gameObject.transform.GetChild(i).gameObject.transform.localPosition = new Vector3(0, -c * cellHeight, 0);
+            c++;
+        }
+        nextHeight = (c - list.Count + 1) * cellHeight;
+        preHeight = (c - list.Count) * cellHeight + 1.0f;
+        realFrontIndex = c - list.Count;
+        realTailIndex = c;
+        frontIndex = 0;
+        tailIndex = 4;
+    }
+    void SetRandomName()
+    {
+        for (int i = 0; i &lt; 100; ++i)
+        {
+            nameList.Add(&quot;No.&quot; + i);
+        }
+    }
+    void MoveToBottom()
+    {
+        list = GridItemUtil.GetItems(grid.gameObject);
+        list[frontIndex].reName(nameList[++realTailIndex]);
+        list[frontIndex].item.transform.localPosition = list[frontIndex].item.transform.localPosition + new Vector3(0, -(grid.gameObject.transform.childCount) * cellHeight, 0);
+        grid.gameObject.transform.GetChild(frontIndex).gameObject.transform.localPosition = list[frontIndex].item.transform.localPosition;
+        nextHeight += cellHeight;
+        preHeight += cellHeight;
+        tailIndex = frontIndex;
+        frontIndex++;
+        frontIndex %= list.Count;
+        realFrontIndex++;
+    }
+    void MoveToTop()
+    {
+        list = GridItemUtil.GetItems(grid.gameObject);
+        list[tailIndex].reName(nameList[--realFrontIndex]);
+        list[tailIndex].item.transform.localPosition = list[tailIndex].item.transform.localPosition + new Vector3(0, (grid.gameObject.transform.childCount) * cellHeight, 0);
+        grid.gameObject.transform.GetChild(tailIndex).gameObject.transform.localPosition = list[tailIndex].item.transform.localPosition;
+        nextHeight -= cellHeight;
+        preHeight -= cellHeight;
+        frontIndex = tailIndex;
+        tailIndex--;
+        tailIndex = (tailIndex + list.Count) % list.Count;
+        realTailIndex--;
+    }
+}
 </code></pre>
-<p>这个值会改变<code>vue2-transitions</code>的key值。来控制显示组件。具体没有细看。就直接再app和layout的<code>mounted()</code>里加了个判断，不符合直接跳到Login页面，简单粗暴。有时间一定要看看这个具体是怎么回事。</p>
-<hr>
-<h2 id="2020-01-07"><a href="#2020-01-07" class="headerlink" title="2020.01.07"></a>2020.01.07</h2><h3 id="Login"><a href="#Login" class="headerlink" title="Login"></a><strong>Login</strong></h3><p>做了个登陆界面，感觉自己相当菜鸡，</p>
-<h1 id="暂时作废。。"><a href="#暂时作废。。" class="headerlink" title="暂时作废。。"></a>暂时作废。。</h1>
+
         </div>
         <!-- .entry-content -->
         <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
@@ -459,15 +548,15 @@
           
             <div class="post-nepre half previous">
           
-            <a href="/2050/12/12/ThemeChange.log/" rel="prev">
+            <a href="/2020/07/13/TextureCompressedFormatChange/" rel="prev">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev_aone.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/shiina.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/shiina.jpg">
               </div>
               <span class="label">
               Previous Post</span>
               <div class="info">
                 <h3>
-                主题更改记录</h3>
+                实习小“总结”：贴图压缩格式转化</h3>
                 <hr>
               </div>
             </a>
@@ -477,15 +566,15 @@
           
             <div class="post-nepre half next">
           
-            <a href="/2020/07/21/TextureSizeCheck/" rel="next">
+            <a href="/2020/06/12/Unity_LoadFXDynamically/" rel="next">
               <div class="background">
-                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg">
               </div>
               <span class="label">
               Next Post</span>
               <div class="info">
                 <h3>
-                实习小“总结”：贴图尺寸检查</h3>
+                Unity动态加载特效</h3>
                 <hr>
               </div>
             </a>
@@ -495,7 +584,7 @@
       
       <section class="author-profile">
         <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
           <div class="meta">
             <span class="title">Author</span>
             <h3 itemprop="name">

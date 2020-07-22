@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="/"/>
-  <updated>2020-04-12T14:53:14.596Z</updated>
+  <updated>2020-07-22T13:19:51.452Z</updated>
   <id>/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="/2050/12/12/ThemeChange.log/"/>
     <id>/2050/12/12/ThemeChange.log/</id>
     <published>2050-12-11T16:00:00.000Z</published>
-    <updated>2020-04-12T14:53:14.596Z</updated>
+    <updated>2020-07-22T13:19:51.452Z</updated>
     
     <summary type="html">
     
@@ -57,6 +57,78 @@
       <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实习小“总结”：贴图尺寸检查</title>
+    <link href="/2020/07/21/TextureSizeCheck/"/>
+    <id>/2020/07/21/TextureSizeCheck/</id>
+    <published>2020-07-20T16:00:00.000Z</published>
+    <updated>2020-07-22T13:22:17.063Z</updated>
+    
+    <summary type="html">
+    
+      感觉像是上次的继续，但是也没要求合起来，忽然感觉做工具也好有意思。
+    
+    </summary>
+    
+      <category term="Unity" scheme="/categories/Unity/"/>
+    
+    
+      <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
+    
+      <category term="实习总结" scheme="/tags/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实习小“总结”：贴图压缩格式转化</title>
+    <link href="/2020/07/13/TextureCompressedFormatChange/"/>
+    <id>/2020/07/13/TextureCompressedFormatChange/</id>
+    <published>2020-07-12T16:00:00.000Z</published>
+    <updated>2020-07-22T13:22:08.373Z</updated>
+    
+    <summary type="html">
+    
+      第一次的一个工具类型的任务，不是游戏的测试了。
+    
+    </summary>
+    
+      <category term="Unity" scheme="/categories/Unity/"/>
+    
+    
+      <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
+    
+      <category term="实习总结" scheme="/tags/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实习小“总结”：NGUI 滑动菜单</title>
+    <link href="/2020/07/08/NGUI_ScrollView/"/>
+    <id>/2020/07/08/NGUI_ScrollView/</id>
+    <published>2020-07-07T16:00:00.000Z</published>
+    <updated>2020-07-22T13:22:12.021Z</updated>
+    
+    <summary type="html">
+    
+      实习的第一个任务，是大家都要做的，第一次接触NGUI，结果虽然上级接受了，但是要是被看到代码怕不是要被开。
+    
+    </summary>
+    
+      <category term="Unity" scheme="/categories/Unity/"/>
+    
+    
+      <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
+    
+      <category term="实习总结" scheme="/tags/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
     
   </entry>
   
