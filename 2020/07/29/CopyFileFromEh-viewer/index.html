@@ -7,7 +7,7 @@
     
         <title itemprop="name">
             
-                Category: Unity |
+                从sd卡上拷贝EhViewer下载的本子 |
                     
                         CloverYuki
         </title>
@@ -381,501 +381,269 @@
   </div>
 </header>
 
-                        
+                        <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
 <div class="pattern-center-blank"></div>
-<div class="pattern-center ">
-  <div class="pattern-attachment-img">
-    <img data-src="Unity.img" class="lazyload" onerror="imgError(this,3)" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Hachimitsu%20Syoujo%20(Mitsumomo%20Mam).jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Hachimitsu%20Syoujo%20(Mitsumomo%20Mam).jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      从sd卡上拷贝EhViewer下载的本子</h1>
+      <p class="entry-census">
+        <span>
+          <a href="">
+            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Hachimitsu%20Syoujo%20(Mitsumomo%20Mam).jpg">
+          </a>
+        </span>
+        <span>
+          <a href="">yuuki</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2020-7-29<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
   </div>
-  <header class="pattern-header ">
-    <h1 class="cat-title">Unity.zh</h1>
-    <span class="cat-des">
-      <p>Unity.en</p>
-    </span>
-  </header>
-</div>
+
 <div id="content" class="site-content">
   <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>为啥干这种事情呢？因为EhViewer的下载标签实际上是不会新建文件夹的。每次还想按自己的标签弄出来本子，4400多个文件夹找的是真的累，所以就自己想办法把他从SD卡里复制出来。顺便Blog的封面也方便找了。</p>
+<h2 id="干活了！"><a href="#干活了！" class="headerlink" title="干活了！"></a>干活了！</h2><p>首先是找下载标签，很幸运EhViewer可以导出一个数据库文件(.db)，里面有很多东西，Label，Title，GID，上传者，等都有,那么只需要Select标签下的所有GID，再根据GID去找文件夹就好了，然后就是复制！</p>
+<h3 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h3><h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>EhViewer用的数据库是SQLite,所以只要用SQLite提供的API去读取就好了。首先需要去<a href="https://www.sqlite.org/download.html" target="_blank" rel="noopener">https://www.sqlite.org/download.html</a>下载两个东西，一个是源码，一个是已经编译好的文件。<br>预编译好的压缩包里有sqlite3.def和sqlite3.dll这两个文件，我们需要把def变成lib使用。首先到VS的安装目录下面D:\Microsoft VisualStudio\VC\Tools\MSVC\14.16.27023\bin\下，x86和x64看需要，将这几个文件复制到一个文件夹。<br><img src alt><br>再把刚刚的def文件复制进来。打开CMD，cd到文件夹里。输入命令<code>LIB /DEF:sqlite3.def /machine:IX86</code>，就可以生成lib文件了，</p>
+<p>用VS新建工程，把lib和dll和源码里的sqlite3.h都复制到工程下，记得添加库的目录到工程里和使用<code>#pragma  comment(lib,&quot;sqlite3.lib&quot;)</code>。</p>
+<p>准备差不多就到这里了。</p>
+<h4 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h4><p>打开数据库函数为<code>sqlite3_open()</code>,参数第一个是数据库文件（.db）的路径，第二个参数是数据库指针的指针（**db）。数据库类型是<code>sqlite3</code>,可以这么打开。</p>
+<pre><code class="lang-C++">sqlite3 *db;
+if (sqlite3_open(dbPath.c_str(), &amp;db))
+{
+    std::cout &lt;&lt; &quot;Open DB error&quot; &lt;&lt; std::endl;
+    sqlite3_close(db);
+    exit(1);
+}
+</code></pre>
+<p>打开后就可以增删改查了，由于我只需要查，所以之说查。<br>查找首先需要SQL语句。SQLite使用<code>sqlite3_stmt</code>类型作为媒介，需要一个这个类型的指针。然后使用<code>sqlite3_prepare_v2()</code>函数去准备语句，参数有五个，</p>
+<ul>
+<li>第一个是数据库指针，</li>
+<li>第二个是UTF8编码的c风格的sql语句的字符串，</li>
+<li>第三个是SQL语句的大小（bytes），</li>
+<li>第四个是<code>sqlite3_stmt</code>类型的指针的指针，</li>
+<li>最后一个是解析过的string的结尾，一般填NULL就行。（对，我也不知道这个是干啥的）</li>
+</ul>
+<pre><code class="lang-c++">sqlite3_stmt *stmt = nullptr;
+sqlite3_prepare_v2(db, findTitleSql.c_str(), findTitleSql.size(), &amp;stmt, 0);
+</code></pre>
+<p>因为我查询的是个大表，所以使用<code>sqlite3_get_table()</code>函数来查询，有6个参数。</p>
+<ul>
+<li>第一个是数据库指针</li>
+<li>第二个是UTF8编码的c风格的sql语句的字符串。</li>
+<li>第三个是结果表，使用char**储存。</li>
+<li>第四个是结果表行数 int</li>
+<li>第五个是结果表列数 int</li>
+<li>第六个是错误信息 char*</li>
+</ul>
+<pre><code class="lang-c++">sqlite3_get_table(db, findLabelSql.c_str(), &amp;res,&amp;row,&amp;col,&amp;msg);
+</code></pre>
+<p>返回的查询结果表是char** 类型就是张二维表，第一行是；列名，剩下的是查询结果，可以根据列行的一个二重循环便利表格。</p>
+<p>读完表应该使用<code>sqlite3_free_table()</code>释放表内存。</p>
+<pre><code class="lang-c++">void sqlite3_free_table(char **result);
+</code></pre>
+<p>如果需要多次查表，可以准备多个语句，也可以通过<code>sqlite3_finalize()</code>函数释放语句,然后重新准备。</p>
+<pre><code class="lang-C++">int sqlite3_finalize(sqlite3_stmt *pStmt);
+</code></pre>
+<h3 id="获取路径"><a href="#获取路径" class="headerlink" title="获取路径"></a>获取路径</h3><p>在找到了要复制的本子的GID后，需要搜索所有本子了路径，然后挑出来我们想要的路径。</p>
+<p>因为EhViewer的目录结构很简单，download下面就是所有本子的文件夹，文件夹里只有img文件。虽然我弄了个可以递归查询目录，但是不影响。</p>
+<p>核心函数<code>FindFirstFile()</code>、<code>FindNextFile()</code>和一个结构体<code>WIN32_FIND_DATA</code>。</p>
+<pre><code class="lang-C++">HANDLE WINAPI FindFirstFile(
+   __in          LPCTSTR lpFileName,
+   __out         LPWIN32_FIND_DATA lpFindFileData
+ );
+
+ BOOL WINAPI FindNextFile(
+   __in          HANDLE hFindFile,
+   __out         LPWIN32_FIND_DATA lpFindFileData
+ );
+
+ typedef struct _WIN32_FIND_DATA {  
+       DWORD dwFileAttributes;  
+       FILETIME ftCreationTime;  
+       FILETIME ftLastAccessTime;  
+       FILETIME ftLastWriteTime; 
+       DWORD nFileSizeHigh; 
+       DWORD nFileSizeLow;  
+       DWORD dwReserved0;  
+       DWORD dwReserved1; 
+       TCHAR cFileName[MAX_PATH];
+        TCHAR cAlternateFileName[14];
+ }WIN32_FIND_DATA,*PWIN32_FIND_DATA,*LPWIN32_FIND_DATA;
+</code></pre>
+<p> <code>FindFirstFile</code>负责找出输入路径下的第一个文件，所以给到download就好了。找到的信息会放进<code>FindData</code>里，找不到返回值<code>HANDLE</code>会为<code>INVALID_HANDLE_VALUE</code>。通过<code>FindData</code>的<code>dwFileAttributes</code>属性可以判断是否是文件夹。是文件夹我们就存起来，不是我们就跳过。然后要查找的路径需要添加一个<em>.</em>的占位符，必须要有，否则会找不到文件。当然也可以在这里就判断是不是我们想要的，是就把文件也找出来，不是就跳过。个人只是想把函数功能尽可能单一，所以就没这么做。大致逻辑可以为</p>
+<pre><code class="lang-c++">std::string Util::wildcard = &quot;\\*.*&quot;;
+void Util::FindAllFolder(const std::string &amp;path, std::vector&lt;std::string&gt; &amp;folders)
+{
+    WIN32_FIND_DATA wfd;
+    std::string newPath = path + wildcard;
+    HANDLE handle = FindFirstFile(newPath.c_str(), &amp;wfd);
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        return;
+    }
+    while (FindNextFile(handle, &amp;wfd))
+    {
+        if (std::string(wfd.cFileName) == &quot;.&quot; || std::string(wfd.cFileName) == &quot;..&quot;)
+            continue;
+        if (wfd.dwFileAttributes &amp; FILE_ATTRIBUTE_DIRECTORY)
+        {
+            folders.push_back(path + &quot;\\&quot; + wfd.cFileName);
+            printf(&quot;\rfind %d folder&quot;, folders.size());
+            FindAllFolder(path + &quot;\\&quot; + wfd.cFileName,folders);
+        }
+    }
+    FindClose(handle);
+}
+</code></pre>
+<p>然后就是根据GID来筛选我们需要的路径。这里又开始我的传统艺能，绕圈子了。因为数据库查出来的GID是字符串，所以我为了查找快一点，先把所有路径的GID截取出来，变成int，存在map里，因为所有GID后都有一个”-“,使用find就可以找到位置，然后substring就好。注意的是，我们一开始存的都是绝对路径，所以find之前还需要substring一下去掉前面的东西，只留文件名，因为我们download的路径是已知的，设为SRC，所以<code>substring(SRC.size())</code>就好。然后循环查找的GID，每次都把字符串变成int来查map。</p>
+<pre><code class="lang-c++">std::string src =&quot;···\\download&quot;;
+std::string dest = &quot;···\\book&quot;;
+Util::FindAllFolder(src, Allfolders);
+for (int i = 0; i &lt; Allfolders.size(); ++i)
+{
+    map[std::stoi(Allfolders[i].substr(src.size() + 1).substr(0, Allfolders[i].substr(src.size() + 1).find(&#39;-&#39;)))] = Allfolders[i];
+    printf(&quot;\rdown %d/%dfolder&quot;,i+1, Allfolders.size());
+}
+</code></pre>
+<p>得到需要的文件夹后，因为WindowsAPI不可以直接复制目录，所以还需要获取目录下文件，和之前获取目录一样，就是变成始文件就添加。循环需要的目录来获取文件。</p>
+<pre><code class="lang-c++">std::string Util::wildcard = &quot;\\*.*&quot;;
+void Util::FindAllFile(const std::string &amp;path,std::vector&lt;std::string&gt; &amp;filename)
+{
+    WIN32_FIND_DATA wfd;
+    std::string newPath = path + wildcard;
+    HANDLE handle = FindFirstFile(newPath.c_str(),&amp;wfd);
+    if (handle == INVALID_HANDLE_VALUE)
+    {
+        return;
+    }
+    while (FindNextFile(handle, &amp;wfd))
+    {
+        if (std::string(wfd.cFileName) == &quot;.&quot; || std::string(wfd.cFileName) == &quot;..&quot;)
+            continue;
+        if (wfd.dwFileAttributes &amp; FILE_ATTRIBUTE_DIRECTORY)
+        {
+            FindAllFile(path+&quot;\\&quot;+ wfd.cFileName,filename);
+        }
+        else
+        {
+            filename.push_back(path + &quot;\\&quot; + wfd.cFileName);
+        }
+    }
+    FindClose(handle);
+}
+</code></pre>
+<h3 id="拷贝文件"><a href="#拷贝文件" class="headerlink" title="拷贝文件"></a>拷贝文件</h3><p>然后，拷贝文件前提是需要文件夹存在，且Windows创建文件夹不能创建多级目录，所以需要先创建一遍label文件夹，然后再创建每个本子的文件夹。</p>
+<pre><code class="lang-c++">CreateDirectory((dest + &quot;\\&quot; + label[singleLabel]).c_str(), 0);
+for (int i = 0; i &lt; folders.size(); ++i)
+{
+    std::string a = dest + &quot;\\&quot; + label[singleLabel] + folders[i].substr(src.size());
+    if(!Util::isDirectoryExist(dest + folders[i].substr(src.size())))
+            CreateDirectory((dest +&quot;\\&quot; + label[singleLabel] + folders[i].substr(src.size())).c_str(), 0);
+    printf(&quot;\rCrestered %d folder&quot;, i + 1);
+}
+</code></pre>
+<p>最后就是复制文件了，很简单的一个CopyFile函数，有三个参数，第一个源路径，第二个目的地路径，第三个是一个bool值，表示有重复文件存在时候，true表示失败，false表示覆盖。</p>
+<pre><code class="lang-c++">for (int i = 0; i &lt; files.size(); ++i)
+{
+    CopyFile(files[i].c_str(), (dest + &quot;\\&quot; + label[singleLabel] + files[i].substr(src.size())).c_str(),false);
+        Util::ShowProcess(i,files.size());
+}
+</code></pre>
+<h4 id="收尾"><a href="#收尾" class="headerlink" title="收尾"></a>收尾</h4><p>释放该释放的资源，关闭该关闭的东西。</p>
+<h4 id="CMD处理一个东西花的时间很久的时候需要什么？"><a href="#CMD处理一个东西花的时间很久的时候需要什么？" class="headerlink" title="CMD处理一个东西花的时间很久的时候需要什么？"></a>CMD处理一个东西花的时间很久的时候需要什么？</h4><p>进度！！</p>
+<p>用\r占位符就可以重新从本行的开头输出。</p>
+<pre><code class="lang-c++">printf(&quot;\r&quot;)
+</code></pre>
+
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2050/12/12/Admin/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/passage/ev318c.png">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                主题Admin更改记录</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2020/07/25/Lua/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                实习小“总结”：xlua插件学习</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
       
-  <!-- 首页默认取最最新文章集 -->
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/25/Lua/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Hachimitsu%20Syoujo%20(Mitsumomo%20Mam).jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author">yuuki</a>
+            </h3>
+          </div>
         </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/25/Lua/">
-    实习小“总结”：xlua插件学习</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-25</div>
-    <p>
-    第一次接触lua，光lua就看了一天，感觉上挺好懂得，就是xLua的学习花了点时间，也算入了门吧。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/25/Lua/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/21/TextureSizeCheck/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/21/TextureSizeCheck/">
-    实习小“总结”：贴图尺寸检查</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-21</div>
-    <p>
-    感觉像是上次的继续，但是也没要求合起来，忽然感觉做工具也好有意思。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/21/TextureSizeCheck/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/13/TextureCompressedFormatChange/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/shiina.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/13/TextureCompressedFormatChange/">
-    实习小“总结”：贴图压缩格式转化</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-13</div>
-    <p>
-    第一次的一个工具类型的任务，不是游戏的测试了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/13/TextureCompressedFormatChange/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/08/NGUI_ScrollView/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/08/NGUI_ScrollView/">
-    实习小“总结”：NGUI 滑动菜单</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-8</div>
-    <p>
-    实习的第一个任务，是大家都要做的，第一次接触NGUI，结果虽然上级接受了，但是要是被看到代码怕不是要被开。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/08/NGUI_ScrollView/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/12/Unity_LoadFXDynamically/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/12/Unity_LoadFXDynamically/">
-    Unity动态加载特效</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-12</div>
-    <p>
-    感觉还是有点乱，耦合高了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/12/Unity_LoadFXDynamically/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/miyasaka_naco.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-    Unity异步加载场景</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-11</div>
-    <p>
-    说实话闹了半天过场真的这么做吗？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/passageshiina_2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-    Unity角色控制</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-5-26</div>
-    <p>
-    说实话还是不是很理想，到底都怎么做的呢？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-
-
-      <div class="clearer">
-      </div>
-    </main>
-    <!--  -->
-    
-  </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一个SB</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
 </div>
 
-<!-- 
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/25/Lua/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/25/Lua/">
-    实习小“总结”：xlua插件学习</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-25</div>
-    <p>
-    第一次接触lua，光lua就看了一天，感觉上挺好懂得，就是xLua的学习花了点时间，也算入了门吧。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/25/Lua/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/21/TextureSizeCheck/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/21/TextureSizeCheck/">
-    实习小“总结”：贴图尺寸检查</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-21</div>
-    <p>
-    感觉像是上次的继续，但是也没要求合起来，忽然感觉做工具也好有意思。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/21/TextureSizeCheck/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/13/TextureCompressedFormatChange/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/shiina.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/13/TextureCompressedFormatChange/">
-    实习小“总结”：贴图压缩格式转化</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-13</div>
-    <p>
-    第一次的一个工具类型的任务，不是游戏的测试了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/13/TextureCompressedFormatChange/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/08/NGUI_ScrollView/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/08/NGUI_ScrollView/">
-    实习小“总结”：NGUI 滑动菜单</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-8</div>
-    <p>
-    实习的第一个任务，是大家都要做的，第一次接触NGUI，结果虽然上级接受了，但是要是被看到代码怕不是要被开。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/08/NGUI_ScrollView/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/12/Unity_LoadFXDynamically/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/12/Unity_LoadFXDynamically/">
-    Unity动态加载特效</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-12</div>
-    <p>
-    感觉还是有点乱，耦合高了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/12/Unity_LoadFXDynamically/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/miyasaka_naco.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-    Unity异步加载场景</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-11</div>
-    <p>
-    说实话闹了半天过场真的这么做吗？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/passageshiina_2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-    Unity角色控制</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-5-26</div>
-    <p>
-    说实话还是不是很理想，到底都怎么做的呢？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
 
- -->
+
                 </div>
                 <div class="ins-search">
     <div class="ins-search-mask"></div>

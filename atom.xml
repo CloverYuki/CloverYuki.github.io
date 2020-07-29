@@ -61,6 +61,54 @@
   </entry>
   
   <entry>
+    <title>从sd卡上拷贝EhViewer下载的本子</title>
+    <link href="/2020/07/29/CopyFileFromEh-viewer/"/>
+    <id>/2020/07/29/CopyFileFromEh-viewer/</id>
+    <published>2020-07-28T16:00:00.000Z</published>
+    <updated>2020-07-29T16:26:09.829Z</updated>
+    
+    <summary type="html">
+    
+      花了一天弄了出来，现在找自己分类的本子很简单了！可能这就是囤积癖把，不在硬盘上放一份不舒服。
+    
+    </summary>
+    
+      <category term="C++" scheme="/categories/C/"/>
+    
+    
+      <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
+    
+      <category term="摸鱼" scheme="/tags/%E6%91%B8%E9%B1%BC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>实习小“总结”：xlua插件学习</title>
+    <link href="/2020/07/25/Lua/"/>
+    <id>/2020/07/25/Lua/</id>
+    <published>2020-07-24T16:00:00.000Z</published>
+    <updated>2020-07-29T16:26:01.192Z</updated>
+    
+    <summary type="html">
+    
+      第一次接触lua，光lua就看了一天，感觉上挺好懂得，就是xLua的学习花了点时间，也算入了门吧。
+    
+    </summary>
+    
+      <category term="Unity" scheme="/categories/Unity/"/>
+    
+    
+      <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
+    
+      <category term="你说这知识咋就不进脑子呢" scheme="/tags/%E4%BD%A0%E8%AF%B4%E8%BF%99%E7%9F%A5%E8%AF%86%E5%92%8B%E5%B0%B1%E4%B8%8D%E8%BF%9B%E8%84%91%E5%AD%90%E5%91%A2/"/>
+    
+      <category term="实习总结" scheme="/tags/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
     <title>实习小“总结”：贴图尺寸检查</title>
     <link href="/2020/07/21/TextureSizeCheck/"/>
     <id>/2020/07/21/TextureSizeCheck/</id>
@@ -431,28 +479,6 @@
       <category term="技术" scheme="/tags/%E6%8A%80%E6%9C%AF/"/>
     
       <category term="DirectX" scheme="/tags/DirectX/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo-Theme-Sakura</title>
-    <link href="/2018/12/12/Hexo-Theme-Sakura/"/>
-    <id>/2018/12/12/Hexo-Theme-Sakura/</id>
-    <published>2018-12-12T14:16:01.000Z</published>
-    <updated>2020-02-18T00:38:20.675Z</updated>
-    
-    <summary type="html">
-    
-      hexo-sakura主题使用教程
-    
-    </summary>
-    
-      <category term="技术" scheme="/categories/%E6%8A%80%E6%9C%AF/"/>
-    
-    
-      <category term="web" scheme="/tags/web/"/>
-    
-      <category term="悦读" scheme="/tags/%E6%82%A6%E8%AF%BB/"/>
     
   </entry>
   

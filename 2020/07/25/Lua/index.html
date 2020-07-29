@@ -7,7 +7,7 @@
     
         <title itemprop="name">
             
-                Category: Unity |
+                实习小“总结”：xlua插件学习 |
                     
                         CloverYuki
         </title>
@@ -381,501 +381,361 @@
   </div>
 </header>
 
-                        
+                        <link rel="stylesheet" type="text/css" href="/css/sharejs.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
 <div class="pattern-center-blank"></div>
-<div class="pattern-center ">
-  <div class="pattern-attachment-img">
-    <img data-src="Unity.img" class="lazyload" onerror="imgError(this,3)" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+
+  <div class="pattern-center single-center">
+    <!-- 有配图默认渲染第一张 -->
+    <div class="pattern-attachment-img lazyload" style="background-image: url(https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg);" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg">
+    </div>
+    <header class="pattern-header single-header">
+      <h1 class="entry-title">
+      实习小“总结”：xlua插件学习</h1>
+      <p class="entry-census">
+        <span>
+          <a href="">
+            <img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg">
+          </a>
+        </span>
+        <span>
+          <a href="">yuuki</a>
+        </span>
+        <span class="bull">
+        ·</span>
+        2020-7-25<span class="bull">
+        ·</span>
+      <span id="busuanzi_value_page_pv"></span>次阅读</p>
+    </header>
   </div>
-  <header class="pattern-header ">
-    <h1 class="cat-title">Unity.zh</h1>
-    <span class="cat-des">
-      <p>Unity.en</p>
-    </span>
-  </header>
-</div>
+
 <div id="content" class="site-content">
   <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
+      <article id="post-1" class="post-1 post type-post status-publish format-standard has-post-thumbnail hentry category-uncategorized">
+        <div class="toc"></div>
+        <!--<div class="toc-entry-content"><!-- 套嵌目录使用（主要为了支援评论）-->
+        
+        <div class="entry-content">
+          <h2 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h2><p>其实到现在也不用Lua能做什么。可能这就是刚入门吧。其实应该说是怎么用吧，互相来回调用有时候也挺麻烦的。</p>
+<h2 id="XLua"><a href="#XLua" class="headerlink" title="XLua"></a>XLua</h2><p>下载XLua后，直接复制Assets文件夹到工程目录。</p>
+<p>开头<code>using XLua;</code>，就可以使用XLua的东西了。</p>
+<p>XLua主要是靠一个<code>LuaEnv</code>来完成操作，首先肯定要new一个出来。</p>
+<pre><code class="lang-c#">LuaEnv luaEnv = new LuaEnv();
+</code></pre>
+<h3 id="执行lua字符串"><a href="#执行lua字符串" class="headerlink" title="执行lua字符串"></a>执行lua字符串</h3><p>使用<code>DoString</code>方法，参数只要是符合lua语法的字符串就可以。</p>
+<pre><code class="lang-c#">luaEnv.DoString(&quot;print(&#39;hello world&#39;)&quot;)
+</code></pre>
+<h3 id="Lua文件加载"><a href="#Lua文件加载" class="headerlink" title="Lua文件加载"></a>Lua文件加载</h3><p>使用<code>DoString</code>方法，执行Lua的<code>require函数</code>。</p>
+<pre><code class="lang-c#">luaEnv.DoString(&quot;require &#39;fileName&#39;&quot;);
+</code></pre>
+<p>使用这个方法，会调用一个个的loader去加载，有一个成功就终止，是被会报文件找不到。同时现在还添加了从Resource下加载，但是因为Resource只支持有限后缀，因此想把Lua脚本放下Resource下的话，需要加上txt后缀。加txt的操作只是在需要放在Resource下的时候使用。</p>
+<h3 id="自定义Loader加载"><a href="#自定义Loader加载" class="headerlink" title="自定义Loader加载"></a>自定义Loader加载</h3><p>xlua支持自定义loader加载，来解决需要解压或加在特定文件夹下的lua文件。这个形式是固定的。</p>
+<pre><code class="lang-c#">public delegate byte[] CustomLoader(ref string filepath);
+public void LuaEnv.AddLoader(CustomLoader rloade)
+</code></pre>
+<p>其实那个委托可以直接定义一个函数，然后AddLoader直接传函数名也可以。（对，我就是不懂C#）定义的函数里就可以做需要的操作。需要先<code>AddLoader</code>之后再调用<code>DoString</code>去<code>require</code>，顺序很重要。</p>
+<h3 id="C-访问Lua"><a href="#C-访问Lua" class="headerlink" title="C#访问Lua"></a>C#访问Lua</h3><p>要从Lua映射到C#的类、委托、interface等最好打上[CSharpCallLua]属性。</p>
+<h4 id="获取全局的基本数据类型"><a href="#获取全局的基本数据类型" class="headerlink" title="获取全局的基本数据类型"></a>获取全局的基本数据类型</h4><p>通过<code>LuaEnv.Global</code>的<code>Get&lt;&gt;</code>方法就可以返回需要的类型，模板写类型，方法参数里写要找的变量名。比如lua中这么写。</p>
+<pre><code class="lang-lua">str = &quot;Test str&quot;;
+num = 200;
+</code></pre>
+<p>C#中就可以这么访问。</p>
+<pre><code class="lang-c#">string luaDtr = luaEnv.Global.Get&lt;string&gt;(&quot;str&quot;);
+int luaNum = luaEnv.Global.Get&lt;int&gt;(&quot;num&quot;);
+</code></pre>
+<h4 id="获取全局的table"><a href="#获取全局的table" class="headerlink" title="获取全局的table"></a>获取全局的table</h4><p>Lua的table比较万能，能存很多种类的变量。一种方法是映射到一个class或者一个struct上。<br>比如有一个class定义为：</p>
+<pre><code class="lang-c#">public class space
+{
+    public string str;
+    public int num;
+};
+</code></pre>
+<p>想要得到lua中的table，那么只能取到这样的table</p>
+<pre><code class="lang-lua">table = {str = &quot;NewStr&quot; ,num = 500}
+</code></pre>
+<p>还可以映射到一个interface上面。<br>如这样一个interface</p>
+<pre><code class="lang-c#">[CSharpCallLua]
+public interface MappingTest
+{
+    int num { get; set; }
+    string str { get; set; }
+    string addStr(string str1,string str2);
+}
+</code></pre>
+<p>就对应这样一个lua的table</p>
+<pre><code class="lang-lua">MappingTest ={
+    num =100,
+    str = &quot;This is a table&quot;,
+    addStr = function (self,a,b)
+        print(&quot;In MappingTest add function&quot;);
+        return a .. b;
+    end;
+}
+</code></pre>
+<p>如果lua中的table中所有的key和value的类型都是一直的话，可以使用List&lt;&gt;或Dictionary&lt;&gt;来映射。<br>如果lua中有这样的字符串</p>
+<pre><code class="lang-lua">List ={&quot;aaa&quot;,&quot;bbb&quot;,&quot;ccc&quot;};
+</code></pre>
+<p>C#中就可以这么取</p>
+<pre><code class="lang-c#">List&lt;string&gt; list = luaEnv.Global.Get&lt;List&lt;string&gt;&gt;(&quot;List&quot;);
+</code></pre>
+<p>最后就是可以映射到LuaTable类中，但是官方说比较慢，比映射到接口慢一个数量级，也就没细看了。</p>
+<h4 id="访问全局function"><a href="#访问全局function" class="headerlink" title="访问全局function"></a>访问全局function</h4><p>一种是使用delegate，delegate声明对于function的每一个参数就声明一个输入类型的参数。多返回值的处理上，从左往右映射C#的输出参数，参数包括返回值，ref参数和out参数。使用上只要映射完成后就当普通函数使用。</p>
+<p>首先声明一个返回值为string类型，输入参数为str，输出参数为str1和str2的委托。接下来</p>
+<pre><code class="lang-c#">[CSharpCallLua]
+public delegate string TestDelegate(string str,out string str1,out string str2);
+</code></pre>
+<p>那么Lua方面，就对应一个参数就是一个str，但返回值需要三个。</p>
+<pre><code class="lang-lua">function MultiReturn(str)
+    str = str ..&quot;Added By Lua&quot;;
+    return str, &quot;This Str is From Lua&quot;,&quot;And This ONE&quot;;
+end;
+</code></pre>
+<p>而在C#方面，调用可以先声明两个string类型的变量。然后传入委托的方法中即可。</p>
+<pre><code class="lang-c#">TestDelegate func = luaEnv.Global.Get&lt;TestDelegate&gt;(&quot;MultiReturn&quot;);
+string str1 =&quot;&quot;,str2=&quot;&quot;;
+string str = func(&quot;Create By Unity&quot;,out str1,out str2);
+</code></pre>
+<p>这样，C#中str会被附上返回值，也就是lua中的str。而str1和str2会从左到右被依次被赋值lua中的返回值。</p>
+<p>还有一种方法就是使用interface。首先C#中定义一个interface并声明两个方法。</p>
+<pre><code class="lang-c#">[CSharpCallLua]
+public interface Test
+{
+    void ChangeColor(Renderer renderer);
+    void CreateCylinder();
+}
+</code></pre>
+<p>lua中首先需要声明一个变量，然后按照 function 变量名:方法名（参数）的格式来书写要实现的函数。</p>
+<pre><code class="lang-lua">UnityCallLua = {};
+function UnityCallLua:ChangeColor(renderer)
+    renderer.material.color = CS.UnityEngine.Color.red;
+end
+
+function UnityCallLua:CreateCylinder()
+    CS.UnityEngine.GameObject.CreatePrimitive(CS.UnityEngine.PrimitiveType.Cylinder);
+end;
+</code></pre>
+<p>这样只需要Get接口类型，就可以调用了。</p>
+<pre><code class="lang-c#">Test UnityCallLua;
+UnityCallLua = luaEnv.Global.Get&lt;Test&gt;(&quot;Unitys&quot;);
+UnityCallLua.ChangeColor(renderer);
+UnityCallLua.CreateCylinder();
+</code></pre>
+<p>最后是映射到LuaFunction，也是性能慢一点，就没看。</p>
+<h3 id="Lua调用C"><a href="#Lua调用C" class="headerlink" title="Lua调用C"></a>Lua调用C</h3><p>Lua调用C#时也最好使用[LuaCallCSharp]标签。</p>
+<p>Lua中访问C#使用<code>CS.namespace.class</code>的形式访问C#类。如创建一个对象可以</p>
+<pre><code class="lang-lua">newObject = CS.UnityEngine.GameObject();
+</code></pre>
+<p>对应C#中的</p>
+<pre><code class="lang-c#">GameObject newObject = new UnityEngine.GameObject();
+</code></pre>
+<p>而且xlua支持重载，调用重载方法就和再C#中一样写就好。</p>
+<h4 id="访问静态方法、属性"><a href="#访问静态方法、属性" class="headerlink" title="访问静态方法、属性"></a>访问静态方法、属性</h4><p>Lua访问C#的静态方法直接使用<code>CS.namespace.class.var</code>或<code>CS.namespace.class.function</code></p>
+<pre><code class="lang-lua">time = CS.UnityEngine.Time.deltaTime;
+CS.UnityEngine.GameObject.Find(&#39;Button&#39;);
+
+CS.UnityEngine.Time.timeScale = 2;
+</code></pre>
+<p>如果有需要经常访问的类，可以用局部变量引用后访问。</p>
+<pre><code class="lang-lua">local GameObject = CS.UnityEngine.GameObject
+GameObject.Find(&#39;helloworld&#39;)
+</code></pre>
+<h4 id="访问成员方法和属性"><a href="#访问成员方法和属性" class="headerlink" title="访问成员方法和属性"></a>访问成员方法和属性</h4><p>访问成员方法是需要先引用变量，调用构造函数即可完成。</p>
+<p>然后使用变量进行.运算符访问成员属性，使用冒号语法糖调用成员方法。<br>假设有C#Class</p>
+<pre><code class="lang-c#">[LuaCallCSharp]
+public class CustomClass 
+{
+    public static string str = &quot;call by lua&quot;;
+    public static void Func(string str)
+    {
+        Debug.LogFormat(&quot;{0}&quot;,str);
+    }
+    public int num = 100;
+    public int add(int a,int b)
+    {
+        return a + b;
+    }
+}
+</code></pre>
+<p>lua中就可以先实例化一个变量，然后调用就好。</p>
+<pre><code class="lang-lua">customClass = CS.CustomClass();
+print(CS.CustomClass.str);
+print(customClass.num);
+print(customClass:add(12,25));
+print(CS.CustomClass.Func(&quot;This is Print By Lua&quot;));
+</code></pre>
+<p>xlua还支持通过派生类实例访问基类的成员和方法，通过派生类访问静态方法和属性。</p>
+<h4 id="多参数的输入输出"><a href="#多参数的输入输出" class="headerlink" title="多参数的输入输出"></a>多参数的输入输出</h4><p>如C#有这样的方法</p>
+<pre><code class="lang-c#">    public string MultiReturned(string str1,string str2,ref string change,out string ostr1,out string ostr2)
+    {
+        change = str1 + str2;
+        ostr1 = str1;
+        ostr2 = str2;
+        return &quot;Down&quot;;
+    }
+</code></pre>
+<p>首先输入参数有str1，str2和change。输出参数有返回值的string，ostr1和ostr2。那么lua中就需要三个返回值和三个参数。</p>
+<pre><code class="lang-lua">returned,reff,out1,out2 = customClass:MultiReturned(&quot;This Print is&quot;,&quot; Added By C#&quot;);
+</code></pre>
+<h4 id="delegate的使用"><a href="#delegate的使用" class="headerlink" title="delegate的使用"></a>delegate的使用</h4><p>调用delegate其实和调用普通函数一样，而其中主要是+操作符和-操作符。其中+操作符是可以把两个委托串成一个委托链，-操作符是可以从一个委托链中删除一个委托。如C#中定义这样的委托。</p>
+<pre><code class="lang-c#"> public delegate void DString(string str);
+    public DString ShowStr = (string str) =&gt;
+    {
+        Debug.Log(&quot;This is ShowStr showed&quot; + str);
+    };
+    public DString AddStr = (string str) =&gt;
+    {
+        Debug.Log(&quot;This is AddStr,Added&quot; + str);
+    };
+</code></pre>
+<p>那么lua就可以这么来调用和串链。</p>
+<pre><code class="lang-lua">local delegate1 = customClass.ShowStr;
+delegate1(&quot;This is From Lua&quot;);
+delegateline = delegate1 + customClass.AddStr;
+delegateline(&quot;Lua call DelegateLine&quot;);
+delegateline = delegateline - delegate1;
+delegateline(&quot;Delete a delegate&quot;);
+</code></pre>
+<h3 id="Hotfix热更新"><a href="#Hotfix热更新" class="headerlink" title="Hotfix热更新"></a>Hotfix热更新</h3><p>需要进行热更新的类，方法，需要打上[Hotfix]标签。</p>
+<h4 id="前置操作"><a href="#前置操作" class="headerlink" title="前置操作"></a>前置操作</h4><p>首先需要打开特性，添加HOTFIX_ENABLE宏（在Unity3D的File-&gt;Build Setting-&gt;Scripting Define Symbols下添加）。编辑器、各手机平台这个宏要分别设置！如果是自动化打包，要注意在代码里头用API设置的宏是不生效的，需要在编辑器设置。</p>
+<p>执行XLua/Generate Code菜单。</p>
+<p>注入，构建手机包这个步骤会在构建时自动进行，编辑器下开发补丁需要手动执行”XLua/Hotfix Inject In Editor”菜单。打印“hotfix inject finish!”或者“had injected!”才算成功，否则会打印错误信息。</p>
+<h4 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h4><p>不支持静态构造函数。</p>
+<p>目前只支持Assets下代码的热补丁，不支持引擎，c#系统库的热补丁。</p>
+<h4 id="API"><a href="#API" class="headerlink" title="API"></a>API</h4><pre><code class="lang-lua">xlua.hotfix(class, [method_name], fix)
+</code></pre>
+<p>用于注入lua补丁</p>
+<ul>
+<li>class表示C#类，两种表示方法，CS.Namespace.TypeName或者字符串方式”Namespace.TypeName”，字符串格式和C#的Type.GetType要求一致，如果是内嵌类型（Nested Type）是非Public类型的话，只能用字符串方式表示”Namespace.TypeName+NestedTypeName”</li>
+<li>method_name，方法名，可选</li>
+<li>fix，如果传了method_name，fix将会是一个function，否则通过table提供一组函数。table的组织按key是method_name，value是function的方式。</li>
+</ul>
+<pre><code class="lang-lua">base(csobj):func();
+</code></pre>
+<p>用于子类override了父类函数而要调用父类函数时用。</p>
+<pre><code class="lang-lua">util.hotfix_ex(class, method_name, fix)
+</code></pre>
+<p>xlua.hotfix的增强版本，可以在fix函数里头执行原来的函数，缺点是fix的执行会略慢。</p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><pre><code class="lang-c#">[Hotfix]
+public class LuaHotfix : MonoBehaviour
+{
+    LuaEnv luaEnv = new LuaEnv();
+    public int def = 100;
+    int atk { get; set; }
+    const float loopTime = 5;
+    float addTime = 0;
+    string str { get; set; }
+    Origins origins { get; set; }
+    void Start()
+    {
+        luaEnv.AddLoader(Loader);
+        luaEnv.DoString(&quot;require &#39;HotFixLua&#39;&quot;);
+    }
+    public string add(string str1,string str2)
+    {
+        return str1 + str2;
+    }
+}
+</code></pre>
+<p>关于修改方法很简单。如想修改add函数</p>
+<pre><code class="lang-lua">xlua.hotfix(CS.LuaHotfix,&#39;add&#39;,function
+(self,a,b)
+     return a .. b .. &quot;Fixed&quot;;
+end)
+</code></pre>
+<p>如果要修改的函数是构造函数，对应的函数名是<code>.ctor</code>。造函数的热补丁并不是替换，而是执行原有逻辑后调用lua。</p>
+<p>如果要访问私有属性需要加上</p>
+<pre><code class="lang-lua">xlua.private_accessible(CS.LuaHotfix);
+</code></pre>
+<p>如果想修改属性，需要设置getter和setter。通过修改getter方法来修改。</p>
+<pre><code class="lang-lua">xlua.hotfix(CS.LuaHotfix,&#39;get_atk&#39;,function ( ... )
+    return 200;
+end)
+print(obj.atk);
+
+xlua.hotfix(CS.LuaHotfix,&#39;get_str&#39;,function ( ... )
+    return &quot;Fixed&quot;;
+end)
+
+xlua.hotfix(CS.LuaHotfix,&#39;get_origins&#39;,function ( ... )
+    return {name = &quot;FixedName&quot;,num = 250,time = 25.5};
+end)
+</code></pre>
+<h2 id="杂谈"><a href="#杂谈" class="headerlink" title="杂谈"></a>杂谈</h2><p>看了下xlua热更新的原理，Unity会编译生成一个中间语言（IL），然后把IL丢到Mono虚拟机里跑。lua似乎是改CIL来注入lua脚本或更改执行路径，来达到修改函数、变量的目的。也就是说，只要是产生中间语言的都可以这么做咯？？不是很了解，而且如果C++要做这种的，难道要通过汇编来改吗？？感觉很神奇。</p>
+
+        </div>
+        <!-- .entry-content -->
+        <div style="text-align:center; width: 100%" class="social-share share-mobile" data-disabled="diandian, tencent"></div>
+        <footer class="post-footer">
+          <div class="post-lincenses"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="nofollow"><i class="fa fa-creative-commons" aria-hidden="true"></i> 知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a></div>
+          <div class="post-tags">
+          </div>
+          <div class="post-share">
+            <div class="social-share sharehidden share-component"></div>
+            <i class="iconfont show-share icon-forward"></i>
+          </div>
+        </footer><!-- .entry-footer -->
+      </article>
+      <!-- #post-## -->
+      <div class="toc" style="background: none;"></div>
+      <section class="post-squares nextprev">
+        
+          
+            <div class="post-nepre half previous">
+          
+            <a href="/2020/07/29/CopyFileFromEh-viewer/" rel="prev">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Hachimitsu%20Syoujo%20(Mitsumomo%20Mam).jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Hachimitsu%20Syoujo%20(Mitsumomo%20Mam).jpg">
+              </div>
+              <span class="label">
+              Previous Post</span>
+              <div class="info">
+                <h3>
+                从sd卡上拷贝EhViewer下载的本子</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+        
+          
+            <div class="post-nepre half next">
+          
+            <a href="/2020/07/21/TextureSizeCheck/" rel="next">
+              <div class="background">
+                <img class="lazyload" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.4/img/loader/orange.progress-bar-stripe-loader.svg" data-src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg" style="width: 100%; height: 100%; object-fit: cover; pointer-events: none;" onerror="imgError(this,3)" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg">
+              </div>
+              <span class="label">
+              Next Post</span>
+              <div class="info">
+                <h3>
+                实习小“总结”：贴图尺寸检查</h3>
+                <hr>
+              </div>
+            </a>
+          </div>
+        
+      </section>
       
-  <!-- 首页默认取最最新文章集 -->
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/25/Lua/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
+      <section class="author-profile">
+        <div class="info" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <a href="" class="profile gravatar"><img src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg" itemprop="image" alt="yuuki" height="70" width="70"></a>
+          <div class="meta">
+            <span class="title">Author</span>
+            <h3 itemprop="name">
+            <a href="" itemprop="url" rel="author">yuuki</a>
+            </h3>
+          </div>
         </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/25/Lua/">
-    实习小“总结”：xlua插件学习</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-25</div>
-    <p>
-    第一次接触lua，光lua就看了一天，感觉上挺好懂得，就是xLua的学习花了点时间，也算入了门吧。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/25/Lua/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/21/TextureSizeCheck/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/21/TextureSizeCheck/">
-    实习小“总结”：贴图尺寸检查</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-21</div>
-    <p>
-    感觉像是上次的继续，但是也没要求合起来，忽然感觉做工具也好有意思。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/21/TextureSizeCheck/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/13/TextureCompressedFormatChange/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/shiina.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/13/TextureCompressedFormatChange/">
-    实习小“总结”：贴图压缩格式转化</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-13</div>
-    <p>
-    第一次的一个工具类型的任务，不是游戏的测试了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/13/TextureCompressedFormatChange/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/08/NGUI_ScrollView/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/08/NGUI_ScrollView/">
-    实习小“总结”：NGUI 滑动菜单</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-8</div>
-    <p>
-    实习的第一个任务，是大家都要做的，第一次接触NGUI，结果虽然上级接受了，但是要是被看到代码怕不是要被开。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/08/NGUI_ScrollView/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/12/Unity_LoadFXDynamically/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/12/Unity_LoadFXDynamically/">
-    Unity动态加载特效</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-12</div>
-    <p>
-    感觉还是有点乱，耦合高了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/12/Unity_LoadFXDynamically/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/miyasaka_naco.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-    Unity异步加载场景</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-11</div>
-    <p>
-    说实话闹了半天过场真的这么做吗？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/passageshiina_2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-    Unity角色控制</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-5-26</div>
-    <p>
-    说实话还是不是很理想，到底都怎么做的呢？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-
-
-      <div class="clearer">
-      </div>
-    </main>
-    <!--  -->
-    
-  </div>
+        <hr>
+        <p><i class="iconfont icon-write"></i>一个SB</p>
+      </section>
+    </main><!-- #main -->
+  </div><!-- #primary -->
 </div>
 
-<!-- 
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/25/Lua/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.8/img/passage/Anmi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/25/Lua/">
-    实习小“总结”：xlua插件学习</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-25</div>
-    <p>
-    第一次接触lua，光lua就看了一天，感觉上挺好懂得，就是xLua的学习花了点时间，也算入了门吧。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/25/Lua/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/21/TextureSizeCheck/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Miyasaki_miyu_rira2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/21/TextureSizeCheck/">
-    实习小“总结”：贴图尺寸检查</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-21</div>
-    <p>
-    感觉像是上次的继续，但是也没要求合起来，忽然感觉做工具也好有意思。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/21/TextureSizeCheck/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/13/TextureCompressedFormatChange/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/shiina.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/13/TextureCompressedFormatChange/">
-    实习小“总结”：贴图压缩格式转化</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-13</div>
-    <p>
-    第一次的一个工具类型的任务，不是游戏的测试了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/13/TextureCompressedFormatChange/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/07/08/NGUI_ScrollView/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/hoshi.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/07/08/NGUI_ScrollView/">
-    实习小“总结”：NGUI 滑动菜单</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-7-8</div>
-    <p>
-    实习的第一个任务，是大家都要做的，第一次接触NGUI，结果虽然上级接受了，但是要是被看到代码怕不是要被开。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/07/08/NGUI_ScrollView/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/12/Unity_LoadFXDynamically/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/Minato_Akua.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/12/Unity_LoadFXDynamically/">
-    Unity动态加载特效</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-12</div>
-    <p>
-    感觉还是有点乱，耦合高了。</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/12/Unity_LoadFXDynamically/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/miyasaka_naco.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-    Unity异步加载场景</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-6-11</div>
-    <p>
-    说实话闹了半天过场真的这么做吗？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/06/11/Unity_LoadSceneAsynchronously/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
-    <article class="post post-list" itemscope="" itemtype="http://schema.org/BlogPosting">
-  <div class="post-entry">
-    <div class="feature">
-      <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-        <div class="overlay">
-          <i class="iconfont icon-text">
-          </i>
-        </div>
-        <img width="150" height="150" src="https://cdn.jsdelivr.net/gh/CloverYuki/cdn@0.7/img/passage/passageshiina_2.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" >
-      </a>
-    </div>
-    <h1 class="entry-title">
-    <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-    Unity角色控制</a>
-    </h1>
-    <div class="p-time">
-      <i class="iconfont icon-time">
-      </i>
-    2020-5-26</div>
-    <p>
-    说实话还是不是很理想，到底都怎么做的呢？</p>
-    <footer class="entry-footer">
-      <div class="post-more">
-        <a href="/2020/05/26/Unity_CharacterController&Rigidbody/">
-          <i class="iconfont icon-caidan">
-          </i>
-        </a>
-      </div>
-    </footer>
-  </div>
-  <hr>
-</article>
-  
 
- -->
+
                 </div>
                 <div class="ins-search">
     <div class="ins-search-mask"></div>
